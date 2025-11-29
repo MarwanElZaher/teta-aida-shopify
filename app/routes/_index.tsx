@@ -47,12 +47,16 @@ export default function Homepage() {
       {/* 1. HERO SECTION */}
       <section className="relative h-screen min-h-[600px] w-full bg-[#F0EFEB] overflow-hidden">
         <div className="absolute inset-0 flex items-center justify-center">
-          <img
-            src="/hero-bg.jpg"
-            alt="Teta Aida Heritage"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+          <div
+            className="absolute inset-0 w-full h-full opacity-80"
+            style={{
+              backgroundImage: 'url("/hero-bg.jpg")',
+              backgroundRepeat: 'repeat',
+              backgroundSize: '300px',
+              backgroundPosition: 'center'
+            }}
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/10" />
         </div>
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto pt-20">
