@@ -1,12 +1,12 @@
-import {Link, useNavigate} from 'react-router';
-import {type MappedProductOptions} from '@shopify/hydrogen';
+import { Link, useNavigate } from 'react-router';
+import { type MappedProductOptions } from '@shopify/hydrogen';
 import type {
   Maybe,
   ProductOptionValueSwatch,
 } from '@shopify/hydrogen/storefront-api-types';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
-import type {ProductFragment} from 'storefrontapi.generated';
+import { AddToCartButton } from './AddToCartButton';
+import { useAside } from './Aside';
+import type { ProductFragment } from 'storefrontapi.generated';
 
 export function ProductForm({
   productOptions,
@@ -16,7 +16,7 @@ export function ProductForm({
   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
 }) {
   const navigate = useNavigate();
-  const {open} = useAside();
+  const { open } = useAside();
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -24,9 +24,9 @@ export function ProductForm({
         if (option.optionValues.length === 1) return null;
 
         return (
-          <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
-            <div className="product-options-grid">
+          <div className="product-options mb-6" key={option.name}>
+            <h5 className="font-serif text-sm font-bold text-primary mb-3 uppercase tracking-wide">{option.name}</h5>
+            <div className="product-options-grid flex flex-wrap gap-3">
               {option.optionValues.map((value) => {
                 const {
                   name,
@@ -39,48 +39,33 @@ export function ProductForm({
                   swatch,
                 } = value;
 
+                const commonClasses = `
+                  px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 border
+                  ${selected
+                    ? 'bg-primary text-white border-primary shadow-md transform scale-105'
+                    : 'bg-white text-dark/70 border-gray-200 hover:border-secondary hover:text-secondary'}
+                  ${!available ? 'opacity-50 cursor-not-allowed' : ''}
+                `;
+
                 if (isDifferentProduct) {
-                  // SEO
-                  // When the variant is a combined listing child product
-                  // that leads to a different url, we need to render it
-                  // as an anchor tag
                   return (
                     <Link
-                      className="product-options-item"
+                      className={commonClasses}
                       key={option.name + name}
                       prefetch="intent"
                       preventScrollReset
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
                     </Link>
                   );
                 } else {
-                  // SEO
-                  // When the variant is an update to the search param,
-                  // render it as a button with javascript navigating to
-                  // the variant so that SEO bots do not index these as
-                  // duplicated links
                   return (
                     <button
                       type="button"
-                      className={`product-options-item${
-                        exists && !selected ? ' link' : ''
-                      }`}
+                      className={`${commonClasses} ${exists && !selected ? ' cursor-pointer' : ''}`}
                       key={option.name + name}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
                       disabled={!exists}
                       onClick={() => {
                         if (!selected) {
@@ -97,7 +82,6 @@ export function ProductForm({
                 }
               })}
             </div>
-            <br />
           </div>
         );
       })}
@@ -109,12 +93,12 @@ export function ProductForm({
         lines={
           selectedVariant
             ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-              ]
+              {
+                merchandiseId: selectedVariant.id,
+                quantity: 1,
+                selectedVariant,
+              },
+            ]
             : []
         }
       >

@@ -1,13 +1,14 @@
-import {redirect, useLoaderData} from 'react-router';
-import type {Route} from './+types/collections.$handle';
-import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ProductItem} from '~/components/ProductItem';
-import type {ProductItemFragment} from 'storefrontapi.generated';
+import { redirect, useLoaderData } from 'react-router';
+import type { Route } from './+types/collections.$handle';
+import { getPaginationVariables, Analytics } from '@shopify/hydrogen';
+import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
+import { ProductItem } from '~/components/ProductItem';
+import { BundleCard } from '~/components/BundleCard';
+import type { ProductItemFragment } from 'storefrontapi.generated';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -17,16 +18,16 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
-  const {handle} = params;
-  const {storefront} = context;
+async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
+  const { handle } = params;
+  const { storefront } = context;
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
@@ -35,9 +36,9 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
     throw redirect('/collections');
   }
 
-  const [{collection}] = await Promise.all([
+  const [{ collection }] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: {handle, ...paginationVariables},
+      variables: { handle, ...paginationVariables },
       // Add other queries here, so that they are loaded in parallel
     }),
   ]);
@@ -49,7 +50,7 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
   }
 
   // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: collection});
+  redirectIfHandleIsLocalized(request, { handle, data: collection });
 
   return {
     collection,
@@ -61,12 +62,12 @@ async function loadCriticalData({context, params, request}: Route.LoaderArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Collection() {
-  const {collection} = useLoaderData<typeof loader>();
+  const { collection } = useLoaderData<typeof loader>();
 
   return (
     <div className="collection">
@@ -74,14 +75,19 @@ export default function Collection() {
       <p className="collection-description">{collection.description}</p>
       <PaginatedResourceSection<ProductItemFragment>
         connection={collection.products}
-        resourcesClassName="products-grid"
+        resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
       >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
+        {({ node: product, index }) => (
+          collection.handle === 'bundles' ? (
+            // @ts-ignore
+            <BundleCard key={product.id} product={product} />
+          ) : (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )
         )}
       </PaginatedResourceSection>
       <Analytics.CollectionView
@@ -119,6 +125,15 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
       maxVariantPrice {
         ...MoneyProductItem
       }
+    }
+    compareAtPriceRange {
+      minVariantPrice {
+        ...MoneyProductItem
+      }
+    }
+    metafields(identifiers: [{namespace: "custom", key: "tagline"}]) {
+      key
+      value
     }
   }
 ` as const;

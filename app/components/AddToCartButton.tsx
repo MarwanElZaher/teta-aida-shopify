@@ -1,5 +1,5 @@
-import {type FetcherWithComponents} from 'react-router';
-import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
+import { type FetcherWithComponents } from 'react-router';
+import { CartForm, type OptimisticCartLineInput } from '@shopify/hydrogen';
 
 export function AddToCartButton({
   analytics,
@@ -15,7 +15,7 @@ export function AddToCartButton({
   onClick?: () => void;
 }) {
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher: FetcherWithComponents<any>) => (
         <>
           <input
@@ -27,6 +27,11 @@ export function AddToCartButton({
             type="submit"
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
+            className={`
+              w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm
+              transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg active:scale-[0.98]
+              flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary
+            `}
           >
             {children}
           </button>

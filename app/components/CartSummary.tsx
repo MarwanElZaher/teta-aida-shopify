@@ -1,31 +1,30 @@
-import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import type {CartLayout} from '~/components/CartMain';
-import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
-import {useEffect, useRef} from 'react';
-import {useFetcher} from 'react-router';
-import type {FetcherWithComponents} from 'react-router';
+import type { CartApiQueryFragment } from 'storefrontapi.generated';
+import type { CartLayout } from '~/components/CartMain';
+import { CartForm, Money, type OptimisticCart } from '@shopify/hydrogen';
+import { useEffect, useRef } from 'react';
+import { useFetcher } from 'react-router';
+import type { FetcherWithComponents } from 'react-router';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
   layout: CartLayout;
 };
 
-export function CartSummary({cart, layout}: CartSummaryProps) {
-  const className =
-    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
-
+export function CartSummary({ cart, layout }: CartSummaryProps) {
   return (
-    <div aria-labelledby="cart-summary" className={className}>
-      <h4>Totals</h4>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
-        <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
-          ) : (
-            '-'
-          )}
-        </dd>
+    <div aria-labelledby="cart-summary" className="border-t border-gray-200 px-6 py-6 bg-cream/30">
+      <h4 className="font-serif text-lg font-bold text-primary mb-4 uppercase tracking-wide">Order Summary</h4>
+      <dl className="space-y-2 mb-4">
+        <div className="flex justify-between text-sm">
+          <dt className="text-dark/70">Subtotal</dt>
+          <dd className="font-bold text-dark">
+            {cart?.cost?.subtotalAmount?.amount ? (
+              <Money data={cart?.cost?.subtotalAmount} />
+            ) : (
+              '-'
+            )}
+          </dd>
+        </div>
       </dl>
       <CartDiscounts discountCodes={cart?.discountCodes} />
       <CartGiftCard giftCardCodes={cart?.appliedGiftCards} />
@@ -34,15 +33,18 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
   if (!checkoutUrl) return null;
 
   return (
-    <div>
-      <a href={checkoutUrl} target="_self">
-        <p>Continue to Checkout &rarr;</p>
+    <div className="mt-6">
+      <a
+        href={checkoutUrl}
+        target="_self"
+        className="block w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg flex items-center justify-center"
+      >
+        Continue to Checkout →
       </a>
-      <br />
     </div>
   );
 }
@@ -55,7 +57,7 @@ function CartDiscounts({
   const codes: string[] =
     discountCodes
       ?.filter((discount) => discount.applicable)
-      ?.map(({code}) => code) || [];
+      ?.map(({ code }) => code) || [];
 
   return (
     <div>
@@ -75,10 +77,19 @@ function CartDiscounts({
 
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
-          <input type="text" name="discountCode" placeholder="Discount code" />
-          &nbsp;
-          <button type="submit">Apply</button>
+        <div className="flex gap-2 mt-3">
+          <input
+            type="text"
+            name="discountCode"
+            placeholder="Discount code"
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary"
+          />
+          <button
+            type="submit"
+            className="px-4 py-2 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#b8941f] transition-colors"
+          >
+            Apply
+          </button>
         </div>
       </UpdateDiscountForm>
     </div>
@@ -112,7 +123,7 @@ function CartGiftCard({
 }) {
   const appliedGiftCardCodes = useRef<string[]>([]);
   const giftCardCodeInput = useRef<HTMLInputElement>(null);
-  const giftCardAddFetcher = useFetcher({key: 'gift-card-add'});
+  const giftCardAddFetcher = useFetcher({ key: 'gift-card-add' });
 
   // Clear the gift card code input after the gift card is added
   useEffect(() => {

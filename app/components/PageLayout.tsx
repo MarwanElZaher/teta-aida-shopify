@@ -1,19 +1,19 @@
-import {Await, Link} from 'react-router';
-import {Suspense, useId} from 'react';
+import { Await, Link } from 'react-router';
+import { Suspense, useId } from 'react';
 import type {
   CartApiQueryFragment,
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
-import {Aside} from '~/components/Aside';
-import {Footer} from '~/components/Footer';
-import {Header, HeaderMenu} from '~/components/Header';
-import {CartMain} from '~/components/CartMain';
+import { Aside } from '~/components/Aside';
+import { Footer } from '~/components/Footer';
+import { Header, HeaderMenu } from '~/components/Header';
+import { CartMain } from '~/components/CartMain';
 import {
   SEARCH_ENDPOINT,
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
-import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
+import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -45,7 +45,7 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <main className="pt-24 md:pt-32 min-h-screen">{children}</main>
       <Footer
         footer={footer}
         header={header}
@@ -55,7 +55,7 @@ export function PageLayout({
   );
 }
 
-function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
+function CartAside({ cart }: { cart: PageLayoutProps['cart'] }) {
   return (
     <Aside type="cart" heading="CART">
       <Suspense fallback={<p>Loading cart ...</p>}>
@@ -73,79 +73,91 @@ function SearchAside() {
   const queriesDatalistId = useId();
   return (
     <Aside type="search" heading="SEARCH">
-      <div className="predictive-search">
-        <br />
-        <SearchFormPredictive>
-          {({fetchResults, goToSearch, inputRef}) => (
-            <>
-              <input
-                name="q"
-                onChange={fetchResults}
-                onFocus={fetchResults}
-                placeholder="Search"
-                ref={inputRef}
-                type="search"
-                list={queriesDatalistId}
-              />
-              &nbsp;
-              <button onClick={goToSearch}>Search</button>
-            </>
-          )}
-        </SearchFormPredictive>
+      <div className="flex flex-col h-full">
+        {/* Search Input Section */}
+        <div className="px-6 py-4 border-b border-gray-200">
+          <SearchFormPredictive>
+            {({ fetchResults, goToSearch, inputRef }) => (
+              <div className="flex gap-2">
+                <input
+                  name="q"
+                  onChange={fetchResults}
+                  onFocus={fetchResults}
+                  placeholder="Search products..."
+                  ref={inputRef}
+                  type="search"
+                  list={queriesDatalistId}
+                  className="flex-1 px-4 py-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary transition-colors"
+                />
+                <button
+                  onClick={goToSearch}
+                  className="px-6 py-3 bg-primary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-[#143d24] transition-colors"
+                >
+                  Search
+                </button>
+              </div>
+            )}
+          </SearchFormPredictive>
+        </div>
 
-        <SearchResultsPredictive>
-          {({items, total, term, state, closeSearch}) => {
-            const {articles, collections, pages, products, queries} = items;
+        {/* Search Results Section */}
+        <div className="flex-1 overflow-y-auto px-6 py-4">
+          <SearchResultsPredictive>
+            {({ items, total, term, state, closeSearch }) => {
+              const { articles, collections, pages, products, queries } = items;
 
-            if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
-            }
+              if (state === 'loading' && term.current) {
+                return (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-dark/60">Searching...</div>
+                  </div>
+                );
+              }
 
-            if (!total) {
-              return <SearchResultsPredictive.Empty term={term} />;
-            }
+              if (!total) {
+                return <SearchResultsPredictive.Empty term={term} />;
+              }
 
-            return (
-              <>
-                <SearchResultsPredictive.Queries
-                  queries={queries}
-                  queriesDatalistId={queriesDatalistId}
-                />
-                <SearchResultsPredictive.Products
-                  products={products}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Collections
-                  collections={collections}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Pages
-                  pages={pages}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Articles
-                  articles={articles}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                {term.current && total ? (
-                  <Link
-                    onClick={closeSearch}
-                    to={`${SEARCH_ENDPOINT}?q=${term.current}`}
-                  >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
-                    </p>
-                  </Link>
-                ) : null}
-              </>
-            );
-          }}
-        </SearchResultsPredictive>
+              return (
+                <div className="space-y-6">
+                  <SearchResultsPredictive.Queries
+                    queries={queries}
+                    queriesDatalistId={queriesDatalistId}
+                  />
+                  <SearchResultsPredictive.Products
+                    products={products}
+                    closeSearch={closeSearch}
+                    term={term}
+                  />
+                  <SearchResultsPredictive.Collections
+                    collections={collections}
+                    closeSearch={closeSearch}
+                    term={term}
+                  />
+                  <SearchResultsPredictive.Pages
+                    pages={pages}
+                    closeSearch={closeSearch}
+                    term={term}
+                  />
+                  <SearchResultsPredictive.Articles
+                    articles={articles}
+                    closeSearch={closeSearch}
+                    term={term}
+                  />
+                  {term.current && total ? (
+                    <Link
+                      onClick={closeSearch}
+                      to={`${SEARCH_ENDPOINT}?q=${term.current}`}
+                      className="block text-center py-3 text-primary font-medium hover:text-secondary transition-colors"
+                    >
+                      View all results for <q>{term.current}</q> →
+                    </Link>
+                  ) : null}
+                </div>
+              );
+            }}
+          </SearchResultsPredictive>
+        </div>
       </div>
     </Aside>
   );

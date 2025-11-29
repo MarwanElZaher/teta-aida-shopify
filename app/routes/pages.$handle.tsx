@@ -1,11 +1,11 @@
 import {
   useLoaderData,
 } from 'react-router';
-import type {Route} from './+types/pages.$handle';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import type { Route } from './+types/pages.$handle';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: `Hydrogen | ${data?.page.title ?? ''}` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -15,7 +15,7 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
@@ -31,7 +31,18 @@ async function loadCriticalData({
     throw new Error('Missing page handle');
   }
 
-  const [{page}] = await Promise.all([
+  // List of custom routes that have their own route files
+  const customRoutes = ['about-us', 'shipping-delivery', 'returns-exchanges', 'contact'];
+
+  // If this is a custom route, redirect to the specific route file
+  if (customRoutes.includes(params.handle)) {
+    throw new Response(null, {
+      status: 404,
+      statusText: 'Not Found - This page has a custom route'
+    });
+  }
+
+  const [{ page }] = await Promise.all([
     context.storefront.query(PAGE_QUERY, {
       variables: {
         handle: params.handle,
@@ -41,10 +52,10 @@ async function loadCriticalData({
   ]);
 
   if (!page) {
-    throw new Response('Not Found', {status: 404});
+    throw new Response('Not Found', { status: 404 });
   }
 
-  redirectIfHandleIsLocalized(request, {handle: params.handle, data: page});
+  redirectIfHandleIsLocalized(request, { handle: params.handle, data: page });
 
   return {
     page,
@@ -56,19 +67,19 @@ async function loadCriticalData({
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Page() {
-  const {page} = useLoaderData<typeof loader>();
+  const { page } = useLoaderData<typeof loader>();
 
   return (
     <div className="page">
       <header>
         <h1>{page.title}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
+      <main dangerouslySetInnerHTML={{ __html: page.body }} />
     </div>
   );
 }
