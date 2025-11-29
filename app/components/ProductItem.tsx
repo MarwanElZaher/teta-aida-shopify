@@ -21,7 +21,7 @@ export function ProductItem({
   const image = product.featuredImage;
   return (
     <Link
-      className="group block"
+      className="group block hover-lift"
       key={product.id}
       prefetch="intent"
       to={variantUrl}

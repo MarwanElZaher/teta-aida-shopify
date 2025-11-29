@@ -56,18 +56,18 @@ export default function Homepage() {
         </div>
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto pt-20">
-          <div className='bg-white/80 p-6 rounded-lg backdrop-blur-sm py-10 flex flex-col justify-center gap-6'>
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 animate-fade-in-up">
+          <div className='bg-white/80 p-6 rounded-lg backdrop-blur-sm py-10 flex flex-col justify-center gap-6 animate-fade-in-up'>
+            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 animate-fade-in-up delay-100">
               Premium Artisanal Pickles <br /> Crafted for Your Table
             </h1>
-            <p className="font-sans text-lg md:text-xl text-dark/80 mb-10 max-w-xl animate-fade-in-up delay-100">
+            <p className="font-sans text-lg md:text-xl text-dark/80 mb-10 max-w-xl animate-fade-in-up delay-200">
               Small-batch gourmet flavors made with clean, carefully selected ingredients. Consistent taste, refined craftsmanship.
             </p>
-            <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row animate-fade-in-up delay-200">
-              <Link to="/collections/bundles" className="btn-primary sm:w-auto sm:px-10">
+            <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row animate-fade-in-up delay-300">
+              <Link to="/collections/bundles" className="btn-primary sm:w-auto sm:px-10 hover-lift">
                 Shop Bundles
               </Link>
-              <Link to="/collections/all" className="btn-secondary sm:w-auto sm:px-10">
+              <Link to="/collections/all" className="btn-secondary sm:w-auto sm:px-10 hover-lift">
                 Shop All Products
               </Link>
             </div>
