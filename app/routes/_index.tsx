@@ -161,7 +161,7 @@ export default function Homepage() {
           <p className="text-lg md:text-xl opacity-90 mb-12 leading-relaxed font-light">
             Teta Aida blends heritage with modern gourmet craft — small-batch recipes made with clean ingredients, refined techniques, and a warm touch of authenticity.
           </p>
-          <Link to="/pages/about" className="inline-block px-8 py-4 border border-[#F9F7F2] rounded-full text-[#F9F7F2] font-bold uppercase tracking-widest hover:bg-[#F9F7F2] hover:text-primary transition-all">
+          <Link to="/pages/about-us" className="inline-block px-8 py-4 border border-[#F9F7F2] rounded-full text-[#F9F7F2] font-bold uppercase tracking-widest hover:bg-[#F9F7F2] hover:text-primary transition-all">
             Read Our Story
           </Link>
         </div>
