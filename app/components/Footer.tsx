@@ -76,11 +76,14 @@ export function Footer({
               <div>
                 <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">Follow Us</h4>
                 <div className="flex gap-4 mb-8">
-                  <a href="https://instagram.com/tetaaidapickles" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
+                  <a href="https://www.instagram.com/teta_3ayda/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
                     <IconInstagram />
                   </a>
-                  <a href="https://facebook.com/tetaaidapickles" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
+                  <a href="https://web.facebook.com/Teta3ayda" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
                     <IconFacebook />
+                  </a>
+                  <a href="https://www.tiktok.com/@teta_3ayda" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
+                    <IconTikTok />
                   </a>
                 </div>
                 <div className="space-y-4">
@@ -165,6 +168,14 @@ function IconFacebook() {
   return (
     <svg fill="currentColor" viewBox="0 0 24 24" className="w-6 h-6">
       <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+    </svg>
+  );
+}
+
+function IconTikTok() {
+  return (
+    <svg fill="currentColor" viewBox="0 0 24 24" className="w-6 h-6">
+      <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z" />
     </svg>
   );
 }
