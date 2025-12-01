@@ -40,20 +40,21 @@ export function BundleCard({ product }: BundleCardProps) {
                 {tagline && (
                     <p className="text-xs text-dark/60 font-sans italic line-clamp-1">{tagline}</p>
                 )}
-                <div className="flex justify-center gap-2 text-sm font-sans font-medium">
+                <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
+                    <span className="text-primary font-bold text-lg">
+                        <Money data={price} />
+                    </span>
                     {compareAtPrice && (
-                        <span className="text-dark/40 line-through">
+                        <span className="text-dark/40 line-through text-sm">
                             <Money data={compareAtPrice} />
                         </span>
                     )}
-                    <span className="text-secondary">
-                        <Money data={price} />
-                    </span>
                 </div>
-                <button className="w-full mt-2 h-[48px] rounded-[12px] bg-primary text-white font-bold uppercase tracking-widest text-xs hover:bg-[#143d24] transition-all shadow-sm group-hover:shadow-md">
+                <button className="w-full mt-3 h-[48px] rounded-[12px] bg-primary text-white font-bold uppercase tracking-widest text-xs hover:bg-[#143d24] transition-all shadow-sm group-hover:shadow-md">
                     Shop Now
                 </button>
             </div>
         </Link>
     );
 }
+

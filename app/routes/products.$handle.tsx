@@ -163,12 +163,10 @@ export default function Product() {
 
             <div className="mt-6">
               <h2 className="sr-only">Product information</h2>
-              <div className="text-3xl font-bold text-green-800">
-                <ProductPrice
-                  price={selectedVariant?.price}
-                  compareAtPrice={selectedVariant?.compareAtPrice}
-                />
-              </div>
+              <ProductPrice
+                price={selectedVariant?.price}
+                compareAtPrice={selectedVariant?.compareAtPrice}
+              />
             </div>
 
             <div className="mt-8" id="main-add-to-cart">

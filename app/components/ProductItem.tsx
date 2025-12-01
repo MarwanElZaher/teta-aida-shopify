@@ -45,10 +45,17 @@ export function ProductItem({
         <h4 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors">
           {product.title}
         </h4>
-        <div className="text-sm font-sans font-medium text-secondary">
-          <Money data={product.priceRange.minVariantPrice} />
+        <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
+          <span className="text-primary font-bold text-lg">
+            <Money data={product.priceRange.minVariantPrice} />
+          </span>
+          {product.compareAtPriceRange?.minVariantPrice && (
+            <span className="text-dark/40 line-through text-sm">
+              <Money data={product.compareAtPriceRange.minVariantPrice} />
+            </span>
+          )}
         </div>
-        <button className="w-full mt-2 h-[48px] rounded-[12px] border border-primary text-primary font-bold uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
+        <button className="w-full mt-3 h-[48px] rounded-[12px] border border-primary text-primary font-bold uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
           Shop
         </button>
       </div>
