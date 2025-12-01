@@ -90,11 +90,11 @@ export default function HealthyLivingALP() {
                     </div>
 
                     {/* Product Image */}
-                    <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
+                    <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
                         {productImage && (
                             <Image
                                 data={productImage}
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-contain"
                                 sizes="100vw"
                             />
                         )}
@@ -146,7 +146,7 @@ export default function HealthyLivingALP() {
                     </div>
 
                     {/* Price & CTA */}
-                    <div className="flex flex-col items-center mb-6 text-center">
+                    <div className="flex flex-col mb-6 text-center">
                         {price && (
                             <div className="mb-6">
                                 {compareAtPrice && (
@@ -159,7 +159,7 @@ export default function HealthyLivingALP() {
                                 </div>
                             </div>
                         )}
-                        <AddToCartButton {...addToCartProps} className="w-full mx-auto h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
+                        <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
                             {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Healthy Box to Cart'}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">

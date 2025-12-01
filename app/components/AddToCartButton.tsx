@@ -17,7 +17,7 @@ export function AddToCartButton({
   onClick?: () => void;
 }) {
   return (
-    <div className="w-full">
+    <div className="w-full [&>form]:w-full flex justify-center">
       <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
         {(fetcher: FetcherWithComponents<any>) => (
           <>

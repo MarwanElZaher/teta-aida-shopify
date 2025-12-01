@@ -94,11 +94,11 @@ export default function SpicyLoversALP() {
                     </div>
 
                     {/* Product Image */}
-                    <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
+                    <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
                         {productImage && (
                             <Image
                                 data={productImage}
-                                className="h-full w-full object-cover"
+                                className="h-full w-full object-contain"
                                 sizes="100vw"
                             />
                         )}
@@ -151,7 +151,7 @@ export default function SpicyLoversALP() {
 
                     {/* Price & CTA */}
                     {/* Price & CTA */}
-                    <div ref={section3.ref} className={`${section3.isVisible ? 'animate-fadeIn' : ''} flex flex-col items-center mb-6 text-center`}>
+                    <div ref={section3.ref} className={`${section3.isVisible ? 'animate-fadeIn' : ''} flex flex-col mb-6 text-center`}>
                         {price && (
                             <div className="mb-6">
                                 {compareAtPrice && (
@@ -164,7 +164,7 @@ export default function SpicyLoversALP() {
                                 </div>
                             </div>
                         )}
-                        <AddToCartButton {...addToCartProps} className="w-full mx-auto h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
+                        <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
                             {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Spicy Box to Cart'}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">
