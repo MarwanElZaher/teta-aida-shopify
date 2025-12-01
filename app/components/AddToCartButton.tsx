@@ -17,29 +17,31 @@ export function AddToCartButton({
   onClick?: () => void;
 }) {
   return (
-    <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
-      {(fetcher: FetcherWithComponents<any>) => (
-        <>
-          <input
-            name="analytics"
-            type="hidden"
-            value={JSON.stringify(analytics)}
-          />
-          <button
-            type="submit"
-            onClick={onClick}
-            disabled={disabled ?? fetcher.state !== 'idle'}
-            className={`
-              ${className}
-              w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm
-              transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg active:scale-[0.98]
-              flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary
-            `}
-          >
-            {children}
-          </button>
-        </>
-      )}
-    </CartForm>
+    <div className="w-full">
+      <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
+        {(fetcher: FetcherWithComponents<any>) => (
+          <>
+            <input
+              name="analytics"
+              type="hidden"
+              value={JSON.stringify(analytics)}
+            />
+            <button
+              type="submit"
+              onClick={onClick}
+              disabled={disabled ?? fetcher.state !== 'idle'}
+              className={`
+                ${className}
+                w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm
+                transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg active:scale-[0.98]
+                flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary
+              `}
+            >
+              {children}
+            </button>
+          </>
+        )}
+      </CartForm>
+    </div>
   );
 }
