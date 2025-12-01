@@ -17,11 +17,11 @@ export function Footer({
     <Suspense>
       <Await resolve={footerPromise}>
         {(footer) => (
-          <footer className="bg-primary text-[#F9F7F2] py-16 md:py-24">
+          <footer className="bg-primary text-white py-16 md:py-24">
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
               {/* Column 1: Brand Story */}
               <div className="space-y-6">
-                <h3 className="font-serif text-3xl tracking-wider uppercase">Teta Aida</h3>
+                <h3 className="text-secondary font-serif text-3xl tracking-wider uppercase">Teta Aida</h3>
                 <p className="text-sm leading-relaxed opacity-90 max-w-xs">
                   Premium small-batch artisanal pickles crafted with clean, carefully selected ingredients. A taste of heritage, elevated for today.
                 </p>
@@ -32,22 +32,22 @@ export function Footer({
                 <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">Shop</h4>
                 <ul className="flex flex-col gap-3 text-sm">
                   <li>
-                    <NavLink to="/collections/bundles" className="hover:text-secondary transition-colors">
+                    <NavLink to="/collections/bundles" className="text-white hover:text-secondary transition-colors">
                       Bundles
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/collections/all" className="hover:text-secondary transition-colors">
+                    <NavLink to="/collections/all" className="text-white hover:text-secondary transition-colors">
                       All Products
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/products/tuffaahy-olives-signature-mix" className="hover:text-secondary transition-colors">
+                    <NavLink to="/products/tuffaahy-olives-signature-mix" className="text-white hover:text-secondary transition-colors">
                       Tuffaahy Olives
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/products/low-salt-cucumbers-with-celery" className="hover:text-secondary transition-colors">
+                    <NavLink to="/products/low-salt-cucumbers-with-celery" className="text-white hover:text-secondary transition-colors">
                       Low-Salt Cucumbers
                     </NavLink>
                   </li>
@@ -64,10 +64,10 @@ export function Footer({
                 />
                 <div className="mt-6 space-y-2 text-sm opacity-80">
                   <p>
-                    <a href="tel:+201070985360" className="hover:text-secondary transition-colors">+20 107 098 5360</a>
+                    <a href="tel:+201070985360" className="text-white hover:text-secondary transition-colors">+20 107 098 5360</a>
                   </p>
                   <p>
-                    <a href="mailto:tetaaidapickles@gmail.com" className="hover:text-secondary transition-colors">tetaaidapickles@gmail.com</a>
+                    <a href="mailto:tetaaidapickles@gmail.com" className="text-white hover:text-secondary transition-colors">tetaaidapickles@gmail.com</a>
                   </p>
                 </div>
               </div>
@@ -137,7 +137,7 @@ function FooterMenu({
             : item.url;
         const isExternal = !url.startsWith('/');
         return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank" className="hover:text-secondary transition-colors">
+          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank" className="text-white hover:text-secondary transition-colors">
             {item.title}
           </a>
         ) : (
@@ -145,7 +145,7 @@ function FooterMenu({
             end
             key={item.id}
             prefetch="intent"
-            className="hover:text-secondary transition-colors"
+            className="text-white hover:text-secondary transition-colors"
             to={url}
           >
             {item.title}

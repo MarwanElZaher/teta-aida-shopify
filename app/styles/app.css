@@ -166,3 +166,13 @@ img {
 .hover-scale:hover {
   transform: scale(1.02);
 }
+
+/* Footer Text Override */
+footer a,
+footer nav a,
+footer h1,
+footer h2,
+footer h5,
+footer h6 {
+  color: white !important;
+}
