@@ -2,12 +2,14 @@ import { type FetcherWithComponents } from 'react-router';
 import { CartForm, type OptimisticCartLineInput } from '@shopify/hydrogen';
 
 export function AddToCartButton({
+  className,
   analytics,
   children,
   disabled,
   lines,
   onClick,
 }: {
+  className?: string;
   analytics?: unknown;
   children: React.ReactNode;
   disabled?: boolean;
@@ -28,6 +30,7 @@ export function AddToCartButton({
             onClick={onClick}
             disabled={disabled ?? fetcher.state !== 'idle'}
             className={`
+              ${className}
               w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm
               transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg active:scale-[0.98]
               flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary
