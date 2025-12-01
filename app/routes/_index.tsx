@@ -119,10 +119,12 @@ export default function Homepage() {
             <p className="text-dark/70 max-w-2xl mx-auto">The flavors that started it all. Hand-packed and full of heritage.</p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-8">
+          <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
             {data.bestSellers.length > 0 ? (
               data.bestSellers.map((product: any) => (
-                <ProductItem key={product.id} product={product} />
+                <div key={product.id} className="min-w-[280px] snap-center md:min-w-0">
+                  <ProductItem product={product} />
+                </div>
               ))
             ) : (
               <p className="col-span-full text-center text-gray-500">Products loading...</p>

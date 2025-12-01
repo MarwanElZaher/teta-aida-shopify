@@ -3,7 +3,6 @@ import { Image, Money } from '@shopify/hydrogen';
 import type {
   ProductItemFragment,
   CollectionItemFragment,
-  RecommendedProductFragment,
 } from 'storefrontapi.generated';
 import { useVariantUrl } from '~/lib/variants';
 
@@ -13,15 +12,14 @@ export function ProductItem({
 }: {
   product:
   | CollectionItemFragment
-  | ProductItemFragment
-  | RecommendedProductFragment;
+  | ProductItemFragment;
   loading?: 'eager' | 'lazy';
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
   return (
     <Link
-      className="group block hover-lift"
+      className="group flex flex-col h-full min-h-[450px] hover-lift"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
@@ -42,7 +40,7 @@ export function ProductItem({
       </div>
 
       <div className="text-center space-y-2">
-        <h4 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-2 min-h-[3.5rem]">
+        <h4 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3 min-h-[4.5rem]">
           {product.title}
         </h4>
         <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">

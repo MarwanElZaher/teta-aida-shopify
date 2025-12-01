@@ -15,7 +15,7 @@ export function BundleCard({ product }: BundleCardProps) {
     const tagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
 
     return (
-        <Link to={`/products/${handle}`} className="group block hover-lift">
+        <Link to={`/products/${handle}`} className="group flex flex-col h-full min-h-[450px] hover-lift">
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-[#F0EFEB] mb-4">
                 {featuredImage && (
                     <Image
@@ -34,7 +34,7 @@ export function BundleCard({ product }: BundleCardProps) {
             </div>
 
             <div className="text-center space-y-2">
-                <h3 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors">
+                <h3 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3 min-h-[4.5rem]">
                     {title}
                 </h3>
                 {tagline && (
