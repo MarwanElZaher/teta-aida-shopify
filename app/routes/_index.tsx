@@ -195,7 +195,7 @@ export default function Homepage() {
           <div className="text-center">
             <Link
               to="/pages/reviews"
-              className="inline-block px-8 py-3 border-2 border-primary text-primary font-bold uppercase tracking-widest text-sm rounded-full hover:bg-primary hover:text-white transition-all"
+              className="inline-block border-b-2 border-primary text-primary font-bold uppercase tracking-widest hover:text-secondary hover:border-secondary transition-colors pb-1"
             >
               View Reviews
             </Link>
