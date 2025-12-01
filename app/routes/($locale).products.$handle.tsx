@@ -21,6 +21,8 @@ import { BundleConfigurator, type BundleItem } from '~/components/BundleConfigur
 import { BundleAddToCartButton } from '~/components/BundleAddToCartButton';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { useTranslation } from '~/lib/translations';
+import { getLocalizedTitle, getLocalizedDescription } from '~/lib/localized-content';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -91,6 +93,11 @@ export default function Product() {
   });
 
   const { title, descriptionHtml } = product;
+  const { locale } = useTranslation();
+
+  // Get localized title and description
+  const displayTitle = getLocalizedTitle(title, product.metafields as any, locale.language);
+  const displayDescription = getLocalizedDescription(descriptionHtml, product.metafields as any, locale.language);
 
   // Parse Metafields
   const metafields = product.metafields || [];
@@ -155,7 +162,7 @@ export default function Product() {
 
           {/* Product Info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{title}</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{displayTitle}</h1>
 
             {tagline && (
               <p className="mt-2 text-lg italic text-gray-500">{tagline}</p>
@@ -262,7 +269,7 @@ export default function Product() {
               <h3 className="text-lg font-bold text-gray-900">Description</h3>
               <div
                 className="prose prose-sm mt-4 text-gray-600"
-                dangerouslySetInnerHTML={{ __html: descriptionHtml }}
+                dangerouslySetInnerHTML={{ __html: displayDescription }}
               />
             </div>
 
@@ -300,7 +307,7 @@ export default function Product() {
 
       {/* Sticky CTA for Mobile */}
       <StickyCTA
-        title={title}
+        title={displayTitle}
         price={selectedVariant?.price}
         available={selectedVariant?.availableForSale ?? false}
         isVisible={!isMainButtonVisible}
@@ -429,7 +436,9 @@ const PRODUCT_FRAGMENT = `#graphql
       {namespace: "custom", key: "bundle_contents"},
       {namespace: "custom", key: "why_bundle"},
       {namespace: "custom", key: "usage_moments"},
-      {namespace: "custom", key: "bundle_items"}
+      {namespace: "custom", key: "bundle_items"},
+      {namespace: "custom", key: "arabic_title"},
+      {namespace: "custom", key: "arabic_description"}
     ]) {
       key
       value

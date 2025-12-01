@@ -4,6 +4,7 @@ import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
 import { CartLineItem } from '~/components/CartLineItem';
 import { CartSummary } from './CartSummary';
+import { useTranslation } from '~/lib/translations';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -51,18 +52,19 @@ function CartEmpty({
   layout?: CartMainProps['layout'];
 }) {
   const { close } = useAside();
+  const { t, locale } = useTranslation();
   return (
     <div hidden={hidden} className="flex flex-col items-center justify-center h-full px-6 text-center gap-4">
       <p className="text-lg text-dark/70 mb-6">
-        Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you started!
+        {t('cart.empty')}
       </p>
       <Link
-        to="/collections/all"
+        to={`${locale.pathPrefix}/collections/all`}
         onClick={close}
         prefetch="viewport"
-        className="inline-block px-8 py-3 bg-primary text-white font-bold uppercase tracking-wider rounded-full hover:bg-[#143d24] transition-colors"
+        className="btn-primary"
       >
-        Continue shopping →
+        {t('cart.continueShopping')} →
       </Link>
     </div>
   );

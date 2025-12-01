@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { ProductPrice } from './ProductPrice';
 import { useAside } from './Aside';
 import type { CartApiQueryFragment } from 'storefrontapi.generated';
+import { useTranslation } from '~/lib/translations';
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -183,12 +184,12 @@ function CartLineRemoveButton({
   lineIds,
   disabled,
 }: {
-  lineIds: string[];
+  lineIds: CartLine['id'][];
   disabled: boolean;
 }) {
+  const { t } = useTranslation();
   return (
     <CartForm
-      fetcherKey={getUpdateKey(lineIds)}
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{ lineIds }}
@@ -196,9 +197,9 @@ function CartLineRemoveButton({
       <button
         disabled={disabled}
         type="submit"
-        className="text-xs text-dark/50 hover:text-red-600 transition-colors underline disabled:opacity-30 disabled:cursor-not-allowed ml-2"
+        className="text-sm text-dark/60 hover:text-primary transition-colors underline disabled:opacity-30 disabled:cursor-not-allowed ml-2"
       >
-        Remove
+        {t('cart.remove')}
       </button>
     </CartForm>
   );

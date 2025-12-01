@@ -4,6 +4,7 @@ import { CartForm, Money, type OptimisticCart } from '@shopify/hydrogen';
 import { useEffect, useRef } from 'react';
 import { useFetcher } from 'react-router';
 import type { FetcherWithComponents } from 'react-router';
+import { useTranslation } from '~/lib/translations';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -11,12 +12,13 @@ type CartSummaryProps = {
 };
 
 export function CartSummary({ cart, layout }: CartSummaryProps) {
+  const { t } = useTranslation();
   return (
     <div aria-labelledby="cart-summary" className="border-t border-gray-200 px-6 py-6 bg-cream/30">
-      <h4 className="font-serif text-lg font-bold text-primary mb-4 uppercase tracking-wide">Order Summary</h4>
+      <h4 className="font-serif text-lg font-bold text-primary mb-4 uppercase tracking-wide">{t('cart.title')}</h4>
       <dl className="space-y-2 mb-4">
         <div className="flex justify-between text-sm">
-          <dt className="text-dark/70">Subtotal</dt>
+          <dt className="text-dark/70">{t('cart.subtotal')}</dt>
           <dd className="font-bold text-dark">
             {cart?.cost?.subtotalAmount?.amount ? (
               <Money data={cart?.cost?.subtotalAmount} />
@@ -34,6 +36,7 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
 }
 
 function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
+  const { t } = useTranslation();
   if (!checkoutUrl) return null;
 
   return (
@@ -43,7 +46,7 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
         target="_self"
         className="block w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg flex items-center justify-center"
       >
-        Continue to Checkout →
+        {t('cart.checkout')} →
       </a>
     </div>
   );
