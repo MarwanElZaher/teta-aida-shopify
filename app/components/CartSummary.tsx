@@ -42,6 +42,9 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
         href={checkoutUrl}
         target="_self"
         className="block w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg flex items-center justify-center"
+        style={{
+          color: 'white',
+        }}
       >
         Continue to Checkout →
       </a>

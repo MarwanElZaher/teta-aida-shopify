@@ -25,17 +25,15 @@ export function CartLineItem({
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const { close } = useAside();
 
-  // Parse bundle customizations from attributes
-  const bundleCustomizations = attributes?.filter(attr =>
-    attr.key.includes('_') && attr.key.includes('Heat Level')
-  ).map(attr => {
-    // Extract item name from key (e.g., "Tuffaahy Olives_0 Heat Level" -> "Tuffaahy Olives")
-    const itemName = attr.key.replace(/_\d+$/, '').replace(' Heat Level', '');
-    return {
-      name: itemName,
-      value: attr.value
-    };
-  }) || [];
+  // Filter out "Default Title" from selected options
+  const relevantOptions = selectedOptions.filter(
+    option => !(option.name === 'Title' && option.value === 'Default Title')
+  );
+
+  // Parse heat level attributes (for both bundles and individual products)
+  const heatLevelAttributes = attributes?.filter(attr =>
+    attr.key.includes('Heat')
+  ) || [];
 
   return (
     <li key={id} className="flex gap-4 border-b border-gray-200 pb-4">
@@ -71,10 +69,10 @@ export function CartLineItem({
             <ProductPrice price={line?.cost?.totalAmount} />
           </div>
 
-          {/* Display variant options */}
-          {selectedOptions.length > 0 && (
+          {/* Display variant options (excluding Default Title) */}
+          {relevantOptions.length > 0 && (
             <ul className="text-xs text-dark/60 space-y-1 mb-2">
-              {selectedOptions.map((option) => (
+              {relevantOptions.map((option) => (
                 <li key={option.name}>
                   {option.name}: {option.value}
                 </li>
@@ -82,14 +80,14 @@ export function CartLineItem({
             </ul>
           )}
 
-          {/* Display bundle customizations */}
-          {bundleCustomizations.length > 0 && (
+          {/* Display heat level attributes */}
+          {heatLevelAttributes.length > 0 && (
             <div className="mt-2 p-2 bg-cream/50 rounded-lg border border-secondary/10">
-              <p className="text-xs font-bold text-primary mb-1 uppercase tracking-wide">Bundle Configuration:</p>
+              <p className="text-xs font-bold text-primary mb-1 uppercase tracking-wide">Heat Levels:</p>
               <ul className="text-xs text-dark/70 space-y-0.5">
-                {bundleCustomizations.map((custom, index) => (
+                {heatLevelAttributes.map((attr, index) => (
                   <li key={index}>
-                    <span className="font-medium">{custom.name}:</span> {custom.value}
+                    <span className="font-medium">{attr.key}:</span> {attr.value}
                   </li>
                 ))}
               </ul>
