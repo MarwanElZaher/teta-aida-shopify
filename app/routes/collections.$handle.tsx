@@ -74,7 +74,7 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-8`}>
         <h1>{collection.title}</h1>
         <p className="collection-description">{collection.description}</p>
       </div>

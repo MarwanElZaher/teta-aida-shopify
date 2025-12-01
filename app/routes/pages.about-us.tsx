@@ -1,10 +1,17 @@
 import { Link } from 'react-router';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta = () => {
     return [{ title: 'About Teta Aida | Heritage & Craft' }];
 };
 
 export default function About() {
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
+    const section5 = useScrollAnimation();
+
     return (
         <div className="about-page">
             {/* HERO SECTION */}
@@ -13,7 +20,7 @@ export default function About() {
                     {/* Placeholder for Hero Image */}
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-secondary/10"></div>
                 </div>
-                <div className="relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto">
+                <div ref={section1.ref} className={`relative z-10 flex h-full flex-col items-center justify-center px-6 text-center max-w-4xl mx-auto transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary mb-6 leading-tight">
                         A Taste of Heritage, Crafted for Today
                     </h1>
@@ -24,7 +31,7 @@ export default function About() {
             </section>
 
             {/* BRAND INTRO */}
-            <section className="py-16 md:py-24 bg-white">
+            <section ref={section2.ref} className={`py-16 md:py-24 bg-white transition-all duration-700 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="mx-auto max-w-4xl px-6">
                     <div className="text-center mb-12">
                         <p className="font-serif text-2xl md:text-3xl font-bold text-primary mb-6 leading-relaxed">
@@ -61,7 +68,7 @@ export default function About() {
             </section>
 
             {/* OUR PHILOSOPHY */}
-            <section className="bg-cream py-16 md:py-24">
+            <section ref={section3.ref} className={`bg-cream py-16 md:py-24 transition-all duration-700 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="mx-auto max-w-7xl px-6">
                     <div className="mb-16 text-center">
                         <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-4">Our Philosophy</h2>
@@ -93,7 +100,7 @@ export default function About() {
             </section>
 
             {/* OUR COMMITMENT */}
-            <section className="py-16 md:py-24 bg-white">
+            <section ref={section4.ref} className={`py-16 md:py-24 bg-white transition-all duration-700 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="mx-auto max-w-5xl px-6">
                     <div className="text-center mb-12">
                         <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-4">Our Commitment</h2>
@@ -117,7 +124,7 @@ export default function About() {
             </section>
 
             {/* CTA SECTION */}
-            <section className="bg-primary py-20 text-center text-cream">
+            <section ref={section5.ref} className={`bg-primary py-20 text-center text-cream transition-all duration-700 ${section5.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="max-w-3xl mx-auto px-6">
                     <h2 className="font-serif text-3xl md:text-4xl font-bold mb-6 leading-tight">Taste the premium difference.</h2>
                     <p className="text-lg mb-8 opacity-90">Discover our signature creations crafted with care and tradition.</p>
