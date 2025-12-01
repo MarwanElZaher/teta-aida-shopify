@@ -6,6 +6,7 @@ import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
 import type { ProductItemFragment } from 'storefrontapi.generated';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: Route.MetaFunction = ({ data }) => {
   return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
@@ -68,28 +69,34 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 
 export default function Collection() {
   const { collection } = useLoaderData<typeof loader>();
+  const section1 = useScrollAnimation();
+  const section2 = useScrollAnimation();
 
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <PaginatedResourceSection<ProductItemFragment>
-        connection={collection.products}
-        resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
-      >
-        {({ node: product, index }) => (
-          collection.handle === 'bundles' ? (
-            // @ts-ignore
-            <BundleCard key={product.id} product={product} />
-          ) : (
-            <ProductItem
-              key={product.id}
-              product={product}
-              loading={index < 8 ? 'eager' : undefined}
-            />
-          )
-        )}
-      </PaginatedResourceSection>
+      <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <h1>{collection.title}</h1>
+        <p className="collection-description">{collection.description}</p>
+      </div>
+      <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <PaginatedResourceSection<ProductItemFragment>
+          connection={collection.products}
+          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
+        >
+          {({ node: product, index }) => (
+            collection.handle === 'bundles' ? (
+              // @ts-ignore
+              <BundleCard key={product.id} product={product} />
+            ) : (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            )
+          )}
+        </PaginatedResourceSection>
+      </div>
       <Analytics.CollectionView
         data={{
           collection: {

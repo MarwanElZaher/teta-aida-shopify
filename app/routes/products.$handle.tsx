@@ -438,7 +438,7 @@ const PRODUCT_FRAGMENT = `#graphql
 ` as const;
 
 const PRODUCT_QUERY = `#graphql
-  query Product(
+  query GenericProduct(
     $country: CountryCode
     $handle: String!
     $language: LanguageCode

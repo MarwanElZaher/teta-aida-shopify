@@ -1,17 +1,25 @@
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+
 export const meta = () => {
     return [{ title: 'Contact Us | Teta Aida' }];
 };
 
 export default function Contact() {
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+
     return (
         <div className="contact-page py-16 sm:py-24">
             <div className="mx-auto max-w-4xl px-4 text-center">
-                <h1 className="mb-6 text-4xl font-bold text-gray-900">We’re here to help.</h1>
-                <p className="mb-12 text-lg text-gray-600">
-                    Whether you have a question about flavors, heat levels, orders, or delivery — we’re always happy to assist.
-                </p>
+                <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <h1 className="mb-6 text-4xl font-bold text-gray-900">We’re here to help.</h1>
+                    <p className="mb-12 text-lg text-gray-600">
+                        Whether you have a question about flavors, heat levels, orders, or delivery — we’re always happy to assist.
+                    </p>
+                </div>
 
-                <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                <div ref={section2.ref} className={`grid grid-cols-1 gap-8 sm:grid-cols-3 transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="rounded-xl bg-[#F9F7F2] p-8 transition-transform hover:-translate-y-1">
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-2xl">📞</div>
                         <h3 className="mb-2 text-lg font-bold text-gray-900">WhatsApp Support</h3>
@@ -34,7 +42,7 @@ export default function Contact() {
                     </div>
                 </div>
 
-                <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 text-left max-w-2xl mx-auto">
+                <div ref={section3.ref} className={`mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 text-left max-w-2xl mx-auto transition-all duration-700 delay-400 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div>
                         <h3 className="mb-4 text-xl font-bold text-gray-900">Location</h3>
                         <p className="text-gray-600">Cairo, Egypt</p>

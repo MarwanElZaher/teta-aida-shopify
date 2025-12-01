@@ -6,6 +6,7 @@ import { getPaginationVariables, Image, Money } from '@shopify/hydrogen';
 import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 import { ProductItem } from '~/components/ProductItem';
 import type { CollectionItemFragment } from 'storefrontapi.generated';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Hydrogen | Products` }];
@@ -51,22 +52,26 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 
 export default function Collection() {
   const { products } = useLoaderData<typeof loader>();
+  const section1 = useScrollAnimation();
+  const section2 = useScrollAnimation();
 
   return (
     <div className="collection">
-      <h1>Products</h1>
-      <PaginatedResourceSection<CollectionItemFragment>
-        connection={products}
-        resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
-      >
-        {({ node: product, index }) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
+      <h1 ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>Products</h1>
+      <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <PaginatedResourceSection<CollectionItemFragment>
+          connection={products}
+          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
+        >
+          {({ node: product, index }) => (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
     </div>
   );
 }

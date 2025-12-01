@@ -4,6 +4,7 @@ import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction = () => {
     return [
@@ -32,6 +33,11 @@ export default function CabbageALP() {
     const [selectedHeat, setSelectedHeat] = useState<'mild' | 'normal' | null>(null);
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
@@ -129,7 +135,7 @@ export default function CabbageALP() {
             </div>
 
             {/* What's Inside */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section1.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         What's Inside
@@ -152,7 +158,7 @@ export default function CabbageALP() {
             </div>
 
             {/* Why People Love It */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section2.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Why People Love It
@@ -175,7 +181,7 @@ export default function CabbageALP() {
             </div>
 
             {/* How to Use */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section3.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         How to Use
@@ -198,7 +204,7 @@ export default function CabbageALP() {
             </div>
 
             {/* Reviews */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section4.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
                         Reviews
@@ -241,7 +247,7 @@ export default function CabbageALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query Product(
+  query CabbageProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode

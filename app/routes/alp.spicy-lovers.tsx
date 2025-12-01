@@ -4,6 +4,7 @@ import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction = () => {
     return [
@@ -28,21 +29,32 @@ export async function loader({ context }: LoaderFunctionArgs) {
 }
 
 type HeatLevels = {
-    olives: 'mild' | 'normal' | 'spicy';
-    harissa: 'mild' | 'spicy';
+    olives: 'mild' | 'normal' | 'spicy' | null;
+    harissa: 'mild' | 'spicy' | null;
 };
 
 export default function SpicyLoversALP() {
     const { product } = useLoaderData<typeof loader>();
     const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        olives: 'spicy',
-        harissa: 'spicy',
+        olives: null,
+        harissa: null,
     });
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
+    const compareAtPrice = selectedVariant?.compareAtPrice;
+    const productImage = selectedVariant?.image || product.featuredImage;
+
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
+    const section5 = useScrollAnimation();
+    const section6 = useScrollAnimation();
+    const section7 = useScrollAnimation();
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -52,16 +64,17 @@ export default function SpicyLoversALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const allHeatLevelsSelected = heatLevels.olives !== null && heatLevels.harissa !== null;
+
     const addToCartProps = {
-        disabled: !selectedVariant?.availableForSale,
+        disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
         onClick: () => open('cart'),
-        lines: selectedVariant ? [{
+        lines: selectedVariant && allHeatLevelsSelected ? [{
             merchandiseId: selectedVariant.id,
             quantity: 1,
-            selectedVariant,
             attributes: [
-                { key: 'Olives Heat', value: heatLevels.olives },
-                { key: 'Harissa Heat', value: heatLevels.harissa },
+                { key: 'Olives Heat', value: heatLevels.olives! },
+                { key: 'Harissa Heat', value: heatLevels.harissa! },
             ],
         }] : [],
     };
@@ -69,7 +82,7 @@ export default function SpicyLoversALP() {
     return (
         <div className="alp-page bg-[#F0EFEB] min-h-screen pb-24">
             {/* Hero Section */}
-            <div className="bg-white">
+            <div ref={section1.ref} className={`${section1.isVisible ? 'animate-fadeIn' : ''} bg-white`}>
                 <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
                     <div className="text-center mb-8">
                         <h1 className="font-serif text-4xl sm:text-5xl text-primary uppercase tracking-wide">
@@ -82,9 +95,9 @@ export default function SpicyLoversALP() {
 
                     {/* Product Image */}
                     <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
-                        {selectedVariant?.image && (
+                        {productImage && (
                             <Image
-                                data={selectedVariant.image}
+                                data={productImage}
                                 className="h-full w-full object-cover"
                                 sizes="100vw"
                             />
@@ -92,7 +105,7 @@ export default function SpicyLoversALP() {
                     </div>
 
                     {/* What's Inside */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
+                    <div ref={section2.ref} className={`${section2.isVisible ? 'animate-fadeIn' : ''} bg-white rounded-2xl p-8 shadow-sm mb-8`}>
                         <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                             Included
                         </h2>
@@ -137,14 +150,21 @@ export default function SpicyLoversALP() {
                     </div>
 
                     {/* Price & CTA */}
-                    <div className="text-center mb-6">
+                    <div ref={section3.ref} className={`${section3.isVisible ? 'animate-fadeIn' : ''} text-center mb-6`}>
                         {price && (
-                            <div className="text-3xl font-bold text-primary mb-6">
-                                <Money data={price} />
+                            <div className="mb-6">
+                                {compareAtPrice && (
+                                    <div className="text-lg text-dark/40 line-through mb-1">
+                                        <Money data={compareAtPrice} />
+                                    </div>
+                                )}
+                                <div className="text-3xl font-bold text-primary">
+                                    <Money data={price} />
+                                </div>
                             </div>
                         )}
                         <AddToCartButton {...addToCartProps} className="w-full max-w-md mx-auto h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                            Add Spicy Box to Cart
+                            {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Spicy Box to Cart'}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">
                             Bold flavors · Aromatic blends
@@ -154,7 +174,7 @@ export default function SpicyLoversALP() {
             </div>
 
             {/* Why You'll Love It */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section4.ref} className={`${section4.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Why You'll Love It
@@ -177,7 +197,7 @@ export default function SpicyLoversALP() {
             </div>
 
             {/* Best Uses */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section5.ref} className={`${section5.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Best Uses
@@ -199,7 +219,7 @@ export default function SpicyLoversALP() {
             </div>
 
             {/* Reviews */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section6.ref} className={`${section6.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
                         Reviews
@@ -220,7 +240,7 @@ export default function SpicyLoversALP() {
             </div>
 
             {/* Explore Link */}
-            <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-center">
+            <div ref={section7.ref} className={`${section7.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-center`}>
                 <p className="text-dark/60 mb-4">Explore all products →</p>
                 <Link to="/collections/all" className="text-primary font-bold hover:text-secondary transition-colors">
                     View All Products
@@ -242,7 +262,7 @@ export default function SpicyLoversALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query Product(
+  query SpicyLoversProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode
@@ -251,11 +271,22 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      featuredImage {
+        id
+        url
+        altText
+        width
+        height
+      }
       selectedOrFirstAvailableVariant: variants(first: 1) {
         nodes {
           id
           availableForSale
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

@@ -4,6 +4,7 @@ import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction = () => {
     return [
@@ -28,25 +29,32 @@ export async function loader({ context }: LoaderFunctionArgs) {
 }
 
 type HeatLevels = {
-    olives1: 'mild' | 'normal' | 'spicy';
-    olives2: 'mild' | 'normal' | 'spicy';
-    harissa: 'mild' | 'spicy';
-    choice: 'mild' | 'normal';
+    olives1: 'mild' | 'normal' | 'spicy' | null;
+    olives2: 'mild' | 'normal' | 'spicy' | null;
+    harissa: 'mild' | 'spicy' | null;
+    choice: 'mild' | 'normal' | null;
 };
 
 export default function HostingBoxALP() {
     const { product } = useLoaderData<typeof loader>();
     const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        olives1: 'normal',
-        olives2: 'normal',
-        harissa: 'spicy',
-        choice: 'normal',
+        olives1: null,
+        olives2: null,
+        harissa: null,
+        choice: null,
     });
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
+    const compareAtPrice = selectedVariant?.compareAtPrice;
+    const productImage = selectedVariant?.image || product.featuredImage;
+
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -56,18 +64,19 @@ export default function HostingBoxALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const allHeatLevelsSelected = heatLevels.olives1 !== null && heatLevels.olives2 !== null && heatLevels.harissa !== null && heatLevels.choice !== null;
+
     const addToCartProps = {
-        disabled: !selectedVariant?.availableForSale,
+        disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
         onClick: () => open('cart'),
-        lines: selectedVariant ? [{
+        lines: selectedVariant && allHeatLevelsSelected ? [{
             merchandiseId: selectedVariant.id,
             quantity: 1,
-            selectedVariant,
             attributes: [
-                { key: 'Olives 1 Heat', value: heatLevels.olives1 },
-                { key: 'Olives 2 Heat', value: heatLevels.olives2 },
-                { key: 'Harissa Heat', value: heatLevels.harissa },
-                { key: 'Cabbage/Cucumbers Heat', value: heatLevels.choice },
+                { key: 'Olives 1 Heat', value: heatLevels.olives1! },
+                { key: 'Olives 2 Heat', value: heatLevels.olives2! },
+                { key: 'Harissa Heat', value: heatLevels.harissa! },
+                { key: 'Cabbage/Cucumbers Heat', value: heatLevels.choice! },
             ],
         }] : [],
     };
@@ -76,7 +85,7 @@ export default function HostingBoxALP() {
         <div className="alp-page bg-[#F0EFEB] min-h-screen pb-24">
             {/* Hero Section */}
             <div className="bg-white">
-                <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+                <div ref={section1.ref} className={`mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="text-center mb-8">
                         <h1 className="font-serif text-4xl sm:text-5xl text-primary uppercase tracking-wide">
                             Hosting Box
@@ -88,9 +97,9 @@ export default function HostingBoxALP() {
 
                     {/* Product Image */}
                     <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
-                        {selectedVariant?.image && (
+                        {productImage && (
                             <Image
-                                data={selectedVariant.image}
+                                data={productImage}
                                 className="h-full w-full object-cover"
                                 sizes="100vw"
                             />
@@ -183,12 +192,19 @@ export default function HostingBoxALP() {
                     {/* Price & CTA */}
                     <div className="text-center mb-6">
                         {price && (
-                            <div className="text-3xl font-bold text-primary mb-6">
-                                <Money data={price} />
+                            <div className="mb-6">
+                                {compareAtPrice && (
+                                    <div className="text-lg text-dark/40 line-through mb-1">
+                                        <Money data={compareAtPrice} />
+                                    </div>
+                                )}
+                                <div className="text-3xl font-bold text-primary">
+                                    <Money data={price} />
+                                </div>
                             </div>
                         )}
                         <AddToCartButton {...addToCartProps} className="w-full max-w-md mx-auto h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                            Add Hosting Box to Cart
+                            {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Hosting Box to Cart'}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">
                             Premium · Clean · Guest-approved
@@ -198,7 +214,7 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Why It's Perfect for Hosting */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section2.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Why It's Perfect for Hosting
@@ -221,7 +237,7 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Best Uses */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section3.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Best Uses
@@ -243,7 +259,7 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Reviews */}
-            <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section4.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
                         Reviews
@@ -285,7 +301,7 @@ export default function HostingBoxALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query Product(
+  query HostingBoxProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode
@@ -294,11 +310,22 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      featuredImage {
+        id
+        url
+        altText
+        width
+        height
+      }
       selectedOrFirstAvailableVariant: variants(first: 1) {
         nodes {
           id
           availableForSale
           price {
+            amount
+            currencyCode
+          }
+          compareAtPrice {
             amount
             currencyCode
           }

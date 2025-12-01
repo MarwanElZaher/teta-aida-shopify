@@ -4,6 +4,7 @@ import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction = () => {
     return [
@@ -33,6 +34,12 @@ export default function OlivesALP() {
     const [selectedHeat, setSelectedHeat] = useState<'mild' | 'normal' | 'spicy' | null>(null);
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+
+    // Scroll animations
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
 
     // Access the first variant from the product's variants connection
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
@@ -131,7 +138,7 @@ export default function OlivesALP() {
             </div>
 
             {/* What Makes It Special */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section1.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         What Makes It Special
@@ -154,7 +161,7 @@ export default function OlivesALP() {
             </div>
 
             {/* Why People Love It */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section2.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         Why People Love It
@@ -177,7 +184,7 @@ export default function OlivesALP() {
             </div>
 
             {/* How to Use */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section3.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
                         How to Use
@@ -200,7 +207,7 @@ export default function OlivesALP() {
             </div>
 
             {/* Reviews */}
-            <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
+            <div ref={section4.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
                         Reviews
@@ -243,7 +250,7 @@ export default function OlivesALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query Product(
+  query OlivesProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode

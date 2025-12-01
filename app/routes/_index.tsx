@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import { Image } from '@shopify/hydrogen';
 import { BundleCard } from '~/components/BundleCard';
 import { ProductItem } from '~/components/ProductItem';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction = () => {
   return [
@@ -41,6 +42,12 @@ export async function loader({ context }: Route.LoaderArgs) {
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
+
+  const section1 = useScrollAnimation();
+  const section2 = useScrollAnimation();
+  const section3 = useScrollAnimation();
+  const section4 = useScrollAnimation();
+  const section5 = useScrollAnimation();
 
   return (
     <div className="home">
@@ -83,7 +90,7 @@ export default function Homepage() {
       </section>
 
       {/* 2. FEATURED BUNDLES (Horizontal Scroll on Mobile) */}
-      <section className="py-16 md:py-24 bg-cream">
+      <section ref={section1.ref} className={`${section1.isVisible ? 'opacity-100 transition-opacity duration-500 translate-y-0' : 'opacity-0 transition-opacity duration-500 translate-y-10'} py-16 md:py-24 bg-cream`}>
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">Our Bestselling Bundles</h2>
@@ -105,7 +112,7 @@ export default function Homepage() {
       </section>
 
       {/* 3. BEST SELLERS (Tight Grid) */}
-      <section className="py-16 md:py-24 bg-white">
+      <section ref={section2.ref} className={`${section2.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-16 md:py-24 bg-white`}>
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">Our Signature Creations</h2>
@@ -131,7 +138,7 @@ export default function Homepage() {
       </section>
 
       {/* 4. WHY TETA AIDA */}
-      <section className="py-20 bg-[#F0EFEB]">
+      <section ref={section3.ref} className={`${section3.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-20 bg-[#F0EFEB]`}>
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
             <div className="space-y-4">
@@ -159,7 +166,7 @@ export default function Homepage() {
       </section>
 
       {/* 5. REAL CUSTOMER MOMENTS */}
-      <section className="py-20 bg-gradient-to-br from-cream to-white">
+      <section ref={section4.ref} className={`${section4.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-20 bg-gradient-to-br from-cream to-white`}>
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">Real Customer Moments</h2>
@@ -204,7 +211,7 @@ export default function Homepage() {
       </section>
 
       {/* 6. BRAND STORY */}
-      <section className="py-24 bg-primary text-[#F9F7F2] text-center">
+      <section ref={section5.ref} className={`${section5.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-24 bg-primary text-[#F9F7F2] text-center`}>
         <div className="container mx-auto px-4 max-w-3xl">
           <h2 className="font-serif text-3xl md:text-5xl mb-8 leading-tight">Inspired by Tradition. <br /> Crafted for Today.</h2>
           <p className="text-lg md:text-xl opacity-90 mb-12 leading-relaxed font-light">
