@@ -51,7 +51,7 @@ export function BundleCard({ product }: BundleCardProps) {
                     </span>
                 </div>
                 <button className="w-full mt-2 h-[48px] rounded-[12px] bg-primary text-white font-bold uppercase tracking-widest text-xs hover:bg-[#143d24] transition-all shadow-sm group-hover:shadow-md">
-                    Shop Bundle
+                    Shop Now
                 </button>
             </div>
         </Link>

@@ -49,7 +49,7 @@ export function ProductItem({
           <Money data={product.priceRange.minVariantPrice} />
         </div>
         <button className="w-full mt-2 h-[48px] rounded-[12px] border border-primary text-primary font-bold uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
-          View Product
+          Shop
         </button>
       </div>
     </Link>
