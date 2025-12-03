@@ -47,11 +47,12 @@ export function ProductItem({
           <span className="text-primary font-bold text-lg">
             <Money data={product.priceRange.minVariantPrice} />
           </span>
-          {product.compareAtPriceRange?.minVariantPrice && (
-            <span className="text-dark/40 line-through text-sm">
-              <Money data={product.compareAtPriceRange.minVariantPrice} />
-            </span>
-          )}
+          {product.compareAtPriceRange?.minVariantPrice &&
+            parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > 0 && (
+              <span className="text-dark/40 line-through text-sm">
+                <Money data={product.compareAtPriceRange.minVariantPrice} />
+              </span>
+            )}
         </div>
         <button className="w-full mt-3 h-[48px] rounded-[12px] border border-primary text-primary font-bold uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
           Shop
