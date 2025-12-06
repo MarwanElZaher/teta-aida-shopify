@@ -50,6 +50,18 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
     });
   }
 
+  // Sort bundles in the correct order if this is the bundles collection
+  if (handle === 'bundles' && collection.products?.nodes) {
+    const bundleOrder = ['all-four-premium-flavors-one-elegant-box', 'healthy-living-box', 'spicy-lovers-box', 'hosting-box'];
+    collection.products.nodes = collection.products.nodes.sort((a: any, b: any) => {
+      const aIndex = bundleOrder.indexOf(a.handle);
+      const bIndex = bundleOrder.indexOf(b.handle);
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+      return aIndex - bIndex;
+    });
+  }
+
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, { handle, data: collection });
 
