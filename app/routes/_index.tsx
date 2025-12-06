@@ -27,6 +27,16 @@ export async function loader({ context }: Route.LoaderArgs) {
     ).slice(0, 4);
   }
 
+  // Sort bundles in the correct order: Signature, Healthy Living, Spicy Lovers, Hosting
+  const bundleOrder = ['all-four-premium-flavors-one-elegant-box', 'healthy-living-box', 'spicy-lovers-box', 'hosting-box'];
+  featuredBundles = featuredBundles.sort((a: any, b: any) => {
+    const aIndex = bundleOrder.indexOf(a.handle);
+    const bIndex = bundleOrder.indexOf(b.handle);
+    if (aIndex === -1) return 1;
+    if (bIndex === -1) return -1;
+    return aIndex - bIndex;
+  });
+
   // Fallback: If no best-sellers collection, use generic products
   if (bestSellingProducts.length === 0 && fallbackProducts?.nodes) {
     bestSellingProducts = fallbackProducts.nodes
