@@ -57,12 +57,16 @@ export default function About() {
                         </div>
                         <div className="flex items-center gap-3 p-4 bg-cream/50 rounded-lg border border-secondary/10">
                             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-white font-bold text-lg flex-shrink-0">✓</span>
+                            <span className="text-dark font-medium">Balanced with carefully selected vegetables, spices, and citrus aroma</span>
+                        </div>
+                        <div className="flex items-center gap-3 p-4 bg-cream/50 rounded-lg border border-secondary/10">
+                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-secondary text-white font-bold text-lg flex-shrink-0">✓</span>
                             <span className="text-dark font-medium">Packed in elegant, premium glass jars</span>
                         </div>
                     </div>
 
-                    <p className="text-2xl md:text-3xl font-serif italic text-secondary text-center leading-relaxed">
-                        "This isn't just pickling. It's artisanal craft, elevated."
+                    <p className="text-2xl md:text-3xl font-serif text-secondary text-center leading-relaxed">
+                        This isn't just pickling. <span className="font-bold">It's artisanal craft, elevated.</span>
                     </p>
                 </div>
             </section>

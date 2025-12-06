@@ -247,8 +247,8 @@ export default function Product() {
                 <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
                   {Object.entries(flavorProfile).map(([key, value]) => (
                     <div key={key}>
-                      <dt className="text-xs font-bold uppercase text-gray-500">{key}</dt>
-                      <dd className="mt-1 text-sm font-medium text-gray-900">{value as string}</dd>
+                      <dt className="text-xs font-bold uppercase text-gray-900">{key}</dt>
+                      <dd className="mt-1 text-sm font-medium text-gray-700">{value as string}</dd>
                     </div>
                   ))}
                 </div>

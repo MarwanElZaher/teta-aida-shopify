@@ -76,14 +76,14 @@ export default function Homepage() {
             </p>
             <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row animate-fade-in-up delay-300">
               <Link to="/collections/bundles" className="btn-primary sm:w-auto sm:px-10 hover-lift">
-                Shop Bundles
+                SHOP BUNDLES
               </Link>
               <Link to="/collections/all" className="btn-secondary sm:w-auto sm:px-10 hover-lift">
-                Shop All Products
+                SHOP ALL PRODUCTS
               </Link>
             </div>
             <p className="mt-8 text-xs uppercase tracking-widest text-dark/60 animate-fade-in-up delay-300">
-              Fresh batches weekly · Fast Cairo delivery
+              FRESH BATCHES WEEKLY · FAST CAIRO DELIVERY
             </p>
           </div>
         </div>
