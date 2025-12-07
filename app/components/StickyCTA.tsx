@@ -1,6 +1,7 @@
 import { Money } from '@shopify/hydrogen';
 import type { ProductVariant } from '@shopify/hydrogen/storefront-api-types';
 import { useEffect, useState } from 'react';
+import { useAside } from '~/components/Aside';
 
 interface StickyCTAProps {
     title: string;
@@ -12,18 +13,23 @@ interface StickyCTAProps {
 
 export function StickyCTA({ title, price, available, children, isVisible }: StickyCTAProps) {
     const [shouldRender, setShouldRender] = useState(false);
+    const { type: asideType } = useAside();
+
+    // Hide when cart is open
+    const isCartOpen = asideType === 'cart';
 
     useEffect(() => {
-        if (isVisible) {
+        if (isVisible && !isCartOpen) {
             setShouldRender(true);
         } else {
             // Delay unmounting for exit animation if needed, or just unmount
             const timer = setTimeout(() => setShouldRender(false), 300);
             return () => clearTimeout(timer);
         }
-    }, [isVisible]);
+    }, [isVisible, isCartOpen]);
 
     if (!shouldRender && !isVisible) return null;
+    if (isCartOpen) return null;
 
     return (
         <div

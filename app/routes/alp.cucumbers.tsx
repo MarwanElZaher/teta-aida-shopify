@@ -5,6 +5,7 @@ import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+import { ImageGallery } from '~/components/ImageGallery';
 
 export const meta: MetaFunction = () => {
     return [
@@ -67,15 +68,12 @@ export default function CucumbersALP() {
             <div className="bg-white">
                 <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                        {/* Product Image */}
-                        <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F0EFEB]">
-                            {selectedVariant?.image && (
-                                <Image
-                                    data={selectedVariant.image}
-                                    className="h-full w-full object-cover"
-                                    sizes="(min-width: 768px) 50vw, 100vw"
-                                />
-                            )}
+                        {/* Product Image Gallery */}
+                        <div>
+                            <ImageGallery
+                                images={product.media?.nodes || []}
+                                productTitle={product.title}
+                            />
                         </div>
 
                         {/* Product Info */}
@@ -256,6 +254,20 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      media(first: 10) {
+        nodes {
+          ... on MediaImage {
+            id
+            image {
+              id
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
       selectedOrFirstAvailableVariant: variants(first: 1) {
         nodes {
           id

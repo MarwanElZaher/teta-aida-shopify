@@ -27,19 +27,26 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
 
+
   return (
     <div className="flex flex-col h-full">
       <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="flex-1 overflow-y-auto px-6 py-4">
+      {/* Cart items with scrolling */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4">
         <div aria-labelledby="cart-lines">
-          <ul className="space-y-4">
+          <ul className="space-y-4 pb-4">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}
           </ul>
         </div>
       </div>
-      {cartHasItems && <CartSummary cart={cart} layout={layout} />}
+      {/* Cart summary - sticky at bottom */}
+      {cartHasItems && (
+        <div className="flex-shrink-0 border-t border-gray-200 bg-white">
+          <CartSummary cart={cart} layout={layout} />
+        </div>
+      )}
     </div>
   );
 }

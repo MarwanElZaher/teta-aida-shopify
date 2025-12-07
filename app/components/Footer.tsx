@@ -89,7 +89,7 @@ export function Footer({
                     <IconWhatsApp />
                   </a>
                 </div>
-                <div className="space-y-4">
+                {/* <div className="space-y-4">
                   <p className="text-xs uppercase tracking-widest opacity-70">Join our community</p>
                   <div className="flex border-b border-white/20 pb-2">
                     <input
@@ -101,7 +101,7 @@ export function Footer({
                       Join
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
 

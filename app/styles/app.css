@@ -82,6 +82,7 @@ p {
 
 .overlay {
   @apply fixed inset-0 z-50 bg-black/20 opacity-0 pointer-events-none transition-opacity duration-300;
+  touch-action: none;
 }
 
 .overlay.expanded {
@@ -90,6 +91,8 @@ p {
 
 aside {
   @apply fixed top-0 right-0 h-full w-full md:w-[400px] bg-cream shadow-2xl transition-transform duration-300 z-50 translate-x-full;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .overlay.expanded aside {

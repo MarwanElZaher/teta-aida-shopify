@@ -21,6 +21,7 @@ import { BundleConfigurator, type BundleItem } from '~/components/BundleConfigur
 import { BundleAddToCartButton } from '~/components/BundleAddToCartButton';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
+import { ImageGallery } from '~/components/ImageGallery';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
@@ -143,11 +144,14 @@ export default function Product() {
     <div className="product-page pb-24">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-12">
-          {/* Product Image */}
-          <div className="product-image-container relative aspect-square overflow-hidden rounded-2xl bg-gray-100">
-            <ProductImage image={selectedVariant?.image} />
+          {/* Product Image Gallery */}
+          <div className="product-image-container relative">
+            <ImageGallery
+              images={product.media?.nodes || []}
+              productTitle={product.title}
+            />
             {microTrust && (
-              <div className="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-green-900 shadow-sm backdrop-blur-sm">
+              <div className="absolute top-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-wide text-green-900 shadow-sm backdrop-blur-sm z-10">
                 {microTrust}
               </div>
             )}
@@ -389,6 +393,20 @@ const PRODUCT_FRAGMENT = `#graphql
     description
     encodedVariantExistence
     encodedVariantAvailability
+    media(first: 10) {
+      nodes {
+        ... on MediaImage {
+          id
+          image {
+            id
+            url
+            altText
+            width
+            height
+          }
+        }
+      }
+    }
     options {
       name
       optionValues {

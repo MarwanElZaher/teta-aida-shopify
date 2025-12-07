@@ -39,6 +39,9 @@ export function Aside({
     const abortController = new AbortController();
 
     if (expanded) {
+      // Lock body scroll when aside is open
+      document.body.style.overflow = 'hidden';
+
       document.addEventListener(
         'keydown',
         function handler(event: KeyboardEvent) {
@@ -48,9 +51,18 @@ export function Aside({
         },
         { signal: abortController.signal },
       );
+    } else {
+      // Restore body scroll when aside is closed
+      document.body.style.overflow = '';
     }
-    return () => abortController.abort();
+
+    return () => {
+      abortController.abort();
+      // Cleanup: restore body scroll
+      document.body.style.overflow = '';
+    };
   }, [close, expanded]);
+
 
   return (
     <div
@@ -59,8 +71,8 @@ export function Aside({
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside>
-        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white">
+      <aside className="flex flex-col">
+        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white flex-shrink-0">
           <h3 className="font-serif text-xl font-bold text-primary uppercase tracking-wide">{heading}</h3>
           <button
             className="w-8 h-8 flex items-center justify-center text-2xl text-dark/50 hover:text-primary transition-colors rounded-full hover:bg-gray-100"
@@ -70,7 +82,7 @@ export function Aside({
             ×
           </button>
         </header>
-        <main>{children}</main>
+        <main className="flex-1 flex flex-col overflow-y-auto">{children}</main>
       </aside>
     </div>
   );
