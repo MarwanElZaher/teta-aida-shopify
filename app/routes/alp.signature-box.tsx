@@ -18,7 +18,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
     const { storefront } = context;
 
     const { product } = await storefront.query(PRODUCT_QUERY, {
-        variables: { handle: 'signature-box' },
+        variables: { handle: 'all-four-premium-flavors-one-elegant-box' },
     });
 
     if (!product?.id) {
