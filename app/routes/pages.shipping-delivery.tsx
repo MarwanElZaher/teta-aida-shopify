@@ -73,7 +73,7 @@ export default function ShippingDelivery() {
                                 <h3 className="font-serif text-xl font-bold text-primary mb-2">Standard Delivery</h3>
                             </div>
                             <div className="text-center">
-                                <p className="text-2xl font-bold text-secondary mb-2">EGP 50</p>
+                                <p className="text-2xl font-bold text-secondary mb-2">Delivery vary depending on zone</p>
                                 <p className="text-sm text-dark/60">2-3 business days</p>
                             </div>
                         </div>
@@ -86,7 +86,7 @@ export default function ShippingDelivery() {
                                 <h3 className="font-serif text-xl font-bold text-primary mb-2">Free Delivery</h3>
                             </div>
                             <div className="text-center">
-                                <p className="text-2xl font-bold text-primary mb-2">Orders over EGP 500</p>
+                                <p className="text-2xl font-bold text-primary mb-2">Orders over EGP 1500</p>
                                 <p className="text-sm text-dark/60">Enjoy complimentary shipping</p>
                             </div>
                         </div>

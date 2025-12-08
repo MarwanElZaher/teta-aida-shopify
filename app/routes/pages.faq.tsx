@@ -20,7 +20,7 @@ const faqs = [
         items: [
             { q: "What are the jar weights?", a: "Each jar includes a Gross Weight of 1 Kg." },
             { q: "Are all products handmade?", a: "Yes — everything is small-batch crafted using clean, natural ingredients." },
-            { q: "Do the jars have heat level options?", a: "Yes — all jars come with heat-level selection:\n• Tuffaahy Olives: Mild / Normal / Spicy\n• Cucumbers: Mild / Normal\n• Tangerine Cabbage: Mild / Normal\n• Harissa Lemons: Mild / Spicy" },
+            { q: "Do the jars have heat level options?", a: "Yes — all jars come with heat-level selection:\n• Tuffaahy Olives: Mild / Normal / Spicy\n• Cucumbers: Mild / Normal / Spicy\n• Tangerine Cabbage: Normal\n• Harissa Lemons: Mild / Normal / Spicy" },
             { q: "Do you use preservatives?", a: "No artificial preservatives. Only clean, fresh ingredients." },
             { q: "How long do the products last?", a: "Shelf life varies per item. Please store jars in a cool place and refrigerate after opening." }
         ]
