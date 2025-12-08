@@ -20,11 +20,15 @@ export default function Contact() {
                 </div>
 
                 <div ref={section2.ref} className={`grid grid-cols-1 gap-8 sm:grid-cols-3 transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <div className="rounded-xl bg-[#F9F7F2] p-8 transition-transform hover:-translate-y-1">
-                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-2xl">📞</div>
-                        <h3 className="mb-2 text-lg font-bold text-gray-900">Call Support</h3>
-                        <p className="font-medium text-green-800">+20 107 098 5360</p>
-                    </div>
+                    <a href="https://wa.me/201070985360" target="_blank" rel="noopener noreferrer" className="block rounded-xl bg-[#F9F7F2] p-8 transition-transform hover:-translate-y-1">
+                        <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-green-800">
+                            <IconWhatsApp />
+                        </div>
+                        <h3 className="mb-2 text-lg font-bold text-gray-900">WhatsApp Support</h3>
+                        <p className="font-medium text-green-800">
+                            +20 107 098 5360
+                        </p>
+                    </a>
 
                     <div className="rounded-xl bg-[#F9F7F2] p-8 transition-transform hover:-translate-y-1">
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100 text-2xl">📧</div>
