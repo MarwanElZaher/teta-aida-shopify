@@ -66,14 +66,6 @@ export function Footer({
                   publicStoreDomain={publicStoreDomain}
                   pathPrefix={locale.pathPrefix}
                 />
-                <div className="mt-6 space-y-2 text-sm opacity-80">
-                  <p>
-                    <a href="tel:+201070985360" className="text-white hover:text-secondary transition-colors">+20 107 098 5360</a>
-                  </p>
-                  <p>
-                    <a href="mailto:tetaaidapickles@gmail.com" className="text-white hover:text-secondary transition-colors">tetaaidapickles@gmail.com</a>
-                  </p>
-                </div>
               </div>
 
               {/* Column 4: Socials & Newsletter */}

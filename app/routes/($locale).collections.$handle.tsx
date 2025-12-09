@@ -86,13 +86,27 @@ export default function Collection() {
   const section1 = useScrollAnimation();
   const section2 = useScrollAnimation();
 
-  // Use localized title and description for bundles collection
-  const displayTitle = collection.handle === 'bundles'
-    ? t('collections.bundles.title')
-    : collection.title;
-  const displayDescription = collection.handle === 'bundles'
-    ? t('collections.bundles.description')
-    : collection.description;
+  // Use localized title and description for specific collections
+  const getLocalizedCollectionData = (handle: string) => {
+    if (handle === 'bundles') {
+      return {
+        title: t('collections.bundles.title'),
+        description: t('collections.bundles.description'),
+      };
+    }
+    if (handle === 'best-sellers') {
+      return {
+        title: t('collections.bestSellers.title'),
+        description: t('collections.bestSellers.description'),
+      };
+    }
+    return {
+      title: collection.title,
+      description: collection.description,
+    };
+  };
+
+  const { title: displayTitle, description: displayDescription } = getLocalizedCollectionData(collection.handle);
 
   return (
     <div className="collection">

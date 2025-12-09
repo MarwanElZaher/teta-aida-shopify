@@ -35,6 +35,7 @@ export const TRANSLATIONS = {
             about: 'About',
             support: 'Support',
             followUs: 'Follow Us',
+            whatsapp: 'WhatsApp',
             rights: 'All rights reserved.',
             crafted: 'Crafted in Cairo.',
             joinCommunity: 'Join our community',
@@ -489,6 +490,10 @@ export const TRANSLATIONS = {
                 title: 'Bundles',
                 description: 'Curated bundles for every occasion — from wellness to hosting.',
             },
+            bestSellers: {
+                title: 'Best Sellers',
+                description: 'Our signature artisanal flavors.',
+            },
         },
         pages: {
             aboutUs: 'About Us',
@@ -689,7 +694,8 @@ export const TRANSLATIONS = {
             about: 'من نحن',
             support: 'الدعم',
             followUs: 'تابعونا',
-            rights: 'جميع الحقوق محفوظة',
+            whatsapp: 'واتساب',
+            rights: 'جميع الحقوق محفوظة.',
             crafted: 'مصنوع بفخر في القاهرة',
             joinCommunity: 'انضموا لأسرتنا',
             emailPlaceholder: 'أدخل بريدك الإلكتروني',
@@ -1142,6 +1148,10 @@ export const TRANSLATIONS = {
             bundles: {
                 title: 'المجموعات',
                 description: 'تشكيلات مختارة لكل مناسبة — من الصحة للضيافة.',
+            },
+            bestSellers: {
+                title: 'الأكثر مبيعًا',
+                description: 'نكهاتنا الحرفية المميّزة.',
             },
         },
         pages: {
