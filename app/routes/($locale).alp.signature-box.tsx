@@ -5,12 +5,13 @@ import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction = () => {
     return [
-        { title: 'Healthy Living Box | Low-Salt & Probiotic | Teta Aida' },
-        { name: 'description', content: 'A wellness bundle featuring low-salt cucumbers and probiotic Tangerine cabbage.' },
-        { name: 'keywords', content: 'healthy pickles Egypt, low salt pickles Cairo, probiotic pickles bundle, probiotics, stomach & colon relief' },
+        { title: 'Signature Box | All Four Premium Flavors | Teta Aida' },
+        { name: 'description', content: 'Discover all four artisanal flavors in one curated premium bundle, including our Tuffaahy crushed Olives — Signature Mix.' },
+        { name: 'keywords', content: 'signature box Egypt, premium pickles set, artisanal bundle Cairo' },
     ];
 };
 
@@ -18,7 +19,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
     const { storefront } = context;
 
     const { product } = await storefront.query(PRODUCT_QUERY, {
-        variables: { handle: 'healthy-living-box' },
+        variables: { handle: 'all-four-premium-flavors-one-elegant-box' },
     });
 
     if (!product?.id) {
@@ -29,18 +30,23 @@ export async function loader({ context }: LoaderFunctionArgs) {
 }
 
 type HeatLevels = {
+    olives: 'mild' | 'normal' | 'spicy' | null;
     cucumbers: 'mild' | 'normal' | null;
     cabbage: 'mild' | 'normal' | null;
+    harissa: 'mild' | 'spicy' | null;
 };
 
-export default function HealthyLivingALP() {
+export default function SignatureBoxALP() {
     const { product } = useLoaderData<typeof loader>();
     const [heatLevels, setHeatLevels] = useState<HeatLevels>({
+        olives: null,
         cucumbers: null,
         cabbage: null,
+        harissa: null,
     });
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+    const { t } = useTranslation();
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
@@ -60,7 +66,7 @@ export default function HealthyLivingALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const allHeatLevelsSelected = heatLevels.cucumbers !== null && heatLevels.cabbage !== null;
+    const allHeatLevelsSelected = heatLevels.olives !== null && heatLevels.cucumbers !== null && heatLevels.cabbage !== null && heatLevels.harissa !== null;
 
     const addToCartProps = {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
@@ -69,8 +75,10 @@ export default function HealthyLivingALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
+                { key: 'Olives Heat', value: heatLevels.olives! },
                 { key: 'Cucumbers Heat', value: heatLevels.cucumbers! },
                 { key: 'Cabbage Heat', value: heatLevels.cabbage! },
+                { key: 'Harissa Heat', value: heatLevels.harissa! },
             ],
         }] : [],
     };
@@ -82,10 +90,10 @@ export default function HealthyLivingALP() {
                 <div ref={section1.ref} className={`mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                     <div className="text-center mb-8">
                         <h1 className="font-serif text-4xl sm:text-5xl text-primary uppercase tracking-wide">
-                            Healthy Living Box
+                            {t('product.signature.name')}
                         </h1>
                         <p className="mt-3 text-xl text-dark/60 italic">
-                            Crisp. Light. Clean-eating perfection.
+                            {t('product.signature.tagline')}
                         </p>
                     </div>
 
@@ -103,12 +111,31 @@ export default function HealthyLivingALP() {
                     {/* What's Inside */}
                     <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
                         <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                            Included
+                            {t('product.signature.whatsInside')}
                         </h2>
+
+                        {/* Olives */}
+                        <div className="mb-6 pb-6 border-b border-dark/10">
+                            <h3 className="font-bold text-dark mb-2">• {t('product.olives.name')} — 1 Kg</h3>
+                            <div className="flex gap-2 mt-3">
+                                {(['mild', 'normal', 'spicy'] as const).map((level) => (
+                                    <button
+                                        key={level}
+                                        onClick={() => setHeatLevels({ ...heatLevels, olives: level })}
+                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives === level
+                                            ? 'border-primary bg-primary text-white'
+                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                            }`}
+                                    >
+                                        {t(`product.heatLevels.${level}`)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
 
                         {/* Cucumbers */}
                         <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• Low-Salt Cucumbers — 1 Kg</h3>
+                            <h3 className="font-bold text-dark mb-2">• {t('product.cucumbers.name')} — 1 Kg</h3>
                             <div className="flex gap-2 mt-3">
                                 {(['mild', 'normal'] as const).map((level) => (
                                     <button
@@ -119,15 +146,15 @@ export default function HealthyLivingALP() {
                                             : 'border-dark/20 bg-white text-dark hover:border-primary'
                                             }`}
                                     >
-                                        {level}
+                                        {t(`product.heatLevels.${level}`)}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
                         {/* Cabbage */}
-                        <div className="mb-6">
-                            <h3 className="font-bold text-dark mb-2">• Tangerine-Infused Cabbage — 1 Kg</h3>
+                        <div className="mb-6 pb-6 border-b border-dark/10">
+                            <h3 className="font-bold text-dark mb-2">• {t('product.cabbage.name')} — 1 Kg</h3>
                             <div className="flex gap-2 mt-3">
                                 {(['mild', 'normal'] as const).map((level) => (
                                     <button
@@ -138,7 +165,26 @@ export default function HealthyLivingALP() {
                                             : 'border-dark/20 bg-white text-dark hover:border-primary'
                                             }`}
                                     >
-                                        {level}
+                                        {t(`product.heatLevels.${level}`)}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Harissa */}
+                        <div className="mb-6">
+                            <h3 className="font-bold text-dark mb-2">• {t('product.lemons.name')} — 1 Kg</h3>
+                            <div className="flex gap-2 mt-3">
+                                {(['mild', 'spicy'] as const).map((level) => (
+                                    <button
+                                        key={level}
+                                        onClick={() => setHeatLevels({ ...heatLevels, harissa: level })}
+                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.harissa === level
+                                            ? 'border-primary bg-primary text-white'
+                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                            }`}
+                                    >
+                                        {t(`product.heatLevels.${level}`)}
                                     </button>
                                 ))}
                             </div>
@@ -160,10 +206,10 @@ export default function HealthyLivingALP() {
                             </div>
                         )}
                         <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                            {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Healthy Box to Cart'}
+                            {!allHeatLevelsSelected ? t('product.healthyBox.selectAll') : t('product.addToCart')}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">
-                            Low salt · Probiotic · Clean ingredients
+                            {t('product.microTrust.freshWeekly')} · {t('product.microTrust.smallBatch')}
                         </p>
                     </div>
                 </div>
@@ -173,41 +219,29 @@ export default function HealthyLivingALP() {
             <div ref={section2.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        Why You'll Love It
+                        {t('product.signature.why.title')}
                     </h2>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[
-                            'Light on the stomach',
-                            'Probiotic & low-salt combo',
-                            'Clean, refreshing flavors',
-                            'Perfect daily healthy pickles',
-                            'Small-batch craft quality',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
                                 <span className="text-primary font-bold">✓</span>
-                                <span className="text-dark/80">{item}</span>
+                                <span className="text-dark/80">{t(`product.signature.why.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
                 </div>
             </div>
 
-            {/* How to Enjoy It */}
+            {/* Serving Ideas */}
             <div ref={section3.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        How to Enjoy It
+                        {t('product.signature.serving.title')}
                     </h2>
                     <div className="flex flex-wrap gap-3">
-                        {[
-                            'Healthy bowls',
-                            'Lunchboxes',
-                            'Post-gym meals',
-                            'Sandwiches',
-                            'Light dinners',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <span key={i} className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                                {item}
+                                {t(`product.signature.serving.${i}`)}
                             </span>
                         ))}
                     </div>
@@ -218,16 +252,13 @@ export default function HealthyLivingALP() {
             <div ref={section4.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
-                        Reviews
+                        {t('product.signature.reviews.title')}
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {[
-                            'Finally — a healthy pickle that tastes amazing.',
-                            'Fresh, clean, crisp.',
-                        ].map((review, i) => (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[1, 2, 3].map((i) => (
                             <div key={i} className="text-center">
                                 <div className="mb-2 text-yellow-400">★★★★★</div>
-                                <p className="text-dark/60 italic">"{review}"</p>
+                                <p className="text-dark/60 italic">"{t(`product.signature.reviews.${i}`)}"</p>
                             </div>
                         ))}
                     </div>
@@ -236,9 +267,9 @@ export default function HealthyLivingALP() {
 
             {/* Explore Link */}
             <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-center">
-                <p className="text-dark/60 mb-4">See more products →</p>
+                <p className="text-dark/60 mb-4">{t('nav.shop')}</p>
                 <Link to="/collections/all" className="text-primary font-bold hover:text-secondary transition-colors">
-                    View All Products
+                    {t('home.bestsellers.viewAll')}
                 </Link>
             </div>
 
@@ -247,7 +278,7 @@ export default function HealthyLivingALP() {
                 <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-50 md:hidden">
                     <div className="px-4 py-3">
                         <AddToCartButton {...addToCartProps} className="w-full h-12 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm">
-                            Add to Cart
+                            {!allHeatLevelsSelected ? t('product.healthyBox.selectAll') : t('product.addToCart')}
                         </AddToCartButton>
                     </div>
                 </div>
@@ -257,7 +288,7 @@ export default function HealthyLivingALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query HealthyLivingProduct(
+  query SignatureBoxProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode

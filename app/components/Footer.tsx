@@ -15,7 +15,7 @@ export function Footer({
   header,
   publicStoreDomain,
 }: FooterProps) {
-  const { t, locale } = useTranslation();
+  const { t, locale, isRtl } = useTranslation();
   return (
     <Suspense>
       <Await resolve={footerPromise}>
@@ -24,7 +24,7 @@ export function Footer({
             <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-12">
               {/* Column 1: Brand Story */}
               <div className="space-y-6">
-                <h3 className="text-secondary font-serif text-3xl tracking-wider uppercase">Teta Aida</h3>
+                <h3 className="text-secondary font-serif text-3xl tracking-wider uppercase">{isRtl ? 'تيتا عايدة' : 'Teta Aida'}</h3>
                 <p className="text-sm leading-relaxed opacity-90 max-w-xs">
                   {t('footer.description')}
                 </p>
@@ -46,12 +46,12 @@ export function Footer({
                   </li>
                   <li>
                     <NavLink to={`${locale.pathPrefix}/products/tuffaahy-olives-signature-mix`} className="text-white hover:text-secondary transition-colors">
-                      Tuffaahy Olives
+                      {t('products.tuffahyOlives')}
                     </NavLink>
                   </li>
                   <li>
                     <NavLink to={`${locale.pathPrefix}/products/low-salt-cucumbers-with-celery`} className="text-white hover:text-secondary transition-colors">
-                      Low-Salt Cucumbers
+                      {t('products.lowSaltCucumbers')}
                     </NavLink>
                   </li>
                 </ul>
@@ -110,7 +110,7 @@ export function Footer({
             </div>
 
             <div className="container mx-auto px-4 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-60">
-              <p>&copy; {new Date().getFullYear()} Teta Aida. {t('footer.rights')}</p>
+              <p>&copy; {new Date().getFullYear()} {isRtl ? 'تيتا عايدة' : 'Teta Aida'}. {t('footer.rights')}</p>
               <p>{t('footer.crafted')}</p>
             </div>
           </footer>
@@ -118,6 +118,25 @@ export function Footer({
       </Await>
     </Suspense>
   );
+}
+
+// Helper function to translate footer menu item titles
+function getFooterMenuItemTranslation(title: string, t: (key: string) => string): string {
+  const titleMap: Record<string, string> = {
+    'Privacy Policy': t('pages.privacy'),
+    'Refund Policy': t('pages.refundPolicy'),
+    'Shipping Policy': t('pages.shippingPolicy'),
+    'Return & Exchange Policy': t('pages.returnExchangePolicy'),
+    'About Us': t('pages.aboutUs'),
+    'Contact': t('pages.contact'),
+    'Contact Us': t('pages.contact'),
+    'FAQ': t('pages.faq'),
+    'Shipping & Delivery': t('pages.shipping'),
+    'Returns & Exchanges': t('pages.returns'),
+    'Terms of Service': t('pages.terms'),
+  };
+
+  return titleMap[title] || title;
 }
 
 function FooterMenu({
@@ -131,6 +150,8 @@ function FooterMenu({
   publicStoreDomain: string;
   pathPrefix: string;
 }) {
+  const { t } = useTranslation();
+
   return (
     <nav className="flex flex-col gap-3 text-sm" role="navigation">
       {(menu || FALLBACK_FOOTER_MENU).items.map((item) => {
@@ -156,7 +177,7 @@ function FooterMenu({
             className="text-white hover:text-secondary transition-colors"
             to={finalUrl}
           >
-            {item.title}
+            {getFooterMenuItemTranslation(item.title, t)}
           </NavLink>
         );
       })}

@@ -2,14 +2,19 @@ import { Await, useLoaderData, Link, type MetaFunction } from 'react-router';
 import type { Route } from './+types/($locale)._index';
 import { Suspense } from 'react';
 import { Image } from '@shopify/hydrogen';
-import { useTranslation } from '~/lib/translations';
+import { useTranslation, TRANSLATIONS } from '~/lib/translations';
 import { BundleCard } from '~/components/BundleCard';
 import { ProductItem } from '~/components/ProductItem';
+import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
-export const meta: MetaFunction = () => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+    const locale = data?.locale || { language: 'EN' };
+    const lang = (locale.language as keyof typeof TRANSLATIONS) || 'EN';
+    const t = TRANSLATIONS[lang];
+
     return [
-        { title: 'Teta Aida | Premium Artisanal Pickles | Small-Batch, Clean Ingredients' },
-        { name: 'description', content: 'Premium small-batch artisanal pickles crafted with clean, carefully selected ingredients. Shop curated bundles, gently crushed olives, low-salt cucumbers, Tangerine cabbage & harissa lemons.' },
+        { title: t?.seo?.home?.title || 'Teta Aida | Premium Artisanal Pickles' },
+        { name: 'description', content: t?.seo?.home?.description || 'Premium small-batch artisanal pickles.' },
     ];
 };
 
@@ -37,12 +42,19 @@ export async function loader({ context }: Route.LoaderArgs) {
     return {
         featuredBundles,
         bestSellers: bestSellingProducts,
+        locale: context.storefront.i18n,
     };
 }
 
 export default function Homepage() {
     const data = useLoaderData<typeof loader>();
     const { t, locale } = useTranslation();
+
+    const section1 = useScrollAnimation();
+    const section2 = useScrollAnimation();
+    const section3 = useScrollAnimation();
+    const section4 = useScrollAnimation();
+    const section5 = useScrollAnimation();
 
     return (
         <div className="home">
@@ -85,7 +97,7 @@ export default function Homepage() {
             </section>
 
             {/* 2. FEATURED BUNDLES (Horizontal Scroll on Mobile) */}
-            <section className="py-16 md:py-24 bg-cream">
+            <section ref={section1.ref} className={`${section1.isVisible ? 'opacity-100 transition-opacity duration-500 translate-y-0' : 'opacity-0 transition-opacity duration-500 translate-y-10'} py-16 md:py-24 bg-cream`}>
                 <div className="container mx-auto px-4">
                     <div className="mb-12 text-center">
                         <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">{t('home.bundles.title')}</h2>
@@ -107,7 +119,7 @@ export default function Homepage() {
             </section>
 
             {/* 3. BEST SELLERS (Tight Grid) */}
-            <section className="py-16 md:py-24 bg-white">
+            <section ref={section2.ref} className={`${section2.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-16 md:py-24 bg-white`}>
                 <div className="container mx-auto px-4">
                     <div className="mb-12 text-center">
                         <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">{t('home.bestsellers.title')}</h2>
@@ -133,7 +145,7 @@ export default function Homepage() {
             </section>
 
             {/* 4. WHY TETA AIDA */}
-            <section className="py-20 bg-[#F0EFEB]">
+            <section ref={section3.ref} className={`${section3.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-20 bg-[#F0EFEB]`}>
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
                         <div className="space-y-4">
@@ -160,14 +172,59 @@ export default function Homepage() {
                 </div>
             </section>
 
-            {/* 5. BRAND STORY */}
-            <section className="py-24 bg-primary text-[#F9F7F2] text-center">
+            {/* 5. REAL CUSTOMER MOMENTS */}
+            <section ref={section4.ref} className={`${section4.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-20 bg-gradient-to-br from-cream to-white`}>
+                <div className="container mx-auto px-4">
+                    <div className="text-center mb-12">
+                        <h2 className="font-serif text-3xl md:text-4xl text-primary mb-4">{t('home.reviews.title')}</h2>
+                        <p className="text-dark/70 max-w-2xl mx-auto">{t('home.reviews.subtitle')}</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                        <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div className="text-secondary text-4xl mb-4">"</div>
+                            <p className="text-lg font-serif text-primary mb-4">{t('home.reviews.quote1')}</p>
+                            <div className="flex text-secondary text-sm">★★★★★</div>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div className="text-secondary text-4xl mb-4">"</div>
+                            <p className="text-lg font-serif text-primary mb-4">{t('home.reviews.quote2')}</p>
+                            <div className="flex text-secondary text-sm">★★★★★</div>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div className="text-secondary text-4xl mb-4">"</div>
+                            <p className="text-lg font-serif text-primary mb-4">{t('home.reviews.quote3')}</p>
+                            <div className="flex text-secondary text-sm">★★★★★</div>
+                        </div>
+
+                        <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+                            <div className="text-secondary text-4xl mb-4">"</div>
+                            <p className="text-lg font-serif text-primary mb-4">{t('home.reviews.quote4')}</p>
+                            <div className="flex text-secondary text-sm">★★★★★</div>
+                        </div>
+                    </div>
+
+                    <div className="text-center">
+                        <Link
+                            to={`${locale.pathPrefix}/pages/reviews`}
+                            className="inline-block border-b-2 border-primary text-primary font-bold uppercase tracking-widest hover:text-secondary hover:border-secondary transition-colors pb-1"
+                        >
+                            {t('home.reviews.viewAll')}
+                        </Link>
+                    </div>
+                </div>
+            </section>
+
+            {/* 6. BRAND STORY */}
+            <section ref={section5.ref} className={`${section5.isVisible ? 'animate-fade-in-up' : 'opacity-0'} py-24 bg-primary text-[#F9F7F2] text-center`}>
                 <div className="container mx-auto px-4 max-w-3xl">
                     <h2 className="font-serif text-3xl md:text-5xl mb-8 leading-tight">{t('home.story.title')}</h2>
                     <p className="text-lg md:text-xl opacity-90 mb-12 leading-relaxed font-light">
                         {t('home.story.text')}
                     </p>
-                    <Link to={`${locale.pathPrefix}/pages/about-us`} className="inline-block px-8 py-4 border border-[#F9F7F2] rounded-full text-[#F9F7F2] font-bold uppercase tracking-widest hover:bg-[#F9F7F2] hover:text-primary transition-all">
+                    <Link to={`${locale.pathPrefix}/pages/about-us`} className="inline-block px-10 py-4 bg-secondary text-white font-bold uppercase tracking-widest text-sm rounded-full hover:bg-[#b8941f] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                         {t('home.story.cta')}
                     </Link>
                 </div>

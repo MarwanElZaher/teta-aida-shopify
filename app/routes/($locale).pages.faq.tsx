@@ -1,54 +1,58 @@
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, Transition } from '@headlessui/react';
+import { useTranslation, TRANSLATIONS } from '~/lib/translations';
 
-export const meta = () => {
-    return [{ title: 'FAQ | Teta Aida' }];
+export const meta = ({ params }: { params: { locale?: string } }) => {
+    const locale = params.locale?.toUpperCase() === 'AR' ? 'AR' : 'EN';
+    return [{ title: TRANSLATIONS[locale].faq.meta_title }];
 };
 
-const faqs = [
-    {
-        category: "Orders & Delivery",
-        items: [
-            { q: "How long does delivery take?", a: "Delivery times depend on courier routing:\n• 1–2 working days: New Cairo, Nasr City, Heliopolis, Sheraton\n• Up to 7–10 working days: Other serviced Cairo districts\n\nYou will receive a confirmation message once your order is on its way." },
-            { q: "Do you deliver outside Cairo?", a: "Currently, we deliver across Greater Cairo. New areas will be added soon." },
-            { q: "How much is the delivery fee?", a: "Delivery fees depend on your location. You will see the exact fee at checkout." },
-            { q: "How do I track my order?", a: "The courier will call you and text you via WhatsApp to arrange pickup. You can track it by directly contacting the courier." },
-            { q: "What happens if I miss the delivery?", a: "The courier will attempt to deliver twice. If both attempts fail, the order may be cancelled and delivery fees may apply twice." }
-        ]
-    },
-    {
-        category: "Product Details",
-        items: [
-            { q: "What are the jar weights?", a: "Each jar includes a Gross Weight of 1 Kg." },
-            { q: "Are all products handmade?", a: "Yes — everything is small-batch crafted using clean, natural ingredients." },
-            { q: "Do the jars have heat level options?", a: "Yes — all jars come with heat-level selection:\n• Tuffaahy Olives: Mild / Normal / Spicy\n• Cucumbers: Mild / Normal / Spicy\n• Tangerine Cabbage: Normal\n• Harissa Lemons: Mild / Normal / Spicy" },
-            { q: "Do you use preservatives?", a: "No artificial preservatives. Only clean, fresh ingredients." },
-            { q: "How long do the products last?", a: "Shelf life varies per item. Please store jars in a cool place and refrigerate after opening." }
-        ]
-    },
-    {
-        category: "Payments",
-        items: [
-            { q: "How can I pay?", a: "We accept Cash on Delivery (COD) and Instapay." },
-            { q: "Is there a minimum order?", a: "No minimum order." },
-            { q: "Do you offer discounts?", a: "Occasionally on selected bundles and promotional campaigns." }
-        ]
-    },
-    {
-        category: "Returns & Refunds",
-        items: [
-            { q: "Can I return a jar if I don’t like the taste?", a: "For safety reasons, we cannot accept opened jars or items returned due to personal preference." },
-            { q: "What if the product arrives damaged?", a: "We will replace or refund immediately. Please send us a photo within 24 hours." },
-            { q: "What if I received the wrong item?", a: "We’ll arrange a replacement as quickly as possible." },
-            { q: "How do I request a return?", a: "Contact us on WhatsApp with your Order number, Photo/video, and Issue description. We respond within 1 business day." }
-        ]
-    }
-];
-
 export default function FAQ() {
+    const { t } = useTranslation();
+
+    const faqs = [
+        {
+            category: t('faq.category.orders'),
+            items: [
+                { q: t('faq.orders.delivery_time.q'), a: t('faq.orders.delivery_time.a') },
+                { q: t('faq.orders.delivery_outside.q'), a: t('faq.orders.delivery_outside.a') },
+                { q: t('faq.orders.delivery_fee.q'), a: t('faq.orders.delivery_fee.a') },
+                { q: t('faq.orders.track_order.q'), a: t('faq.orders.track_order.a') },
+                { q: t('faq.orders.miss_delivery.q'), a: t('faq.orders.miss_delivery.a') }
+            ]
+        },
+        {
+            category: t('faq.category.products'),
+            items: [
+                { q: t('faq.products.jar_weights.q'), a: t('faq.products.jar_weights.a') },
+                { q: t('faq.products.handmade.q'), a: t('faq.products.handmade.a') },
+                { q: t('faq.products.heat_levels.q'), a: t('faq.products.heat_levels.a') },
+                { q: t('faq.products.preservatives.q'), a: t('faq.products.preservatives.a') },
+                { q: t('faq.products.shelf_life.q'), a: t('faq.products.shelf_life.a') }
+            ]
+        },
+        {
+            category: t('faq.category.payments'),
+            items: [
+                { q: t('faq.payments.payment_methods.q'), a: t('faq.payments.payment_methods.a') },
+                { q: t('faq.payments.minimum_order.q'), a: t('faq.payments.minimum_order.a') },
+                { q: t('faq.payments.discounts.q'), a: t('faq.payments.discounts.a') }
+            ]
+        },
+        {
+            category: t('faq.category.returns'),
+            items: [
+                { q: t('faq.returns.return_taste.q'), a: t('faq.returns.return_taste.a') },
+                { q: t('faq.returns.damaged.q'), a: t('faq.returns.damaged.a') },
+                { q: t('faq.returns.wrong_item.q'), a: t('faq.returns.wrong_item.a') },
+                { q: t('faq.returns.request_return.q'), a: t('faq.returns.request_return.a') }
+            ]
+        }
+    ];
+
     return (
         <div className="faq-page py-16 sm:py-24">
             <div className="mx-auto max-w-3xl px-4">
-                <h1 className="mb-12 text-center text-4xl font-bold text-gray-900">Frequently Asked Questions</h1>
+                <h1 className="mb-12 text-center text-4xl font-bold text-gray-900">{t('faq.title')}</h1>
 
                 <div className="space-y-12">
                     {faqs.map((section, idx) => (
@@ -61,13 +65,17 @@ export default function FAQ() {
                                             <>
                                                 <Disclosure.Button className="flex w-full justify-between text-left text-lg font-medium text-gray-900 focus:outline-none">
                                                     <span>{item.q}</span>
-                                                    <span className={`ml-6 flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform ${open ? 'rotate-180' : ''}`}>
+                                                    <span className={`ml-6 flex h-7 w-7 items-center justify-center rounded-full bg-white transition-transform duration-300 ${open ? 'rotate-180' : ''}`}>
                                                         ↓
                                                     </span>
                                                 </Disclosure.Button>
-                                                <Disclosure.Panel className="mt-4 whitespace-pre-line text-gray-600">
-                                                    {item.a}
-                                                </Disclosure.Panel>
+                                                <div className={`grid transition-[grid-template-rows] duration-500 ease-in-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}>
+                                                    <div className="overflow-hidden">
+                                                        <Disclosure.Panel static className="mt-4 whitespace-pre-line text-gray-600">
+                                                            {item.a}
+                                                        </Disclosure.Panel>
+                                                    </div>
+                                                </div>
                                             </>
                                         )}
                                     </Disclosure>
@@ -77,6 +85,6 @@ export default function FAQ() {
                     ))}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

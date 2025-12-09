@@ -15,6 +15,9 @@ export const CART_QUERY_FRAGMENT = `#graphql
       totalAmount {
         ...Money
       }
+      subtotalAmount {
+        ...Money
+      }
       amountPerQuantity {
         ...Money
       }

@@ -14,6 +14,7 @@ import {
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
 import { SearchResultsPredictive } from '~/components/SearchResultsPredictive';
+import { useTranslation } from '~/lib/translations';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -56,9 +57,14 @@ export function PageLayout({
 }
 
 function CartAside({ cart }: { cart: PageLayoutProps['cart'] }) {
+  const { t } = useTranslation();
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
+    <Aside type="cart" heading={t('cart.title')}>
+      <Suspense fallback={
+        <div className="flex h-full items-center justify-center p-8">
+          <p className="font-serif text-lg text-dark/60 italic">{t('cart.loading')}</p>
+        </div>
+      }>
         <Await resolve={cart}>
           {(cart) => {
             return <CartMain cart={cart} layout="aside" />;
@@ -71,8 +77,10 @@ function CartAside({ cart }: { cart: PageLayoutProps['cart'] }) {
 
 function SearchAside() {
   const queriesDatalistId = useId();
+  const { t } = useTranslation();
+
   return (
-    <Aside type="search" heading="SEARCH">
+    <Aside type="search" heading={t('search.title')}>
       <div className="flex flex-col h-full">
         {/* Search Input Section */}
         <div className="px-6 py-4 border-b border-gray-200">
@@ -83,7 +91,7 @@ function SearchAside() {
                   name="q"
                   onChange={fetchResults}
                   onFocus={fetchResults}
-                  placeholder="Search products..."
+                  placeholder={t('search.placeholder')}
                   ref={inputRef}
                   type="search"
                   list={queriesDatalistId}
@@ -93,7 +101,7 @@ function SearchAside() {
                   onClick={goToSearch}
                   className="px-6 py-3 bg-primary text-white font-bold text-sm uppercase tracking-wider rounded-lg hover:bg-[#143d24] transition-colors"
                 >
-                  Search
+                  {t('search.title')}
                 </button>
               </div>
             )}
@@ -109,13 +117,18 @@ function SearchAside() {
               if (state === 'loading' && term.current) {
                 return (
                   <div className="flex items-center justify-center py-8">
-                    <div className="text-dark/60">Searching...</div>
+                    <div className="text-dark/60">{t('search.searching')}</div>
                   </div>
                 );
               }
 
               if (!total) {
-                return <SearchResultsPredictive.Empty term={term} />;
+                return (
+                  <div className="flex items-center justify-center py-8">
+                    <div className="text-dark/60">{t('search.noResults')}</div>
+                  </div>
+                  //   <SearchResultsPredictive.Empty term={term} />
+                );
               }
 
               return (
@@ -150,7 +163,7 @@ function SearchAside() {
                       to={`${SEARCH_ENDPOINT}?q=${term.current}`}
                       className="block text-center py-3 text-primary font-medium hover:text-secondary transition-colors"
                     >
-                      View all results for <q>{term.current}</q> →
+                      {t('search.viewAll')} <q>{term.current}</q> →
                     </Link>
                   ) : null}
                 </div>
@@ -170,10 +183,11 @@ function MobileMenuAside({
   header: PageLayoutProps['header'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
 }) {
+  const { t } = useTranslation();
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
+      <Aside type="mobile" heading={t('nav.menu')}>
         <HeaderMenu
           menu={header.menu}
           viewport="mobile"

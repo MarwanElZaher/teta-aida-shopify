@@ -7,6 +7,7 @@ import { ProductPrice } from './ProductPrice';
 import { useAside } from './Aside';
 import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { useTranslation } from '~/lib/translations';
+import { getLocalizedTitle } from '~/lib/localized-content';
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -25,6 +26,12 @@ export function CartLineItem({
   const { product, title, image, selectedOptions } = merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const { close } = useAside();
+  const { t, locale } = useTranslation();
+
+  // Get localized product title
+  // Passing empty array for metafields because they might not be available in cart line,
+  // relying on fallback logic in getLocalizedTitle for common products.
+  const displayTitle = getLocalizedTitle(product.title, [], locale.language);
 
   // Filter out "Default Title" from selected options
   const relevantOptions = selectedOptions.filter(
@@ -33,14 +40,14 @@ export function CartLineItem({
 
   // Parse heat level attributes (for both bundles and individual products)
   const heatLevelAttributes = attributes?.filter(attr =>
-    attr.key.includes('Heat')
+    attr.key.includes('Heat') || attr.key.includes('Level')
   ) || [];
 
   return (
     <li key={id} className="flex gap-4 border-b border-gray-200 pb-4">
       {image && (
         <Image
-          alt={title}
+          alt={displayTitle}
           aspectRatio="1/1"
           data={image}
           height={100}
@@ -63,11 +70,11 @@ export function CartLineItem({
             className="hover:text-secondary transition-colors"
           >
             <p className="font-serif font-bold text-dark mb-1">
-              {product.title}
+              {displayTitle}
             </p>
           </Link>
           <div className="text-secondary font-bold mb-2">
-            <ProductPrice price={line?.cost?.totalAmount} />
+            <ProductPrice price={merchandise.price} />
           </div>
 
           {/* Display variant options (excluding Default Title) */}
@@ -75,7 +82,8 @@ export function CartLineItem({
             <ul className="text-xs text-dark/60 space-y-1 mb-2">
               {relevantOptions.map((option) => (
                 <li key={option.name}>
-                  {option.name}: {option.value}
+                  {t(`product.attributes.${option.name}`) !== `product.attributes.${option.name}` ? t(`product.attributes.${option.name}`) : option.name}: {' '}
+                  {t(`product.heatLevels.${option.value.toLowerCase()}`) !== `product.heatLevels.${option.value.toLowerCase()}` ? t(`product.heatLevels.${option.value.toLowerCase()}`) : option.value}
                 </li>
               ))}
             </ul>
@@ -84,11 +92,14 @@ export function CartLineItem({
           {/* Display heat level attributes */}
           {heatLevelAttributes.length > 0 && (
             <div className="mt-2 p-2 bg-cream/50 rounded-lg border border-secondary/10">
-              <p className="text-xs font-bold text-primary mb-1 uppercase tracking-wide">Heat Levels:</p>
+              <p className="text-xs font-bold text-primary mb-1 uppercase tracking-wide">{t('product.attributes.title')}:</p>
               <ul className="text-xs text-dark/70 space-y-0.5">
                 {heatLevelAttributes.map((attr, index) => (
                   <li key={index}>
-                    <span className="font-medium">{attr.key}:</span> {attr.value}
+                    <span className="font-medium">
+                      {t(`product.attributes.${attr.key}`) !== `product.attributes.${attr.key}` ? t(`product.attributes.${attr.key}`) : attr.key}:
+                    </span> {' '}
+                    {t(`product.heatLevels.${attr.value.toLowerCase()}`) !== `product.heatLevels.${attr.value.toLowerCase()}` ? t(`product.heatLevels.${attr.value.toLowerCase()}`) : attr.value}
                   </li>
                 ))}
               </ul>
@@ -107,6 +118,7 @@ export function CartLineItem({
  * hasn't yet responded that it was successfully added to the cart.
  */
 function CartLineQuantity({ line }: { line: CartLine }) {
+  const { t } = useTranslation();
   if (!line || typeof line?.quantity === 'undefined') return null;
   const { id: lineId, quantity, isOptimistic } = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
@@ -115,7 +127,7 @@ function CartLineQuantity({ line }: { line: CartLine }) {
   if (isOptimistic) {
     return (
       <div className="flex items-center gap-2 mt-2">
-        <span className="text-sm text-dark/70">Qty: {quantity}</span>
+        <span className="text-sm text-dark/70">{t('cart.quantity')}: {quantity}</span>
         <div className="flex items-center gap-1">
           <button
             aria-label="Decrease quantity"
@@ -135,7 +147,7 @@ function CartLineQuantity({ line }: { line: CartLine }) {
             disabled
             className="text-xs text-dark/30 cursor-not-allowed ml-2 underline"
           >
-            Remove
+            {t('cart.remove')}
           </button>
         </div>
       </div>
@@ -144,7 +156,7 @@ function CartLineQuantity({ line }: { line: CartLine }) {
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <span className="text-sm text-dark/70">Qty: {quantity}</span>
+      <span className="text-sm text-dark/70">{t('cart.quantity')}: {quantity}</span>
       <div className="flex items-center gap-1">
         <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button

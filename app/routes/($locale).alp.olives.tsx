@@ -6,6 +6,7 @@ import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { ImageGallery } from '~/components/ImageGallery';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction = () => {
     return [
@@ -35,6 +36,7 @@ export default function OlivesALP() {
     const [selectedHeat, setSelectedHeat] = useState<'mild' | 'normal' | 'spicy' | null>(null);
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+    const { t } = useTranslation();
 
     // Scroll animations
     const section1 = useScrollAnimation();
@@ -83,21 +85,21 @@ export default function OlivesALP() {
                         <div className="space-y-6">
                             <div>
                                 <h1 className="font-serif text-3xl sm:text-4xl text-primary uppercase tracking-wide">
-                                    Tuffaahy Olives — Signature Mix
+                                    {t('product.olives.name')}
                                 </h1>
                                 <p className="mt-2 text-lg text-dark/60 italic">
-                                    Rich. Vibrant. Naturally flavorful.
+                                    {t('product.olives.tagline')}
                                 </p>
                             </div>
 
                             <div className="text-sm text-dark/60">
-                                <span className="font-bold">Gross Weight:</span> 1 Kg
+                                <span className="font-bold">{t('product.grossWeight')}:</span> 1 Kg
                             </div>
 
                             {/* Heat Level Selector */}
                             <div className="space-y-3">
                                 <label className="block text-sm font-bold text-dark uppercase tracking-wide">
-                                    Heat Level:
+                                    {t('product.heatLevel')}:
                                 </label>
                                 <div className="flex gap-3">
                                     {(['mild', 'normal', 'spicy'] as const).map((level) => (
@@ -109,7 +111,7 @@ export default function OlivesALP() {
                                                 : 'border-dark/20 bg-white text-dark hover:border-primary'
                                                 }`}
                                         >
-                                            {level}
+                                            {t(`product.heatLevels.${level}`)}
                                         </button>
                                     ))}
                                 </div>
@@ -124,11 +126,11 @@ export default function OlivesALP() {
 
                             {/* Add to Cart */}
                             <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                                {!selectedHeat ? 'Select Heat Level' : 'Add to Cart'}
+                                {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                             </AddToCartButton>
 
                             <p className="text-xs text-center text-dark/60">
-                                Fresh weekly · Clean ingredients
+                                {t('product.microTrust.freshWeekly')} · {t('product.microTrust.cleanIngredients')}
                             </p>
                         </div>
                     </div>
@@ -139,19 +141,13 @@ export default function OlivesALP() {
             <div ref={section1.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        What Makes It Special
+                        {t('product.olives.special.title')}
                     </h2>
                     <ul className="space-y-3">
-                        {[
-                            'Crushed Tuffaahy olives',
-                            'Diced carrots, pepper slices, celery',
-                            'Signature aromatic brine',
-                            'Deep, balanced flavor',
-                            'Small-batch crafted',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
                                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
-                                <span className="text-dark/80">{item}</span>
+                                <span className="text-dark/80">{t(`product.olives.special.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
@@ -162,19 +158,13 @@ export default function OlivesALP() {
             <div ref={section2.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        Why People Love It
+                        {t('product.olives.why.title')}
                     </h2>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[
-                            'Premium gourmet flavor',
-                            'Firm crisp texture',
-                            'Amazing on mezze tables',
-                            'Perfect for hosting',
-                            'Beautiful, vibrant presentation',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
                                 <span className="text-primary font-bold">✓</span>
-                                <span className="text-dark/80">{item}</span>
+                                <span className="text-dark/80">{t(`product.olives.why.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
@@ -185,19 +175,12 @@ export default function OlivesALP() {
             <div ref={section3.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        How to Use
+                        {t('product.olives.usage.title')}
                     </h2>
                     <div className="flex flex-wrap gap-3">
-                        {[
-                            'Mezze platters',
-                            'Sandwiches',
-                            'Cheese boards',
-                            'Pasta topping',
-                            'Daily snacking',
-                            'With grilled meat or chicken',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
                             <span key={i} className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                                {item}
+                                {t(`product.olives.usage.${i}`)}
                             </span>
                         ))}
                     </div>
@@ -208,17 +191,13 @@ export default function OlivesALP() {
             <div ref={section4.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
-                        Reviews
+                        {t('product.olives.reviews.title')}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            'Best olive mix I ever tried.',
-                            'The crunch + brine is perfect.',
-                            'Premium taste.',
-                        ].map((review, i) => (
+                        {[1, 2, 3].map((i) => (
                             <div key={i} className="text-center">
                                 <div className="mb-2 text-yellow-400">★★★★★</div>
-                                <p className="text-dark/60 italic">"{review}"</p>
+                                <p className="text-dark/60 italic">"{t(`product.olives.reviews.${i}`)}"</p>
                             </div>
                         ))}
                     </div>
@@ -238,7 +217,7 @@ export default function OlivesALP() {
                 <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-50 md:hidden">
                     <div className="px-4 py-3">
                         <AddToCartButton {...addToCartProps} className="w-full h-12 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm">
-                            {!selectedHeat ? 'Select Heat Level' : 'Add to Cart'}
+                            {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                         </AddToCartButton>
                     </div>
                 </div>

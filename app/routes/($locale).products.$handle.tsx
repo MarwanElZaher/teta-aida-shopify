@@ -94,7 +94,7 @@ export default function Product() {
   });
 
   const { title, descriptionHtml } = product;
-  const { locale } = useTranslation();
+  const { locale, t } = useTranslation();
 
   // Get localized title and description
   const displayTitle = getLocalizedTitle(title, product.metafields as any, locale.language);
@@ -120,7 +120,11 @@ export default function Product() {
   const heatLevels = getJsonMetafield('heat_levels') as string[] | null;
   const bundleContents = getJsonMetafield('bundle_contents') as string[] | null;
   const whyBundle = getMetafield('why_bundle');
-  const bundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
+  const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
+  const bundleItems = rawBundleItems?.map(item => ({
+    ...item,
+    name: getLocalizedTitle(item.name, [], locale.language)
+  })) || null;
 
   const isBundle = !!bundleContents;
   const isBundleWithConfig = !!bundleItems && bundleItems.length > 0;
@@ -193,10 +197,10 @@ export default function Product() {
                     customProperties={bundleConfig}
                   >
                     {!allBundleItemsSelected
-                      ? 'Select all heat levels'
+                      ? t('product.selectHeatLevel')
                       : selectedVariant?.availableForSale
-                        ? 'Add Bundle to Cart'
-                        : 'Sold out'}
+                        ? t('product.addBundleToCart')
+                        : t('product.soldOut')}
                   </BundleAddToCartButton>
                 </>
               ) : (
@@ -221,7 +225,7 @@ export default function Product() {
             {/* Bundle Contents (if bundle) */}
             {isBundle && bundleContents && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">What's Inside</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
                 <ul className="mt-4 space-y-2">
                   {bundleContents.map((item, i) => (
                     <li key={i} className="flex items-center gap-2 text-gray-600">
@@ -294,7 +298,7 @@ export default function Product() {
         {/* Reviews Section */}
         {reviews && reviews.length > 0 && (
           <div className="mt-16 border-t border-gray-200 pt-16">
-            <h2 className="text-center text-2xl font-bold text-gray-900">Real Customer Reviews</h2>
+            <h2 className="text-center text-2xl font-bold text-gray-900">{t('product.reviews')}</h2>
             <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {reviews.map((review, i) => (
                 <div key={i} className="rounded-xl bg-gray-50 p-6 shadow-sm">
@@ -320,16 +324,16 @@ export default function Product() {
             customProperties={bundleConfig}
           >
             {!allBundleItemsSelected
-              ? 'Select Options'
+              ? t('product.selectHeatLevel')
               : selectedVariant?.availableForSale
-                ? 'Add Bundle'
-                : 'Sold Out'}
+                ? t('product.addBundleToCart')
+                : t('product.soldOut')}
           </BundleAddToCartButton>
         ) : (
           <AddToCartButton
             {...addToCartButtonProps}
           >
-            {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}
+            {selectedVariant?.availableForSale ? t('product.addToCart') : t('product.soldOut')}
           </AddToCartButton>
         )}
       </StickyCTA>

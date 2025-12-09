@@ -5,12 +5,13 @@ import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction = () => {
     return [
-        { title: 'Hosting Box | Premium Table Bundle | Teta Aida' },
-        { name: 'description', content: 'A hosting-ready gourmet selection including Tuffaahy Crushed Olives — Signature Mix and complementary premium jars.' },
-        { name: 'keywords', content: 'hosting box Egypt, dinner party food bundle, gourmet table set' },
+        { title: 'Spicy Lovers Box | Bold & Fiery Flavors | Teta Aida' },
+        { name: 'description', content: 'A premium bundle for spice lovers featuring Tuffaahy Crushed Olives — Signature Mix and Harissa Lemons.' },
+        { name: 'keywords', content: 'spicy pickles Egypt, harissa lemon box, bold flavors Egypt' },
     ];
 };
 
@@ -18,7 +19,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
     const { storefront } = context;
 
     const { product } = await storefront.query(PRODUCT_QUERY, {
-        variables: { handle: 'hosting-box' },
+        variables: { handle: 'spicy-lovers-box' },
     });
 
     if (!product?.id) {
@@ -29,22 +30,19 @@ export async function loader({ context }: LoaderFunctionArgs) {
 }
 
 type HeatLevels = {
-    olives1: 'mild' | 'normal' | 'spicy' | null;
-    olives2: 'mild' | 'normal' | 'spicy' | null;
+    olives: 'mild' | 'normal' | 'spicy' | null;
     harissa: 'mild' | 'spicy' | null;
-    choice: 'mild' | 'normal' | null;
 };
 
-export default function HostingBoxALP() {
+export default function SpicyLoversALP() {
     const { product } = useLoaderData<typeof loader>();
     const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        olives1: null,
-        olives2: null,
+        olives: null,
         harissa: null,
-        choice: null,
     });
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+    const { t, locale, isRtl } = useTranslation();
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
@@ -55,6 +53,10 @@ export default function HostingBoxALP() {
     const section2 = useScrollAnimation();
     const section3 = useScrollAnimation();
     const section4 = useScrollAnimation();
+    const section5 = useScrollAnimation();
+    const section6 = useScrollAnimation();
+    const section7 = useScrollAnimation();
+
 
     useEffect(() => {
         const handleScroll = () => {
@@ -64,7 +66,7 @@ export default function HostingBoxALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const allHeatLevelsSelected = heatLevels.olives1 !== null && heatLevels.olives2 !== null && heatLevels.harissa !== null && heatLevels.choice !== null;
+    const allHeatLevelsSelected = heatLevels.olives !== null && heatLevels.harissa !== null;
 
     const addToCartProps = {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
@@ -73,25 +75,23 @@ export default function HostingBoxALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
-                { key: 'Olives 1 Heat', value: heatLevels.olives1! },
-                { key: 'Olives 2 Heat', value: heatLevels.olives2! },
+                { key: 'Olives Heat', value: heatLevels.olives! },
                 { key: 'Harissa Heat', value: heatLevels.harissa! },
-                { key: 'Cabbage/Cucumbers Heat', value: heatLevels.choice! },
             ],
         }] : [],
     };
 
     return (
-        <div className="alp-page bg-[#F0EFEB] min-h-screen pb-24">
+        <div className={`alp-page bg-[#F0EFEB] min-h-screen pb-24 ${isRtl ? 'rtl' : 'ltr'}`} dir={isRtl ? 'rtl' : 'ltr'}>
             {/* Hero Section */}
-            <div className="bg-white">
-                <div ref={section1.ref} className={`mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div ref={section1.ref} className={`${section1.isVisible ? 'animate-fadeIn' : ''} bg-white`}>
+                <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
                     <div className="text-center mb-8">
                         <h1 className="font-serif text-4xl sm:text-5xl text-primary uppercase tracking-wide">
-                            Hosting Box
+                            {t('product.spicyBox.title')}
                         </h1>
                         <p className="mt-3 text-xl text-dark/60 italic">
-                            Made for Elegant Tables & Gatherings.
+                            {t('product.spicyBox.tagline')}
                         </p>
                     </div>
 
@@ -107,52 +107,33 @@ export default function HostingBoxALP() {
                     </div>
 
                     {/* What's Inside */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
+                    <div ref={section2.ref} className={`${section2.isVisible ? 'animate-fadeIn' : ''} bg-white rounded-2xl p-8 shadow-sm mb-8`}>
                         <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                            Included
+                            {t('product.spicyBox.included')}
                         </h2>
 
-                        {/* Olives 1 */}
+                        {/* Olives */}
                         <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• Tuffaahy Olives #1 — 1 Kg</h3>
+                            <h3 className="font-bold text-dark mb-2">• {t('product.spicyBox.olives')}</h3>
                             <div className="flex gap-2 mt-3">
                                 {(['mild', 'normal', 'spicy'] as const).map((level) => (
                                     <button
                                         key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, olives1: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives1 === level
+                                        onClick={() => setHeatLevels({ ...heatLevels, olives: level })}
+                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives === level
                                             ? 'border-primary bg-primary text-white'
                                             : 'border-dark/20 bg-white text-dark hover:border-primary'
                                             }`}
                                     >
-                                        {level}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Olives 2 */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• Tuffaahy Olives #2 — 1 Kg</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal', 'spicy'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, olives2: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives2 === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {level}
+                                        {t(`product.heatLevels.${level}`)}
                                     </button>
                                 ))}
                             </div>
                         </div>
 
                         {/* Harissa */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• Harissa Lemons — 1 Kg</h3>
+                        <div className="mb-6">
+                            <h3 className="font-bold text-dark mb-2">• {t('product.spicyBox.harissa')}</h3>
                             <div className="flex gap-2 mt-3">
                                 {(['mild', 'spicy'] as const).map((level) => (
                                     <button
@@ -163,26 +144,7 @@ export default function HostingBoxALP() {
                                             : 'border-dark/20 bg-white text-dark hover:border-primary'
                                             }`}
                                     >
-                                        {level}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Choice */}
-                        <div className="mb-6">
-                            <h3 className="font-bold text-dark mb-2">• Tangerine Cabbage OR Cucumbers — 1 Kg</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, choice: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.choice === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {level}
+                                        {t(`product.heatLevels.${level}`)}
                                     </button>
                                 ))}
                             </div>
@@ -190,7 +152,7 @@ export default function HostingBoxALP() {
                     </div>
 
                     {/* Price & CTA */}
-                    <div className="flex flex-col mb-6 text-center">
+                    <div ref={section3.ref} className={`${section3.isVisible ? 'animate-fadeIn' : ''} flex flex-col mb-6 text-center`}>
                         {price && (
                             <div className="mb-6">
                                 {compareAtPrice && (
@@ -204,32 +166,26 @@ export default function HostingBoxALP() {
                             </div>
                         )}
                         <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                            {!allHeatLevelsSelected ? 'Select All Heat Levels' : 'Add Hosting Box to Cart'}
+                            {!allHeatLevelsSelected ? t('product.spicyBox.selectAll') : t('product.spicyBox.addToCart')}
                         </AddToCartButton>
                         <p className="text-xs text-dark/60 mt-3">
-                            Premium · Clean · Guest-approved
+                            {t('product.microTrust.freshWeekly')} · {t('product.microTrust.cleanIngredients')}
                         </p>
                     </div>
                 </div>
             </div>
 
-            {/* Why It's Perfect for Hosting */}
-            <div ref={section2.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {/* Why You'll Love It */}
+            <div ref={section4.ref} className={`${section4.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        Why It's Perfect for Hosting
+                        {t('product.spicyBox.why.title')}
                     </h2>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[
-                            'Beautiful presentation',
-                            'Balanced taste selection',
-                            'Ideal for cheese boards & mezze',
-                            'Impresses guests instantly',
-                            'Luxury jars elevate the table',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
-                                <span className="text-primary font-bold">✓</span>
-                                <span className="text-dark/80">{item}</span>
+                                <span className={`text-primary font-bold ${isRtl ? 'ml-2' : 'mr-2'}`}>✓</span>
+                                <span className="text-dark/80">{t(`product.spicyBox.why.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
@@ -237,21 +193,15 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Best Uses */}
-            <div ref={section3.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div ref={section5.ref} className={`${section5.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        Best Uses
+                        {t('product.spicyBox.uses.title')}
                     </h2>
                     <div className="flex flex-wrap gap-3">
-                        {[
-                            'Brunch',
-                            'Dinner parties',
-                            'Family events',
-                            'Gift tables',
-                            'Special occasions',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <span key={i} className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                                {item}
+                                {t(`product.spicyBox.uses.${i}`)}
                             </span>
                         ))}
                     </div>
@@ -259,19 +209,16 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Reviews */}
-            <div ref={section4.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            <div ref={section6.ref} className={`${section6.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
-                        Reviews
+                        {t('product.spicyBox.reviews.title')}
                     </h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {[
-                            'Transformed our table.',
-                            'Guests kept asking for the brand.',
-                        ].map((review, i) => (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[1, 2, 3].map((i) => (
                             <div key={i} className="text-center">
                                 <div className="mb-2 text-yellow-400">★★★★★</div>
-                                <p className="text-dark/60 italic">"{review}"</p>
+                                <p className="text-dark/60 italic">"{t(`product.spicyBox.reviews.${i}`)}"</p>
                             </div>
                         ))}
                     </div>
@@ -279,10 +226,10 @@ export default function HostingBoxALP() {
             </div>
 
             {/* Explore Link */}
-            <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-center">
-                <p className="text-dark/60 mb-4">Browse our full collection →</p>
+            <div ref={section7.ref} className={`${section7.isVisible ? 'animate-fadeIn' : ''} mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8 text-center`}>
+                <p className="text-dark/60 mb-4">{t('nav.shop')}</p>
                 <Link to="/collections/all" className="text-primary font-bold hover:text-secondary transition-colors">
-                    View All Products
+                    {t('home.bestsellers.viewAll')}
                 </Link>
             </div>
 
@@ -291,7 +238,7 @@ export default function HostingBoxALP() {
                 <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-50 md:hidden">
                     <div className="px-4 py-3">
                         <AddToCartButton {...addToCartProps} className="w-full h-12 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm">
-                            Add to Cart
+                            {!allHeatLevelsSelected ? t('product.spicyBox.selectAll') : t('product.spicyBox.addToCart')}
                         </AddToCartButton>
                     </div>
                 </div>
@@ -301,7 +248,7 @@ export default function HostingBoxALP() {
 }
 
 const PRODUCT_QUERY = `#graphql
-  query HostingBoxProduct(
+  query SpicyLoversProduct(
     $handle: String!
     $country: CountryCode
     $language: LanguageCode

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from '~/lib/translations';
 
 export interface BundleItem {
     name: string;
@@ -12,6 +13,7 @@ interface BundleConfiguratorProps {
 
 export function BundleConfigurator({ bundleItems, onConfigurationChange }: BundleConfiguratorProps) {
     const [selections, setSelections] = useState<Record<string, string>>({});
+    const { t, isRtl } = useTranslation();
 
     const handleSelection = (itemIndex: number, itemName: string, heatLevel: string) => {
         const itemKey = `${itemName}_${itemIndex}`;
@@ -30,12 +32,12 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
     });
 
     return (
-        <div className="bundle-configurator my-8">
+        <div className={`bundle-configurator my-8 ${isRtl ? 'rtl' : 'ltr'}`} dir={isRtl ? 'rtl' : 'ltr'}>
             <h3 className="font-serif text-xl font-bold text-primary mb-6 uppercase tracking-wide">
-                Customize Your Bundle
+                {t('product.customizeBundle')}
             </h3>
             <p className="text-sm text-dark/70 mb-6">
-                Select the heat level for each item in your bundle:
+                {t('product.selectHeatInstructions')}
             </p>
 
             <div className="space-y-6">
@@ -44,7 +46,8 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                     // Count how many times this item appears before this index
                     const itemCount = bundleItems.slice(0, index + 1).filter(i => i.name === item.name).length;
                     const totalItemCount = bundleItems.filter(i => i.name === item.name).length;
-                    const displayName = totalItemCount > 1 ? `${item.name} (${itemCount} of ${totalItemCount})` : item.name;
+                    // Use / instead of "of" for locale neutrality
+                    const displayName = totalItemCount > 1 ? `${item.name} (${itemCount}/${totalItemCount})` : item.name;
 
                     return (
                         <div key={itemKey} className="bundle-item border-b border-gray-200 pb-6 last:border-0">
@@ -64,13 +67,13 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                                                 : 'bg-white text-dark/70 border-gray-200 hover:border-secondary hover:text-secondary'}
                     `}
                                     >
-                                        {level}
+                                        {t(`product.heatLevels.${level.toLowerCase()}`)}
                                     </button>
                                 ))}
                             </div>
                             {selections[itemKey] && (
                                 <p className="mt-2 text-xs text-secondary font-medium">
-                                    ✓ Selected: {selections[itemKey]}
+                                    ✓ {t('product.selected')} {t(`product.heatLevels.${selections[itemKey].toLowerCase()}`)}
                                 </p>
                             )}
                         </div>
@@ -81,7 +84,7 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
             {!isComplete && (
                 <div className="mt-6 p-4 bg-cream rounded-lg border border-secondary/20">
                     <p className="text-sm text-dark/70 text-center">
-                        Please select a heat level for all items before adding to cart
+                        {t('product.incompleteSelection')}
                     </p>
                 </div>
             )}

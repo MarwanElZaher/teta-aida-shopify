@@ -6,6 +6,7 @@ import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { ImageGallery } from '~/components/ImageGallery';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction = () => {
     return [
@@ -34,6 +35,7 @@ export default function CabbageALP() {
     const [selectedHeat, setSelectedHeat] = useState<'mild' | 'normal' | null>(null);
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
+    const { t } = useTranslation();
 
     const section1 = useScrollAnimation();
     const section2 = useScrollAnimation();
@@ -80,21 +82,21 @@ export default function CabbageALP() {
                         <div className="space-y-6">
                             <div>
                                 <h1 className="font-serif text-3xl sm:text-4xl text-primary uppercase tracking-wide">
-                                    Tangerine-Infused Cabbage
+                                    {t('product.cabbage.name')}
                                 </h1>
                                 <p className="mt-2 text-lg text-dark/60 italic">
-                                    Probiotic. Crisp. Refreshingly citrus aroma.
+                                    {t('product.cabbage.tagline')}
                                 </p>
                             </div>
 
                             <div className="text-sm text-dark/60">
-                                <span className="font-bold">Gross Weight:</span> 1 Kg
+                                <span className="font-bold">{t('product.grossWeight')}:</span> 1 Kg
                             </div>
 
                             {/* Heat Level Selector */}
                             <div className="space-y-3">
                                 <label className="block text-sm font-bold text-dark uppercase tracking-wide">
-                                    Heat Level:
+                                    {t('product.selectHeatLevel')}:
                                 </label>
                                 <div className="flex gap-3">
                                     {(['mild', 'normal'] as const).map((level) => (
@@ -106,7 +108,7 @@ export default function CabbageALP() {
                                                 : 'border-dark/20 bg-white text-dark hover:border-primary'
                                                 }`}
                                         >
-                                            {level}
+                                            {t(`product.heatLevels.${level}`)}
                                         </button>
                                     ))}
                                 </div>
@@ -121,11 +123,11 @@ export default function CabbageALP() {
 
                             {/* Add to Cart */}
                             <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                                {!selectedHeat ? 'Select Heat Level' : 'Add to Cart'}
+                                {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                             </AddToCartButton>
 
                             <p className="text-xs text-center text-dark/60">
-                                Probiotic · Naturally fermented
+                                {t('product.microTrust.cleanIngredients')}
                             </p>
                         </div>
                     </div>
@@ -136,19 +138,13 @@ export default function CabbageALP() {
             <div ref={section1.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        What's Inside
+                        {t('product.cabbage.inside.title')}
                     </h2>
                     <ul className="space-y-3">
-                        {[
-                            'Fermented cabbage',
-                            'Tangerine essence',
-                            'Crisp texture',
-                            'Natural probiotics',
-                            'Small-batch crafted',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
                                 <span className="mt-1 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
-                                <span className="text-dark/80">{item}</span>
+                                <span className="text-dark/80">{t(`product.cabbage.inside.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
@@ -159,19 +155,13 @@ export default function CabbageALP() {
             <div ref={section2.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        Why People Love It
+                        {t('product.cabbage.why.title')}
                     </h2>
                     <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {[
-                            'Gut-friendly',
-                            'Light citrus aroma',
-                            'Refreshing flavor',
-                            'Clean ingredients',
-                            'Perfect for healthy meals',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5].map((i) => (
                             <li key={i} className="flex items-start gap-3">
                                 <span className="text-primary font-bold">✓</span>
-                                <span className="text-dark/80">{item}</span>
+                                <span className="text-dark/80">{t(`product.cabbage.why.${i}`)}</span>
                             </li>
                         ))}
                     </ul>
@@ -182,19 +172,12 @@ export default function CabbageALP() {
             <div ref={section3.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                        How to Use
+                        {t('product.cabbage.usage.title')}
                     </h2>
                     <div className="flex flex-wrap gap-3">
-                        {[
-                            'Healthy bowls',
-                            'Sandwiches',
-                            'Salads',
-                            'Sides for protein',
-                            'Mezze',
-                            'Wraps',
-                        ].map((item, i) => (
+                        {[1, 2, 3, 4, 5, 6].map((i) => (
                             <span key={i} className="rounded-full bg-primary/10 px-4 py-2 text-sm font-medium text-primary">
-                                {item}
+                                {t(`product.cabbage.usage.${i}`)}
                             </span>
                         ))}
                     </div>
@@ -205,17 +188,13 @@ export default function CabbageALP() {
             <div ref={section4.ref} className={`mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                 <div className="bg-white rounded-2xl p-8 shadow-sm">
                     <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6 text-center">
-                        Reviews
+                        {t('product.cabbage.reviews.title')}
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            'Refreshing and addictive.',
-                            'The citrus twist is perfect.',
-                            'My favorite healthy pickle.',
-                        ].map((review, i) => (
+                        {[1, 2, 3].map((i) => (
                             <div key={i} className="text-center">
                                 <div className="mb-2 text-yellow-400">★★★★★</div>
-                                <p className="text-dark/60 italic">"{review}"</p>
+                                <p className="text-dark/60 italic">"{t(`product.cabbage.reviews.${i}`)}"</p>
                             </div>
                         ))}
                     </div>
@@ -224,9 +203,9 @@ export default function CabbageALP() {
 
             {/* Explore Link */}
             <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 text-center">
-                <p className="text-dark/60 mb-4">Explore all products →</p>
+                <p className="text-dark/60 mb-4">{t('nav.shop')}</p>
                 <Link to="/collections/all" className="text-primary font-bold hover:text-secondary transition-colors">
-                    View All Products
+                    {t('home.bestsellers.viewAll')}
                 </Link>
             </div>
 
@@ -235,7 +214,7 @@ export default function CabbageALP() {
                 <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-50 md:hidden">
                     <div className="px-4 py-3">
                         <AddToCartButton {...addToCartProps} className="w-full h-12 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm">
-                            {!selectedHeat ? 'Select Heat Level' : 'Add to Cart'}
+                            {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                         </AddToCartButton>
                     </div>
                 </div>

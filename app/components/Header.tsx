@@ -26,6 +26,7 @@ export function Header({
 }: HeaderProps) {
   const { shop, menu } = header;
   const [isScrolled, setIsScrolled] = useState(false);
+  const { isRtl } = useTranslation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +59,7 @@ export function Header({
           {/* Center: Logo - Absolutely positioned to stay centered */}
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
             <NavLink prefetch="intent" to="/" end className="text-xl md:text-2xl lg:text-3xl font-serif font-bold tracking-widest text-primary uppercase whitespace-nowrap pointer-events-auto">
-              {shop.name}
+              {isRtl ? 'تيتا عايدة' : shop.name}
             </NavLink>
           </div>
 
@@ -70,6 +71,22 @@ export function Header({
       </div>
     </header>
   );
+}
+
+// Helper function to translate menu item titles
+function getMenuItemTranslation(title: string, t: (key: string) => string): string {
+  const titleMap: Record<string, string> = {
+    'Shop All': t('nav.allProducts'),
+    'Bundles': t('nav.bundles'),
+    'About Us': t('nav.about'),
+    'FAQ': t('pages.faq'),
+    'Contact': t('nav.contact'),
+    'Home': t('nav.home'),
+    'Shop': t('nav.shop'),
+    "Best Sellers": t('nav.bestsellers'),
+  };
+
+  return titleMap[title] || title;
 }
 
 export function HeaderMenu({
@@ -85,7 +102,7 @@ export function HeaderMenu({
 }) {
   const { close } = useAside();
 
-  const { locale } = useTranslation();
+  const { locale, t } = useTranslation();
 
   if (viewport === 'mobile') {
     return (
@@ -111,7 +128,7 @@ export function HeaderMenu({
               prefetch="intent"
               to={finalUrl}
             >
-              {item.title}
+              {getMenuItemTranslation(item.title, t)}
             </NavLink>
           );
         })}
@@ -144,7 +161,7 @@ export function HeaderMenu({
             prefetch="intent"
             to={finalUrl}
           >
-            {item.title}
+            {getMenuItemTranslation(item.title, t)}
           </NavLink>
         );
       })}

@@ -21,8 +21,22 @@ export function BundleCard({ product }: BundleCardProps) {
         locale.language
     );
 
-    // Parse tagline from metafields if available
-    const tagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+    // Map handles to dictionary keys
+    const handleMap: Record<string, string> = {
+        'signature-box': 'signature',
+        'healthy-living-box': 'healthyBox',
+        'spicy-lovers-box': 'spicyBox',
+        'hosting-box': 'hostingBox',
+        // Add other bundles here
+    };
+
+    const dictionaryKey = handleMap[handle];
+
+    // Parse tagline from metafields OR dictionary
+    const metaTagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+    const tagline = (dictionaryKey && t(`product.${dictionaryKey}.tagline`) !== `product.${dictionaryKey}.tagline`)
+        ? t(`product.${dictionaryKey}.tagline`)
+        : metaTagline;
 
     return (
         <Link to={`${locale.pathPrefix}/products/${handle}`} className="group flex flex-col h-full min-h-[450px] hover-lift">

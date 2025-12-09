@@ -7,6 +7,7 @@ import type {
 import { AddToCartButton } from './AddToCartButton';
 import { useAside } from './Aside';
 import type { ProductFragment } from 'storefrontapi.generated';
+import { useTranslation } from '~/lib/translations';
 
 export function ProductForm({
   productOptions,
@@ -17,6 +18,23 @@ export function ProductForm({
 }) {
   const navigate = useNavigate();
   const { open } = useAside();
+  const { t } = useTranslation();
+
+  const translateOptionName = (name: string) => {
+    if (name === 'Heat Level') return t('product.heatLevel');
+    return name;
+  };
+
+  const translateOptionValue = (value: string, optionName: string) => {
+    if (optionName === 'Heat Level') {
+      const key = value.toLowerCase();
+      if (key === 'mild') return t('product.heatLevels.mild');
+      if (key === 'normal') return t('product.heatLevels.normal');
+      if (key === 'spicy') return t('product.heatLevels.spicy');
+    }
+    return value;
+  };
+
   return (
     <div className="product-form">
       {productOptions.map((option) => {
@@ -25,7 +43,7 @@ export function ProductForm({
 
         return (
           <div className="product-options mb-6" key={option.name}>
-            <h5 className="font-serif text-sm font-bold text-primary mb-3 uppercase tracking-wide">{option.name}</h5>
+            <h5 className="font-serif text-sm font-bold text-primary mb-3 uppercase tracking-wide">{translateOptionName(option.name)}</h5>
             <div className="product-options-grid flex flex-wrap gap-3">
               {option.optionValues.map((value) => {
                 const {
@@ -38,6 +56,8 @@ export function ProductForm({
                   isDifferentProduct,
                   swatch,
                 } = value;
+
+                const translatedName = translateOptionValue(name, option.name);
 
                 const commonClasses = `
                   px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 border
@@ -57,7 +77,7 @@ export function ProductForm({
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={translatedName} />
                     </Link>
                   );
                 } else {
@@ -76,7 +96,7 @@ export function ProductForm({
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch swatch={swatch} name={translatedName} />
                     </button>
                   );
                 }
@@ -102,7 +122,7 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? t('product.addToCart') : t('product.soldOut')}
       </AddToCartButton>
     </div>
   );

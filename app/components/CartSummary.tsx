@@ -60,6 +60,7 @@ function CartDiscounts({
 }: {
   discountCodes?: CartApiQueryFragment['discountCodes'];
 }) {
+  const { t } = useTranslation();
   const codes: string[] =
     discountCodes
       ?.filter((discount) => discount.applicable)
@@ -75,7 +76,7 @@ function CartDiscounts({
             <div className="cart-discount">
               <code>{codes?.join(', ')}</code>
               &nbsp;
-              <button>Remove</button>
+              <button>{t('cart.remove')}</button>
             </div>
           </UpdateDiscountForm>
         </div>
@@ -87,14 +88,14 @@ function CartDiscounts({
           <input
             type="text"
             name="discountCode"
-            placeholder="Discount code"
+            placeholder={t('cart.discountCode')}
             className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-primary"
           />
           <button
             type="submit"
             className="px-4 py-2 bg-secondary text-white font-bold text-xs uppercase tracking-wider rounded-lg hover:bg-[#b8941f] transition-colors"
           >
-            Apply
+            {t('cart.apply')}
           </button>
         </div>
       </UpdateDiscountForm>
@@ -127,6 +128,7 @@ function CartGiftCard({
 }: {
   giftCardCodes: CartApiQueryFragment['appliedGiftCards'] | undefined;
 }) {
+  const { t } = useTranslation();
   const appliedGiftCardCodes = useRef<string[]>([]);
   const giftCardCodeInput = useRef<HTMLInputElement>(null);
   const giftCardAddFetcher = useFetcher({ key: 'gift-card-add' });
@@ -158,7 +160,7 @@ function CartGiftCard({
                 &nbsp;
                 <Money data={giftCard.amountUsed} />
                 &nbsp;
-                <button type="submit">Remove</button>
+                <button type="submit">{t('cart.remove')}</button>
               </div>
             </RemoveGiftCardForm>
           ))}
@@ -175,12 +177,12 @@ function CartGiftCard({
           <input
             type="text"
             name="giftCardCode"
-            placeholder="Gift card code"
+            placeholder={t('cart.giftCardCode')}
             ref={giftCardCodeInput}
           />
           &nbsp;
           <button type="submit" disabled={giftCardAddFetcher.state !== 'idle'}>
-            Apply
+            {t('cart.apply')}
           </button>
         </div>
       </UpdateGiftCardForm>
@@ -238,4 +240,3 @@ function RemoveGiftCardForm({
     </CartForm>
   );
 }
-
