@@ -108,6 +108,14 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
         ...MoneyCollectionItem
       }
     }
+    metafields(identifiers: [
+      {namespace: "custom", key: "tagline"},
+      {namespace: "custom", key: "arabic_title"},
+      {namespace: "custom", key: "arabic_description"}
+    ]) {
+      key
+      value
+    }
   }
 ` as const;
 

@@ -115,6 +115,7 @@ export const TRANSLATIONS = {
             selectHeatLevel: 'Select Heat Level',
             grossWeight: 'Gross Weight',
             heatLevel: 'Heat Level',
+            shopNow: 'Shop Now',
             heatLevels: {
                 mild: 'Mild',
                 normal: 'Normal',
@@ -484,6 +485,10 @@ export const TRANSLATIONS = {
             priceAsc: 'Price: Low to High',
             priceDesc: 'Price: High to Low',
             newest: 'Newest',
+            bundles: {
+                title: 'Bundles',
+                description: 'Curated bundles for every occasion — from wellness to hosting.',
+            },
         },
         pages: {
             aboutUs: 'About Us',
@@ -763,7 +768,8 @@ export const TRANSLATIONS = {
             itemsSelected: 'منتجات محددة',
             selectHeatLevel: 'اختار درجة السبايسي',
             grossWeight: 'الوزن الإجمالي',
-            heatLevel: 'درجة السبايسي',
+            heatLevel: 'مستوى الحرارة',
+            shopNow: 'تسوّق الآن',
             heatLevels: {
                 mild: 'هادي',
                 normal: 'وسط',
@@ -950,7 +956,7 @@ export const TRANSLATIONS = {
             },
             signature: {
                 name: 'التشكيلة المميّزة',
-                tagline: 'أربع نكهات فاخرة… في تجربة أنيقة واحدة.',
+                tagline: 'تشكيلة كاملة… نكهات متنوعة… وتجربة تيتا عايدة الأصيلة.',
                 whatsInside: 'المحتويات',
                 why: {
                     title: 'ليه هتحبّوها؟',
@@ -1133,6 +1139,10 @@ export const TRANSLATIONS = {
             priceAsc: 'السعر: من الأقل للأعلى',
             priceDesc: 'السعر: من الأعلى للأقل',
             newest: 'الأحدث',
+            bundles: {
+                title: 'المجموعات',
+                description: 'تشكيلات مختارة لكل مناسبة — من الصحة للضيافة.',
+            },
         },
         pages: {
             aboutUs: 'من نحن',

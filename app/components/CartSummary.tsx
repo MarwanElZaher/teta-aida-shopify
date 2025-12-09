@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import { useFetcher } from 'react-router';
 import type { FetcherWithComponents } from 'react-router';
 import { useTranslation } from '~/lib/translations';
+import { formatCurrency } from '~/lib/utils';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -12,7 +13,7 @@ type CartSummaryProps = {
 };
 
 export function CartSummary({ cart, layout }: CartSummaryProps) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   return (
     <div aria-labelledby="cart-summary" className="border-t border-gray-200 px-6 py-6 bg-cream/30">
       <h4 className="font-serif text-lg font-bold text-primary mb-4 uppercase tracking-wide">{t('cart.title')}</h4>
@@ -21,7 +22,11 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
           <dt className="text-dark/70">{t('cart.subtotal')}</dt>
           <dd className="font-bold text-dark">
             {cart?.cost?.subtotalAmount?.amount ? (
-              <Money data={cart?.cost?.subtotalAmount} />
+              formatCurrency(
+                parseFloat(cart.cost.subtotalAmount.amount),
+                cart.cost.subtotalAmount.currencyCode,
+                locale.language
+              )
             ) : (
               '-'
             )}
@@ -128,7 +133,7 @@ function CartGiftCard({
 }: {
   giftCardCodes: CartApiQueryFragment['appliedGiftCards'] | undefined;
 }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const appliedGiftCardCodes = useRef<string[]>([]);
   const giftCardCodeInput = useRef<HTMLInputElement>(null);
   const giftCardAddFetcher = useFetcher({ key: 'gift-card-add' });
@@ -158,7 +163,11 @@ function CartGiftCard({
               <div className="cart-discount">
                 <code>***{giftCard.lastCharacters}</code>
                 &nbsp;
-                <Money data={giftCard.amountUsed} />
+                {formatCurrency(
+                  parseFloat(giftCard.amountUsed.amount),
+                  giftCard.amountUsed.currencyCode,
+                  locale.language
+                )}
                 &nbsp;
                 <button type="submit">{t('cart.remove')}</button>
               </div>

@@ -7,6 +7,7 @@ import type {
 import { useVariantUrl } from '~/lib/variants';
 import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle } from '~/lib/localized-content';
+import { formatCurrency } from '~/lib/utils';
 
 export function ProductItem({
   product,
@@ -56,12 +57,20 @@ export function ProductItem({
         </h4>
         <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
           <span className="text-primary font-bold text-lg">
-            <Money data={product.priceRange.minVariantPrice} />
+            {formatCurrency(
+              parseFloat(product.priceRange.minVariantPrice.amount),
+              product.priceRange.minVariantPrice.currencyCode,
+              locale.language
+            )}
           </span>
           {product.compareAtPriceRange?.minVariantPrice &&
             parseFloat(product.compareAtPriceRange.minVariantPrice.amount) > 0 && (
               <span className="text-dark/40 line-through text-sm">
-                <Money data={product.compareAtPriceRange.minVariantPrice} />
+                {formatCurrency(
+                  parseFloat(product.compareAtPriceRange.minVariantPrice.amount),
+                  product.compareAtPriceRange.minVariantPrice.currencyCode,
+                  locale.language
+                )}
               </span>
             )}
         </div>

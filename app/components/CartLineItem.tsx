@@ -8,6 +8,7 @@ import { useAside } from './Aside';
 import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle } from '~/lib/localized-content';
+import { localizeNumber } from '~/lib/utils';
 
 type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -118,16 +119,18 @@ export function CartLineItem({
  * hasn't yet responded that it was successfully added to the cart.
  */
 function CartLineQuantity({ line }: { line: CartLine }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   if (!line || typeof line?.quantity === 'undefined') return null;
   const { id: lineId, quantity, isOptimistic } = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
+  const formattedQuantity = localizeNumber(quantity, locale.language);
+
   if (isOptimistic) {
     return (
       <div className="flex items-center gap-2 mt-2">
-        <span className="text-sm text-dark/70">{t('cart.quantity')}: {quantity}</span>
+        <span className="text-sm text-dark/70">{t('cart.quantity')}: {formattedQuantity}</span>
         <div className="flex items-center gap-1">
           <button
             aria-label="Decrease quantity"
@@ -156,7 +159,7 @@ function CartLineQuantity({ line }: { line: CartLine }) {
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <span className="text-sm text-dark/70">{t('cart.quantity')}: {quantity}</span>
+      <span className="text-sm text-dark/70">{t('cart.quantity')}: {formattedQuantity}</span>
       <div className="flex items-center gap-1">
         <CartLineUpdateButton lines={[{ id: lineId, quantity: prevQuantity }]}>
           <button

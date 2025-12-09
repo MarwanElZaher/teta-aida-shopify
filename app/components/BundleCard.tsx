@@ -3,6 +3,7 @@ import { Image, Money } from '@shopify/hydrogen';
 import type { Product } from '@shopify/hydrogen/storefront-api-types';
 import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle } from '~/lib/localized-content';
+import { formatCurrency } from '~/lib/utils';
 
 interface BundleCardProps {
     product: Product;
@@ -24,6 +25,9 @@ export function BundleCard({ product }: BundleCardProps) {
     // Map handles to dictionary keys
     const handleMap: Record<string, string> = {
         'signature-box': 'signature',
+        'signature': 'signature',
+        'the-signature-box': 'signature',
+        'all-four-premium-flavors-one-elegant-box': 'signature',
         'healthy-living-box': 'healthyBox',
         'spicy-lovers-box': 'spicyBox',
         'hosting-box': 'hostingBox',
@@ -67,11 +71,19 @@ export function BundleCard({ product }: BundleCardProps) {
                 <div className="flex-1" />
                 <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
                     <span className="text-primary font-bold text-lg">
-                        <Money data={price} />
+                        {formatCurrency(
+                            parseFloat(price.amount),
+                            price.currencyCode,
+                            locale.language
+                        )}
                     </span>
                     {compareAtPrice && (
                         <span className="text-dark/40 line-through text-sm">
-                            <Money data={compareAtPrice} />
+                            {formatCurrency(
+                                parseFloat(compareAtPrice.amount),
+                                compareAtPrice.currencyCode,
+                                locale.language
+                            )}
                         </span>
                     )}
                 </div>

@@ -7,6 +7,7 @@ import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
 import type { ProductItemFragment } from 'storefrontapi.generated';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: Route.MetaFunction = ({ data }) => {
   return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
@@ -81,14 +82,23 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 
 export default function Collection() {
   const { collection } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
   const section1 = useScrollAnimation();
   const section2 = useScrollAnimation();
+
+  // Use localized title and description for bundles collection
+  const displayTitle = collection.handle === 'bundles'
+    ? t('collections.bundles.title')
+    : collection.title;
+  const displayDescription = collection.handle === 'bundles'
+    ? t('collections.bundles.description')
+    : collection.description;
 
   return (
     <div className="collection">
       <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-8`}>
-        <h1>{collection.title}</h1>
-        <p className="collection-description">{collection.description}</p>
+        <h1>{displayTitle}</h1>
+        <p className="collection-description">{displayDescription}</p>
       </div>
       <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <PaginatedResourceSection<ProductItemFragment>
@@ -150,7 +160,11 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
         ...MoneyProductItem
       }
     }
-    metafields(identifiers: [{namespace: "custom", key: "tagline"}]) {
+    metafields(identifiers: [
+      {namespace: "custom", key: "tagline"},
+      {namespace: "custom", key: "arabic_title"},
+      {namespace: "custom", key: "arabic_description"}
+    ]) {
       key
       value
     }
