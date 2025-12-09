@@ -202,8 +202,13 @@ export default function App() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const nonce = useNonce();
+
   let errorMessage = 'Unknown error';
   let errorStatus = 500;
+  let heading = 'Something went wrong';
+  let description = 'We encountered an unexpected error. Please try again later.';
 
   if (isRouteErrorResponse(error)) {
     errorMessage = error?.data?.message ?? error.data;
@@ -212,15 +217,108 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
+  // Customize messages based on error status
+  if (errorStatus === 404) {
+    heading = 'Page Not Found';
+    description = "The page you're looking for doesn't exist or has been moved.";
+  } else if (errorStatus === 500) {
+    heading = 'Server Error';
+    description = "Something went wrong on our end. We're working to fix it.";
+  }
+
+  // Determine language and RTL
+  const language = rootData?.locale?.language || 'EN';
+  const isRtl = language === 'AR';
+
+  // Localized content
+  const content = language === 'AR' ? {
+    heading: errorStatus === 404 ? 'الصفحة غير موجودة' : 'خطأ في الخادم',
+    description: errorStatus === 404
+      ? 'الصفحة التي تبحث عنها غير موجودة أو تم نقلها.'
+      : 'حدث خطأ من جانبنا. نحن نعمل على إصلاحه.',
+    backHome: 'العودة للرئيسية',
+    shopNow: 'تسوّق الآن',
+    brandName: 'تيتا عايدة',
+  } : {
+    heading,
+    description,
+    backHome: 'Back to Home',
+    shopNow: 'Shop Now',
+    brandName: 'Teta Aida',
+  };
+
   return (
-    <div className="route-error">
-      <h1>Oops</h1>
-      <h2>{errorStatus}</h2>
-      {errorMessage && (
-        <fieldset>
-          <pre>{errorMessage}</pre>
-        </fieldset>
-      )}
-    </div>
+    <html lang={language.toLowerCase()} dir={isRtl ? 'rtl' : 'ltr'}>
+      <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <title>{errorStatus} - {content.brandName}</title>
+        <link rel="stylesheet" href={resetStyles}></link>
+        <link rel="stylesheet" href={appStyles}></link>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+        />
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div className="min-h-screen bg-cream flex items-center justify-center px-4">
+          <div className="max-w-2xl w-full text-center space-y-8">
+            {/* Error Code */}
+            <div className="space-y-4">
+              <h1 className="font-serif text-9xl md:text-[12rem] text-primary/20 font-bold leading-none">
+                {errorStatus}
+              </h1>
+              <h2 className="font-serif text-3xl md:text-5xl text-primary">
+                {content.heading}
+              </h2>
+            </div>
+
+            {/* Description */}
+            <p className="text-lg md:text-xl text-dark/70 max-w-md mx-auto">
+              {content.description}
+            </p>
+
+            {/* Decorative Element */}
+            <div className="flex items-center justify-center gap-4 py-8">
+              <div className="h-px w-16 bg-primary/20"></div>
+              <svg className="w-8 h-8 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 3.5a1.5 1.5 0 013 0V4a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-.5a1.5 1.5 0 000 3h.5a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-.5a1.5 1.5 0 00-3 0v.5a1 1 0 01-1 1H6a1 1 0 01-1-1v-3a1 1 0 00-1-1h-.5a1.5 1.5 0 010-3H4a1 1 0 001-1V6a1 1 0 011-1h3a1 1 0 001-1v-.5z" />
+              </svg>
+              <div className="h-px w-16 bg-primary/20"></div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <a
+                href={isRtl ? '/ar' : '/'}
+                className="btn-primary sm:w-auto px-10"
+              >
+                {content.backHome}
+              </a>
+              <a
+                href={isRtl ? '/ar/collections/all' : '/collections/all'}
+                className="btn-secondary sm:w-auto px-10"
+              >
+                {content.shopNow}
+              </a>
+            </div>
+
+            {/* Brand Footer */}
+            <div className="pt-12">
+              <p className="font-serif text-2xl text-secondary">
+                {content.brandName}
+              </p>
+              <p className="text-sm text-dark/50 mt-2">
+                {isRtl ? 'مخللات فاخرة مصنوعة يدويًا' : 'Premium Artisanal Pickles'}
+              </p>
+            </div>
+          </div>
+        </div>
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
+      </body>
+    </html>
   );
 }
