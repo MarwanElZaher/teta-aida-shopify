@@ -8,11 +8,14 @@ interface FooterProps {
   publicStoreDomain: string;
 }
 
+import { useTranslation } from '~/lib/translations';
+
 export function Footer({
   footer: footerPromise,
   header,
   publicStoreDomain,
 }: FooterProps) {
+  const { t, locale } = useTranslation();
   return (
     <Suspense>
       <Await resolve={footerPromise}>
@@ -23,31 +26,31 @@ export function Footer({
               <div className="space-y-6">
                 <h3 className="text-secondary font-serif text-3xl tracking-wider uppercase">Teta Aida</h3>
                 <p className="text-sm leading-relaxed opacity-90 max-w-xs">
-                  Premium small-batch artisanal pickles crafted with clean, carefully selected ingredients. A taste of heritage, elevated for today.
+                  {t('footer.description')}
                 </p>
               </div>
 
               {/* Column 2: Shop */}
               <div>
-                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">Shop</h4>
+                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">{t('nav.shop')}</h4>
                 <ul className="flex flex-col gap-3 text-sm">
                   <li>
-                    <NavLink to="/collections/bundles" className="text-white hover:text-secondary transition-colors">
-                      Bundles
+                    <NavLink to={`${locale.pathPrefix}/collections/bundles`} className="text-white hover:text-secondary transition-colors">
+                      {t('nav.bundles')}
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/collections/all" className="text-white hover:text-secondary transition-colors">
-                      All Products
+                    <NavLink to={`${locale.pathPrefix}/collections/all`} className="text-white hover:text-secondary transition-colors">
+                      {t('nav.allProducts')}
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/products/tuffaahy-olives-signature-mix" className="text-white hover:text-secondary transition-colors">
+                    <NavLink to={`${locale.pathPrefix}/products/tuffaahy-olives-signature-mix`} className="text-white hover:text-secondary transition-colors">
                       Tuffaahy Olives
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/products/low-salt-cucumbers-with-celery" className="text-white hover:text-secondary transition-colors">
+                    <NavLink to={`${locale.pathPrefix}/products/low-salt-cucumbers-with-celery`} className="text-white hover:text-secondary transition-colors">
                       Low-Salt Cucumbers
                     </NavLink>
                   </li>
@@ -56,11 +59,12 @@ export function Footer({
 
               {/* Column 3: Support & Policies */}
               <div>
-                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">Support</h4>
+                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">{t('footer.support')}</h4>
                 <FooterMenu
                   menu={footer?.menu}
                   primaryDomainUrl={header.shop.primaryDomain.url}
                   publicStoreDomain={publicStoreDomain}
+                  pathPrefix={locale.pathPrefix}
                 />
                 <div className="mt-6 space-y-2 text-sm opacity-80">
                   <p>
@@ -74,7 +78,7 @@ export function Footer({
 
               {/* Column 4: Socials & Newsletter */}
               <div>
-                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">Follow Us</h4>
+                <h4 className="font-serif text-lg text-secondary mb-6 tracking-wide uppercase">{t('footer.followUs')}</h4>
                 <div className="flex gap-4 mb-8">
                   <a href="https://www.instagram.com/teta_3ayda/" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">
                     <IconInstagram />
@@ -94,11 +98,11 @@ export function Footer({
                   <div className="flex border-b border-white/20 pb-2">
                     <input
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('footer.emailPlaceholder')}
                       className="bg-transparent border-none outline-none text-sm w-full placeholder:text-white/40"
                     />
                     <button className="text-secondary text-xs font-bold uppercase tracking-widest hover:text-white transition-colors">
-                      Join
+                      {t('footer.join')}
                     </button>
                   </div>
                 </div> */}
@@ -106,8 +110,8 @@ export function Footer({
             </div>
 
             <div className="container mx-auto px-4 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-60">
-              <p>&copy; {new Date().getFullYear()} Teta Aida. All rights reserved.</p>
-              <p>Crafted in Cairo.</p>
+              <p>&copy; {new Date().getFullYear()} Teta Aida. {t('footer.rights')}</p>
+              <p>{t('footer.crafted')}</p>
             </div>
           </footer>
         )}
@@ -120,10 +124,12 @@ function FooterMenu({
   menu,
   primaryDomainUrl,
   publicStoreDomain,
+  pathPrefix,
 }: {
   menu: FooterQuery['menu'];
   primaryDomainUrl: FooterProps['header']['shop']['primaryDomain']['url'];
   publicStoreDomain: string;
+  pathPrefix: string;
 }) {
   return (
     <nav className="flex flex-col gap-3 text-sm" role="navigation">
@@ -132,24 +138,23 @@ function FooterMenu({
         // Filter out social links from this menu as they are handled separately
         if (item.title.toLowerCase().includes('instagram') || item.title.toLowerCase().includes('facebook')) return null;
 
+        // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
             item.url.includes(publicStoreDomain) ||
             item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
-        const isExternal = !url.startsWith('/');
-        return isExternal ? (
-          <a href={url} key={item.id} rel="noopener noreferrer" target="_blank" className="text-white hover:text-secondary transition-colors">
-            {item.title}
-          </a>
-        ) : (
+        const isInternal = url.startsWith('/');
+        const finalUrl = isInternal ? `${pathPrefix}${url === '/' ? '' : url}` : url;
+
+        return (
           <NavLink
             end
             key={item.id}
             prefetch="intent"
             className="text-white hover:text-secondary transition-colors"
-            to={url}
+            to={finalUrl}
           >
             {item.title}
           </NavLink>

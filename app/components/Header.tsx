@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useState } from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import { Await, NavLink, useAsyncValue, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
+import { useTranslation } from '~/lib/translations';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -84,6 +85,8 @@ export function HeaderMenu({
 }) {
   const { close } = useAside();
 
+  const { locale } = useTranslation();
+
   if (viewport === 'mobile') {
     return (
       <nav className="flex flex-col gap-4 p-6" role="navigation">
@@ -96,6 +99,9 @@ export function HeaderMenu({
               item.url.includes(primaryDomainUrl)
               ? new URL(item.url).pathname
               : item.url;
+
+          const finalUrl = `${locale.pathPrefix}${url.startsWith('/') ? '' : '/'}${url}`;
+
           return (
             <NavLink
               className={({ isActive }) => `text-lg font-medium tracking-wide ${isActive ? 'text-primary' : 'text-dark'}`}
@@ -103,7 +109,7 @@ export function HeaderMenu({
               key={item.id}
               onClick={close}
               prefetch="intent"
-              to={url}
+              to={finalUrl}
             >
               {item.title}
             </NavLink>
@@ -124,6 +130,9 @@ export function HeaderMenu({
             item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
+
+        const finalUrl = `${locale.pathPrefix}${url.startsWith('/') ? '' : '/'}${url}`;
+
         return (
           <NavLink
             className={({ isActive }) =>
@@ -133,7 +142,7 @@ export function HeaderMenu({
             key={item.id}
             onClick={close}
             prefetch="intent"
-            to={url}
+            to={finalUrl}
           >
             {item.title}
           </NavLink>
@@ -143,16 +152,54 @@ export function HeaderMenu({
   );
 }
 
+
+
+function LanguageSelector() {
+  const { pathname, search } = useLocation();
+  const { locale } = useTranslation();
+  const isAr = locale.language === 'AR';
+
+  const toggleLanguage = (targetLang: 'EN' | 'AR') => {
+    let newPath = pathname;
+    if (targetLang === 'AR' && !pathname.startsWith('/ar')) {
+      newPath = `/ar${pathname === '/' ? '' : pathname}`;
+    } else if (targetLang === 'EN' && pathname.startsWith('/ar')) {
+      newPath = pathname.replace(/^\/ar/, '') || '/';
+    }
+    return `${newPath}${search}`;
+  };
+
+  return (
+    <div className="flex items-center gap-1 text-xs font-bold tracking-widest uppercase">
+      <a
+        href={toggleLanguage('EN')}
+        className={`${!isAr ? 'text-primary' : 'text-dark/50 hover:text-primary'} transition-colors`}
+      >
+        EN
+      </a>
+      <span className="text-dark/30">|</span>
+      <a
+        href={toggleLanguage('AR')}
+        className={`${isAr ? 'text-primary' : 'text-dark/50 hover:text-primary'} transition-colors`}
+      >
+        AR
+      </a>
+    </div>
+  );
+}
+
 function HeaderCtas({
   isLoggedIn,
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
+  const { t, locale } = useTranslation();
   return (
     <nav className="flex items-center gap-4" role="navigation">
-      <NavLink prefetch="intent" to="/account" className="hidden md:block text-dark hover:text-primary transition-colors">
+      <LanguageSelector />
+      <NavLink prefetch="intent" to={`${locale.pathPrefix}/account`} className="hidden md:block text-dark hover:text-primary transition-colors">
         <Suspense fallback={<IconUser />}>
           <Await resolve={isLoggedIn} errorElement={<IconUser />}>
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : <IconUser />)}
+            {(isLoggedIn) => (isLoggedIn ? t('nav.account') : <IconUser />)}
           </Await>
         </Suspense>
       </NavLink>

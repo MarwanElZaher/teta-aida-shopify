@@ -7,6 +7,7 @@ import {
   type PredictiveSearchReturn,
 } from '~/lib/search';
 import { useAside } from './Aside';
+import { useTranslation } from '~/lib/translations';
 
 type PredictiveSearchItems = PredictiveSearchReturn['result']['items'];
 
@@ -85,11 +86,12 @@ function SearchResultsPredictiveArticles({
   articles,
   closeSearch,
 }: PartialPredictiveSearchResult<'articles'>) {
+  const { t } = useTranslation();
   if (!articles.length) return null;
 
   return (
     <div className="predictive-search-result" key="articles">
-      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">Articles</h5>
+      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">{t('search.articles')}</h5>
       <ul className="space-y-2">
         {articles.map((article) => {
           const articleUrl = urlWithTrackingParams({
@@ -127,11 +129,12 @@ function SearchResultsPredictiveCollections({
   collections,
   closeSearch,
 }: PartialPredictiveSearchResult<'collections'>) {
+  const { t } = useTranslation();
   if (!collections.length) return null;
 
   return (
     <div className="predictive-search-result" key="collections">
-      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">Collections</h5>
+      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">{t('search.collections')}</h5>
       <ul className="space-y-2">
         {collections.map((collection) => {
           const collectionUrl = urlWithTrackingParams({
@@ -169,11 +172,12 @@ function SearchResultsPredictivePages({
   pages,
   closeSearch,
 }: PartialPredictiveSearchResult<'pages'>) {
+  const { t } = useTranslation();
   if (!pages.length) return null;
 
   return (
     <div className="predictive-search-result" key="pages">
-      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">Pages</h5>
+      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">{t('search.pages')}</h5>
       <ul className="space-y-2">
         {pages.map((page) => {
           const pageUrl = urlWithTrackingParams({
@@ -202,11 +206,12 @@ function SearchResultsPredictiveProducts({
   products,
   closeSearch,
 }: PartialPredictiveSearchResult<'products'>) {
+  const { t } = useTranslation();
   if (!products.length) return null;
 
   return (
     <div className="predictive-search-result" key="products">
-      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">Products</h5>
+      <h5 className="font-serif font-bold text-primary text-sm uppercase tracking-wider mb-3 border-b border-gray-100 pb-2">{t('search.products')}</h5>
       <ul className="space-y-2">
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
@@ -266,6 +271,7 @@ function SearchResultsPredictiveEmpty({
 }: {
   term: React.MutableRefObject<string>;
 }) {
+  const { t } = useTranslation();
   if (!term.current) {
     return null;
   }
@@ -273,7 +279,7 @@ function SearchResultsPredictiveEmpty({
   return (
     <div className="text-center py-8">
       <p className="text-dark/60">
-        No results found for <q className="font-bold text-dark">{term.current}</q>
+        {t('search.noResults')} <q className="font-bold text-dark">{term.current}</q>
       </p>
     </div>
   );

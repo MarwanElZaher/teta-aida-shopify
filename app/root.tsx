@@ -95,6 +95,7 @@ export async function loader(args: Route.LoaderArgs) {
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
+    locale: args.context.storefront.i18n,
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
@@ -154,11 +155,12 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
   };
 }
 
-export function Layout({ children }: { children?: React.ReactNode }) {
+export function Layout({ children, language = 'EN' }: { children?: React.ReactNode; language?: string }) {
   const nonce = useNonce();
+  const isRtl = language === 'AR';
 
   return (
-    <html lang="en">
+    <html lang={language.toLowerCase()} dir={isRtl ? 'rtl' : 'ltr'}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -189,9 +191,11 @@ export default function App() {
       shop={data.shop}
       consent={data.consent}
     >
-      <PageLayout {...data}>
-        <Outlet />
-      </PageLayout>
+      <Layout language={data.consent.language}>
+        <PageLayout {...data}>
+          <Outlet />
+        </PageLayout>
+      </Layout>
     </Analytics.Provider>
   );
 }
