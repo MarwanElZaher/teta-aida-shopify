@@ -506,6 +506,7 @@ export const TRANSLATIONS = {
             refundPolicy: 'Refund Policy',
             shippingPolicy: 'Shipping Policy',
             returnExchangePolicy: 'Return & Exchange Policy',
+            whatsapp: 'WhatsApp',
         },
         products: {
             tuffahyOlives: 'Tuffaahy Olives — Signature Mix',
@@ -1165,6 +1166,7 @@ export const TRANSLATIONS = {
             refundPolicy: 'سياسة الاسترداد',
             shippingPolicy: 'سياسة الشحن',
             returnExchangePolicy: 'سياسة الإرجاع والاستبدال',
+            whatsapp: 'واتساب',
         },
         products: {
             tuffahyOlives: 'زيتون تفّاحي — الخلطة المميّزة',

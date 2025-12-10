@@ -27,8 +27,11 @@ export default function Contact() {
                             <IconWhatsApp />
                         </div>
                         <h3 className="mb-2 text-lg font-bold text-gray-900">{t('contact.whatsapp')}</h3>
+
                         <p className="font-medium text-green-800">
-                            +20 107 098 5360
+                            <span style={{ unicodeBidi: 'plaintext' }}>
+                                +20 107 098 5360
+                            </span>
                         </p>
                     </a>
 

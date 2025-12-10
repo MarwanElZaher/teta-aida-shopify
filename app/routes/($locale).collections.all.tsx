@@ -7,6 +7,7 @@ import { PaginatedResourceSection } from '~/components/PaginatedResourceSection'
 import { ProductItem } from '~/components/ProductItem';
 import type { CollectionItemFragment } from 'storefrontapi.generated';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
+import { useTranslation } from '~/lib/translations';
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Hydrogen | Products` }];
@@ -52,12 +53,13 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 
 export default function Collection() {
   const { products } = useLoaderData<typeof loader>();
+  const { t } = useTranslation();
   const section1 = useScrollAnimation();
   const section2 = useScrollAnimation();
 
   return (
     <div className="collection">
-      <h1 ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>Products</h1>
+      <h1 ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>{t('collections.allProducts')}</h1>
       <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <PaginatedResourceSection<CollectionItemFragment>
           connection={products}
