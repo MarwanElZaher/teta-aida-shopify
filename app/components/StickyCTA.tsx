@@ -29,11 +29,10 @@ export function StickyCTA({ title, price, available, children, isVisible }: Stic
     }, [isVisible, isCartOpen]);
 
     if (!shouldRender && !isVisible) return null;
-    if (isCartOpen) return null;
 
     return (
         <div
-            className={`fixed bottom-0 left-0 right-0 z-50 border-t border-primary/10 bg-[#F9F7F2]/95 backdrop-blur-md p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden transition-transform duration-300 ease-in-out ${isVisible ? 'translate-y-0' : 'translate-y-full'
+            className={`fixed bottom-0 left-0 right-0 z-50 border-t border-primary/10 bg-[#F9F7F2]/95 backdrop-blur-md p-4 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden transition-transform duration-300 ease-in-out ${isVisible && !isCartOpen ? 'translate-y-0' : 'translate-y-full'
                 }`}
         >
             <div className="flex items-center justify-between gap-4">
