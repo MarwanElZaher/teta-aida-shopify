@@ -50,6 +50,13 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          metafields(identifiers: [
+            {namespace: "custom", key: "arabic_title"},
+            {namespace: "custom", key: "title_ar"}
+          ]) {
+            key
+            value
+          }
         }
         selectedOptions {
           name
@@ -100,6 +107,13 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          metafields(identifiers: [
+            {namespace: "custom", key: "arabic_title"},
+            {namespace: "custom", key: "title_ar"}
+          ]) {
+            key
+            value
+          }
         }
         selectedOptions {
           name

@@ -30,9 +30,8 @@ export function CartLineItem({
   const { t, locale } = useTranslation();
 
   // Get localized product title
-  // Passing empty array for metafields because they might not be available in cart line,
-  // relying on fallback logic in getLocalizedTitle for common products.
-  const displayTitle = getLocalizedTitle(product.title, [], locale.language);
+  // Get localized product title
+  const displayTitle = getLocalizedTitle(product.title, (product as any).metafields || [], locale.language);
 
   // Filter out "Default Title" from selected options
   const relevantOptions = selectedOptions.filter(
@@ -98,9 +97,19 @@ export function CartLineItem({
                 {heatLevelAttributes.map((attr, index) => (
                   <li key={index}>
                     <span className="font-medium">
-                      {t(`product.attributes.${attr.key}`) !== `product.attributes.${attr.key}` ? t(`product.attributes.${attr.key}`) : attr.key}:
+                      {(() => {
+                        const cleanKey = attr.key.replace(/_\d+$/, '');
+                        // Try to localize the cleaned key using getLocalizedTitle (which has hardcoded fallbacks)
+                        // or check existing translations
+                        // But first checking if it's already localized effectively
+                        const localizedKey = getLocalizedTitle(cleanKey, [], locale.language);
+
+                        // If getLocalizedTitle returns same english key (no fallback found), try translation keys
+                        // But first checking if it's already localized effectively
+                        return localizedKey !== cleanKey ? localizedKey : (t(`product.attributes.${attr.key}`) !== `product.attributes.${attr.key}` ? t(`product.attributes.${attr.key}`) : cleanKey);
+                      })()}:
                     </span> {' '}
-                    {t(`product.heatLevels.${attr.value.toLowerCase()}`) !== `product.heatLevels.${attr.value.toLowerCase()}` ? t(`product.heatLevels.${attr.value.toLowerCase()}`) : attr.value}
+                    {t(`product.heatLevels.${(attr.value || '').toLowerCase()}`) !== `product.heatLevels.${(attr.value || '').toLowerCase()}` ? t(`product.heatLevels.${(attr.value || '').toLowerCase()}`) : (attr.value || '')}
                   </li>
                 ))}
               </ul>
