@@ -9,6 +9,7 @@ interface FooterProps {
 }
 
 import { useTranslation } from '~/lib/translations';
+import { LanguageSelector } from '~/components/LanguageSelector';
 
 export function Footer({
   footer: footerPromise,
@@ -103,6 +104,7 @@ export function Footer({
 
             <div className="container mx-auto px-4 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs opacity-60">
               <p>&copy; {new Date().getFullYear()} {isRtl ? 'تيتا عايدة' : 'Teta Aida'}. {t('footer.rights')}</p>
+              <LanguageSelector variant="light" />
               <p>{t('footer.crafted')}</p>
             </div>
           </footer>

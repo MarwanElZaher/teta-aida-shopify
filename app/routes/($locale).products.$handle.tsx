@@ -98,7 +98,12 @@ export default function Product() {
 
   // Get localized title and description
   const displayTitle = getLocalizedTitle(title, product.metafields as any, locale.language);
-  const displayDescription = getLocalizedDescription(descriptionHtml, product.metafields as any, locale.language);
+  let displayDescription = getLocalizedDescription(descriptionHtml, product.metafields as any, locale.language);
+
+  // Create a robust description that handles plain text newlines if HTML isn't present
+  if (displayDescription && !/<[a-z][\s\S]*>/i.test(displayDescription)) {
+    displayDescription = displayDescription.replace(/\n/g, '<br/>');
+  }
 
   // Parse Metafields
   const metafields = product.metafields || [];
@@ -222,8 +227,8 @@ export default function Product() {
               )}
             </div>
 
-            {/* Bundle Contents (if bundle) */}
-            {isBundle && bundleContents && (
+            {/* Bundle Contents (if bundle) - Hidden in Arabic as it's included in description */}
+            {isBundle && bundleContents && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
                 <ul className="mt-4 space-y-2">
@@ -240,10 +245,10 @@ export default function Product() {
               </div>
             )}
 
-            {/* Key Benefits */}
-            {keyBenefits && (
+            {/* Key Benefits - Hidden in Arabic as it's included in description */}
+            {keyBenefits && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">Why You'll Love It</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t('product.whyLoveIt')}</h3>
                 <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {keyBenefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
@@ -255,10 +260,10 @@ export default function Product() {
               </div>
             )}
 
-            {/* Flavor Profile */}
-            {flavorProfile && (
+            {/* Flavor Profile - Hidden in Arabic as it's included in description */}
+            {flavorProfile && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">Flavor Profile</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t('product.flavorProfile')}</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
                   {Object.entries(flavorProfile).map(([key, value]) => (
                     <div key={key}>
@@ -272,17 +277,17 @@ export default function Product() {
 
             {/* Description */}
             <div className="mt-10 border-t border-gray-200 pt-10">
-              <h3 className="text-lg font-bold text-gray-900">Description</h3>
+              <h3 className="text-lg font-bold text-gray-900">{t('product.description')}</h3>
               <div
                 className="prose prose-sm mt-4 text-gray-600"
                 dangerouslySetInnerHTML={{ __html: displayDescription }}
               />
             </div>
 
-            {/* Usage Ideas */}
-            {usageIdeas && (
+            {/* Usage Ideas - Hidden in Arabic as it's included in description */}
+            {usageIdeas && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">Perfect For</h3>
+                <h3 className="text-lg font-bold text-gray-900">{t('product.perfectFor')}</h3>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {usageIdeas.map((idea, i) => (
                     <span key={i} className="rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-green-800">

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from '~/lib/translations';
 
 type HeatLevel = 'Mild' | 'Normal' | 'Spicy';
 
@@ -11,9 +12,11 @@ interface HeatLevelSelectorProps {
 export function HeatLevelSelector({ availableLevels, selectedLevel, onSelect }: HeatLevelSelectorProps) {
     if (!availableLevels || availableLevels.length === 0) return null;
 
+    const { t } = useTranslation();
+
     return (
         <div className="heat-level-selector my-6">
-            <label className="block text-sm font-serif font-bold text-primary mb-3 uppercase tracking-wide">Select Heat Level</label>
+            <label className="block text-sm font-serif font-bold text-primary mb-3 uppercase tracking-wide">{t('heatLevelSelector.title')}</label>
             <div className="flex flex-wrap gap-3">
                 {availableLevels.map((level) => (
                     <button
@@ -26,7 +29,7 @@ export function HeatLevelSelector({ availableLevels, selectedLevel, onSelect }: 
                                 : 'bg-white text-dark/70 border-gray-200 hover:border-secondary hover:text-secondary'}
             `}
                     >
-                        {level}
+                        {t(`heatLevels.${level}`)}
                     </button>
                 ))}
             </div>

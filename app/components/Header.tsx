@@ -8,6 +8,7 @@ import {
 import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
 import { useTranslation } from '~/lib/translations';
+import { LanguageSelector } from '~/components/LanguageSelector';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -120,7 +121,6 @@ export function HeaderMenu({
   if (viewport === 'mobile') {
     return (
       <nav className="flex flex-col gap-4 p-6" role="navigation">
-
         {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
           if (!item.url) return null;
           const url =
@@ -145,6 +145,12 @@ export function HeaderMenu({
             </NavLink>
           );
         })}
+
+        {/* Mobile Language Selector */}
+        <div className="mt-6 pt-6 border-t border-gray-100">
+          <p className="text-sm text-dark/50 mb-4 uppercase tracking-widest">{t('nav.selectLanguage') || 'Select Language'}</p>
+          <LanguageSelector />
+        </div>
       </nav>
     );
   }
@@ -184,39 +190,7 @@ export function HeaderMenu({
 
 
 
-function LanguageSelector() {
-  const { pathname, search } = useLocation();
-  const { locale } = useTranslation();
-  const isAr = locale.language === 'AR';
 
-  const toggleLanguage = (targetLang: 'EN' | 'AR') => {
-    let newPath = pathname;
-    if (targetLang === 'AR' && !pathname.startsWith('/ar')) {
-      newPath = `/ar${pathname === '/' ? '' : pathname}`;
-    } else if (targetLang === 'EN' && pathname.startsWith('/ar')) {
-      newPath = pathname.replace(/^\/ar/, '') || '/';
-    }
-    return `${newPath}${search}`;
-  };
-
-  return (
-    <div className="flex items-center gap-1 text-xs font-bold tracking-widest uppercase">
-      <a
-        href={toggleLanguage('EN')}
-        className={`${!isAr ? 'text-primary' : 'text-dark/50 hover:text-primary'} transition-colors`}
-      >
-        EN
-      </a>
-      <span className="text-dark/30">|</span>
-      <a
-        href={toggleLanguage('AR')}
-        className={`${isAr ? 'text-primary' : 'text-dark/50 hover:text-primary'} transition-colors`}
-      >
-        AR
-      </a>
-    </div>
-  );
-}
 
 function HeaderCtas({
   isLoggedIn,
@@ -225,7 +199,9 @@ function HeaderCtas({
   const { t, locale } = useTranslation();
   return (
     <nav className="flex items-center gap-4" role="navigation">
-      <LanguageSelector />
+      <div className="hidden md:block">
+        <LanguageSelector />
+      </div>
       <NavLink prefetch="intent" to={`${locale.pathPrefix}/account`} className="hidden md:block text-dark hover:text-primary transition-colors">
         <Suspense fallback={<IconUser />}>
           <Await resolve={isLoggedIn} errorElement={<IconUser />}>

@@ -40,10 +40,11 @@ export function getLocalizedTitle(
         defaultTitle === 'Healthy Living Box' ? 'تشكيلة الحياة الصحية' :
             (defaultTitle.includes('Low-Salt Cucumbers') ? 'خيار قليل الملح بالكرفس' :
                 (defaultTitle.includes('Tangerine-Infused Cabbage') ? 'كرنب بلمسة يوسفي' :
-                    (defaultTitle.includes('Half-Preserved Lemons with Harissa') ? 'ليمون معصفر بالهريسة' :
-                        (defaultTitle.includes('Signature Box') || defaultTitle.includes('All Four Premium Flavors') ? 'التشكيلة المميّزة' :
-                            (defaultTitle.includes('Spicy Lovers Box') ? 'تشكيلة عشّاق السبايسي' :
-                                (defaultTitle.includes('Hosting Box') ? 'تشكيلة الضيافة' : defaultTitle))))))
+                    (defaultTitle.includes('Half-Preserved Lemons') || defaultTitle.includes('Half Lemons') ? 'ليمون معصفر بالهريسة' :
+                        (defaultTitle.includes('Tuffaahy Olives') ? 'زيتون تفّاحي — الخلطة المميّزة' :
+                            (defaultTitle.includes('Signature Box') || defaultTitle.includes('All Four Premium Flavors') ? 'التشكيلة المميّزة' :
+                                (defaultTitle.includes('Spicy Lovers Box') ? 'تشكيلة عشّاق السبايسي' :
+                                    (defaultTitle.includes('Hosting Box') ? 'تشكيلة الضيافة' : defaultTitle)))))))
     );
 }
 

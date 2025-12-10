@@ -11,6 +11,7 @@ export const TRANSLATIONS = {
             account: 'Account',
             allProducts: 'Shop All',
             bestsellers: 'Best Sellers',
+            selectLanguage: 'Select Language',
             menu: 'Menu',
             search: 'Search',
         },
@@ -108,6 +109,10 @@ export const TRANSLATIONS = {
             select: 'Select',
             whatsInside: "What's Inside",
             reviews: 'Reviews',
+            whyLoveIt: "Why You'll Love It",
+            flavorProfile: 'Flavor Profile',
+            description: 'Description',
+            perfectFor: 'Perfect For',
             quantity: 'Quantity',
             bundle: 'Bundle',
             chooseYourItems: 'Choose Your Items',
@@ -402,7 +407,14 @@ export const TRANSLATIONS = {
                 trust: 'Premium · Clean · Guest-approved',
             },
         },
-
+        heatLevelSelector: {
+            title: 'Select Heat Level',
+        },
+        heatLevels: {
+            Mild: 'Mild',
+            Normal: 'Original',
+            Spicy: 'Spicy',
+        },
         cart: {
             title: 'Cart',
             empty: 'Your cart is empty',
@@ -670,6 +682,7 @@ export const TRANSLATIONS = {
             allProducts: 'كل المنتجات',
             shopAll: 'تسوق الكل ',
             bestsellers: 'الأكثر شراءا',
+            selectLanguage: 'اختر اللغة',
             menu: 'القائمة',
             search: 'بحث',
         },
@@ -768,6 +781,10 @@ export const TRANSLATIONS = {
             select: 'اختر',
             whatsInside: 'ما بداخل المجموعة',
             reviews: 'التقييمات',
+            whyLoveIt: 'ليه هتحبه',
+            flavorProfile: 'وصف الطعم',
+            description: 'الوصف',
+            perfectFor: 'مناسب لـ',
             quantity: 'الكمية',
             bundle: 'مجموعة',
             chooseYourItems: 'اختر منتجاتك',
@@ -1063,6 +1080,14 @@ export const TRANSLATIONS = {
             },
         },
 
+        heatLevelSelector: {
+            title: 'اختر درجة الحرارة',
+        },
+        heatLevels: {
+            Mild: 'هادي',
+            Normal: 'وسط',
+            Spicy: 'حار',
+        },
         cart: {
             title: 'السلة',
             empty: 'سلتك لا تحتوي على منتجات',

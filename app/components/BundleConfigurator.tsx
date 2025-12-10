@@ -3,6 +3,7 @@ import { useTranslation } from '~/lib/translations';
 
 export interface BundleItem {
     name: string;
+    arabic_title?: string;
     heatLevels: string[];
 }
 
