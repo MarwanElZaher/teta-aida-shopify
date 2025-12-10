@@ -49,11 +49,11 @@ export default function Contact() {
                 </div>
 
                 <div ref={section3.ref} className={`mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 text-left max-w-2xl mx-auto transition-all duration-700 delay-400 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-                    <div>
+                    <div className='flex flex-col items-start align-center'>
                         <h3 className="mb-4 text-xl font-bold text-gray-900">{t('contact.location')}</h3>
                         <p className="text-gray-600">{t('contact.locationText')}</p>
                     </div>
-                    <div>
+                    <div className='flex flex-col items-start align-center'>
                         <h3 className="mb-4 text-xl font-bold text-gray-900">{t('contact.followUs')}</h3>
                         <div className="flex gap-4">
                             <a href="https://www.instagram.com/teta_3ayda/" target="_blank" rel="noopener noreferrer" className="text-green-800 hover:text-green-600 transition-colors">

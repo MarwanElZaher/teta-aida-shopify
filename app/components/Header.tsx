@@ -35,7 +35,7 @@ export function Header({
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
+  const { locale } = useTranslation();
   const headerClass = `fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-[#F9F7F2]/95 backdrop-blur-sm shadow-sm py-3' : 'bg-transparent py-5'
     }`;
 
@@ -58,7 +58,20 @@ export function Header({
 
           {/* Center: Logo - Absolutely positioned to stay centered */}
           <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 pointer-events-none">
-            <NavLink prefetch="intent" to="/" end className="text-xl md:text-2xl lg:text-3xl font-serif font-bold tracking-widest text-primary uppercase whitespace-nowrap pointer-events-auto">
+            <NavLink
+              prefetch="intent"
+              to={locale.pathPrefix ? `${locale.pathPrefix}/` : '/'}
+              onClick={(e) => {
+                // Prevent navigation if already on homepage
+                const currentPath = window.location.pathname;
+                const targetPath = locale.pathPrefix ? `${locale.pathPrefix}/` : '/';
+                if (currentPath === targetPath || currentPath === targetPath.replace(/\/$/, '')) {
+                  e.preventDefault();
+                }
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-xl md:text-2xl lg:text-3xl font-serif font-bold tracking-widest text-primary uppercase whitespace-nowrap pointer-events-auto"
+            >
               {isRtl ? 'تيتا عايدة' : shop.name}
             </NavLink>
           </div>
