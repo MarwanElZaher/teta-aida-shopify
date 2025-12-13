@@ -371,6 +371,8 @@ export const TRANSLATIONS = {
                 'Harissa Heat': 'Harissa Heat',
                 'Cabbage/Cucumbers Heat': 'Cabbage/Cucumbers Heat',
                 'Olives Heat': 'Olives Heat',
+                'Cucumbers Heat': 'Cucumbers Heat',
+                'Cabbage Heat': 'Cabbage Heat',
                 'Heat Level': 'Heat Level',
             },
             hostingBox: {
@@ -1043,6 +1045,8 @@ export const TRANSLATIONS = {
                 'Harissa Heat': 'حرارة الهريسة',
                 'Cabbage/Cucumbers Heat': 'حرارة الكرنب/الخيار',
                 'Olives Heat': 'حرارة الزيتون',
+                'Cucumbers Heat': 'حرارة الخيار',
+                'Cabbage Heat': 'حرارة الكرنب',
                 'Heat Level': 'درجة الحرارة',
             },
             hostingBox: {

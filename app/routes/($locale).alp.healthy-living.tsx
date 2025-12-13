@@ -71,8 +71,8 @@ export default function HealthyLivingALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
-                { key: 'Cucumbers Heat', value: heatLevels.cucumbers! },
-                { key: 'Cabbage Heat', value: heatLevels.cabbage! },
+                { key: t('product.attributes.Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.cucumbers}`) },
+                { key: t('product.attributes.Cabbage Heat'), value: t(`product.heatLevels.${heatLevels.cabbage}`) },
             ],
         }] : [],
     };

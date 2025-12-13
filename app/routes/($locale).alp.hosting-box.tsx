@@ -75,10 +75,10 @@ export default function HostingBoxALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
-                { key: 'Olives 1 Heat', value: heatLevels.olives1! },
-                { key: 'Olives 2 Heat', value: heatLevels.olives2! },
-                { key: 'Harissa Heat', value: heatLevels.harissa! },
-                { key: 'Cabbage/Cucumbers Heat', value: heatLevels.choice! },
+                { key: t('product.attributes.Olives 1 Heat'), value: t(`product.heatLevels.${heatLevels.olives1}`) },
+                { key: t('product.attributes.Olives 2 Heat'), value: t(`product.heatLevels.${heatLevels.olives2}`) },
+                { key: t('product.attributes.Harissa Heat'), value: t(`product.heatLevels.${heatLevels.harissa}`) },
+                { key: t('product.attributes.Cabbage/Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.choice}`) },
             ],
         }] : [],
     };

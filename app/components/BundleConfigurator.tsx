@@ -3,6 +3,7 @@ import { useTranslation } from '~/lib/translations';
 
 export interface BundleItem {
     name: string;
+    displayName?: string; // Add displayName for UI
     arabic_title?: string;
     heatLevels: string[];
 }
@@ -48,7 +49,8 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                     const itemCount = bundleItems.slice(0, index + 1).filter(i => i.name === item.name).length;
                     const totalItemCount = bundleItems.filter(i => i.name === item.name).length;
                     // Use / instead of "of" for locale neutrality
-                    const displayName = totalItemCount > 1 ? `${item.name} (${itemCount}/${totalItemCount})` : item.name;
+                    const nameToDisplay = item.displayName || item.name;
+                    const displayName = totalItemCount > 1 ? `${nameToDisplay} (${itemCount}/${totalItemCount})` : nameToDisplay;
 
                     return (
                         <div key={itemKey} className="bundle-item border-b border-gray-200 pb-6 last:border-0">

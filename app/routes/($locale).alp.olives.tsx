@@ -63,7 +63,7 @@ export default function OlivesALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             selectedVariant,
-            attributes: [{ key: 'Heat Level', value: selectedHeat }],
+            attributes: [{ key: t('product.attributes.Heat Level'), value: t(`product.heatLevels.${selectedHeat}`) }],
         }] : [],
     };
 
@@ -206,9 +206,9 @@ export default function OlivesALP() {
 
             {/* Explore Link */}
             <div className="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8 text-center">
-                <p className="text-dark/60 mb-4">Still exploring?</p>
+                <p className="text-dark/60 mb-4">{t('nav.shop')}</p>
                 <Link to="/collections/all" className="text-primary font-bold hover:text-secondary transition-colors">
-                    Browse full collection →
+                    {t('home.bestsellers.viewAll')}
                 </Link>
             </div>
 

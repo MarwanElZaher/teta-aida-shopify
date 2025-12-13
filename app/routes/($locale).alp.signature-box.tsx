@@ -75,10 +75,10 @@ export default function SignatureBoxALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
-                { key: 'Olives Heat', value: heatLevels.olives! },
-                { key: 'Cucumbers Heat', value: heatLevels.cucumbers! },
-                { key: 'Cabbage Heat', value: heatLevels.cabbage! },
-                { key: 'Harissa Heat', value: heatLevels.harissa! },
+                { key: t('product.attributes.Olives Heat'), value: t(`product.heatLevels.${heatLevels.olives}`) },
+                { key: t('product.attributes.Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.cucumbers}`) },
+                { key: t('product.attributes.Cabbage Heat'), value: t(`product.heatLevels.${heatLevels.cabbage}`) },
+                { key: t('product.attributes.Harissa Heat'), value: t(`product.heatLevels.${heatLevels.harissa}`) },
             ],
         }] : [],
     };

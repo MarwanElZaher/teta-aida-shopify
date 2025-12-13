@@ -128,7 +128,8 @@ export default function Product() {
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
   const bundleItems = rawBundleItems?.map(item => ({
     ...item,
-    name: getLocalizedTitle(item.name, [], locale.language)
+    displayName: getLocalizedTitle(item.name, [], locale.language),
+    name: item.name // Keep original name for keys
   })) || null;
 
   const isBundle = !!bundleContents;

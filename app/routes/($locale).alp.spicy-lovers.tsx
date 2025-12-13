@@ -75,8 +75,8 @@ export default function SpicyLoversALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             attributes: [
-                { key: 'Olives Heat', value: heatLevels.olives! },
-                { key: 'Harissa Heat', value: heatLevels.harissa! },
+                { key: t('product.attributes.Olives Heat'), value: t(`product.heatLevels.${heatLevels.olives}`) },
+                { key: t('product.attributes.Harissa Heat'), value: t(`product.heatLevels.${heatLevels.harissa}`) },
             ],
         }] : [],
     };

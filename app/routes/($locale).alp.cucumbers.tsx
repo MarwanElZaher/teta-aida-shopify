@@ -60,7 +60,7 @@ export default function CucumbersALP() {
             merchandiseId: selectedVariant.id,
             quantity: 1,
             selectedVariant,
-            attributes: [{ key: 'Heat Level', value: selectedHeat }],
+            attributes: [{ key: t('product.attributes.Heat Level'), value: t(`product.heatLevels.${selectedHeat}`) }],
         }] : [],
     };
 
