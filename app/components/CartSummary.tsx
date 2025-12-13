@@ -41,13 +41,19 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
 }
 
 function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   if (!checkoutUrl) return null;
+
+  let finalCheckoutUrl = checkoutUrl;
+  if (locale.language === 'AR') {
+    const separator = finalCheckoutUrl.includes('?') ? '&' : '?';
+    finalCheckoutUrl = `${finalCheckoutUrl}${separator}locale=ar`;
+  }
 
   return (
     <div className="mt-6">
       <a
-        href={checkoutUrl}
+        href={finalCheckoutUrl}
         target="_self"
         className="block w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-widest text-sm transition-all duration-300 hover:bg-[#143d24] hover:shadow-lg flex items-center justify-center"
         style={{
