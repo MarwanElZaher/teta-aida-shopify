@@ -130,7 +130,15 @@ export function HeaderMenu({
               ? new URL(item.url).pathname
               : item.url;
 
-          const finalUrl = `${locale.pathPrefix}${url.startsWith('/') ? '' : '/'}${url}`;
+          const pathPrefix = locale.pathPrefix;
+          const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+
+          // Remove existing path prefix if present to avoid duplication
+          const urlWithoutPrefix = pathPrefix && normalizedUrl.startsWith(pathPrefix)
+            ? normalizedUrl.slice(pathPrefix.length)
+            : normalizedUrl;
+
+          const finalUrl = `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`;
 
           return (
             <NavLink
@@ -167,7 +175,15 @@ export function HeaderMenu({
             ? new URL(item.url).pathname
             : item.url;
 
-        const finalUrl = `${locale.pathPrefix}${url.startsWith('/') ? '' : '/'}${url}`;
+        const pathPrefix = locale.pathPrefix;
+        const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+
+        // Remove existing path prefix if present to avoid duplication (e.g. /ar/ar/...)
+        const urlWithoutPrefix = pathPrefix && normalizedUrl.startsWith(pathPrefix)
+          ? normalizedUrl.slice(pathPrefix.length)
+          : normalizedUrl;
+
+        const finalUrl = `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`;
 
         return (
           <NavLink
