@@ -683,7 +683,7 @@ export const TRANSLATIONS = {
             account: 'حسابي',
             allProducts: 'كل المنتجات',
             shopAll: 'تسوق الكل ',
-            bestsellers: 'الأكثر شراءا',
+            bestsellers: 'الأكثر مبيعاً',
             selectLanguage: 'اختر اللغة',
             menu: 'القائمة',
             search: 'بحث',
@@ -726,7 +726,7 @@ export const TRANSLATIONS = {
                 footer: 'تحضير أسبوعي طازج · توصيل سريع داخل القاهرة',
             },
             bundles: {
-                title: 'الأكثر مبيعًا',
+                title: 'الأكثر مبيعاً',
                 subtitle: 'مجموعات مُختارة بعناية لكل مناسبة… من الضيافه للأكل الصحي.',
                 coming_soon: 'المجموعات هتكون متاحة قريبًا…',
             },
