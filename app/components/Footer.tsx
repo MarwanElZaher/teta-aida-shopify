@@ -161,8 +161,17 @@ function FooterMenu({
             item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
+        const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
+
+        // Remove existing path prefix if present to avoid duplication (e.g. /ar/ar/...)
+        const urlWithoutPrefix = pathPrefix && normalizedUrl.startsWith(pathPrefix)
+          ? normalizedUrl.slice(pathPrefix.length)
+          : normalizedUrl;
+
         const isInternal = url.startsWith('/');
-        const finalUrl = isInternal ? `${pathPrefix}${url === '/' ? '' : url}` : url;
+        const finalUrl = isInternal
+          ? `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`
+          : url;
 
         return (
           <NavLink
