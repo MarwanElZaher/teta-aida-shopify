@@ -31,6 +31,7 @@ export function BundleCard({ product }: BundleCardProps) {
         'healthy-living-box': 'healthyBox',
         'spicy-lovers-box': 'spicyBox',
         'hosting-box': 'hostingBox',
+        'winter-comfort-box': 'winterBox',
         // Add other bundles here
     };
 

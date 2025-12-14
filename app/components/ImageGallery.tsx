@@ -18,7 +18,7 @@ export function ImageGallery({ images, productTitle }: ImageGalleryProps) {
     return (
         <div className="image-gallery">
             {/* Main Image Display */}
-            <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F0EFEB] mb-4">
+            <div className="relative overflow-hidden rounded-2xl bg-[#F0EFEB] mb-4">
                 {selectedImage?.image && (
                     <Image
                         data={selectedImage.image}
@@ -37,8 +37,8 @@ export function ImageGallery({ images, productTitle }: ImageGalleryProps) {
                             key={mediaItem.id || index}
                             onClick={() => setSelectedImageIndex(index)}
                             className={`flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden border-2 transition-all ${selectedImageIndex === index
-                                    ? 'border-primary ring-2 ring-primary ring-offset-2'
-                                    : 'border-dark/20 hover:border-primary/50'
+                                ? 'border-primary ring-2 ring-primary ring-offset-2'
+                                : 'border-dark/20 hover:border-primary/50'
                                 }`}
                             aria-label={`View image ${index + 1}`}
                         >

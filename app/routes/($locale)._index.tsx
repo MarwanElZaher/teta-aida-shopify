@@ -32,6 +32,13 @@ export async function loader({ context }: Route.LoaderArgs) {
         ).slice(0, 4);
     }
 
+    // Prioritize Winter Comfort Box if present
+    const winterBoxIndex = featuredBundles.findIndex((p: any) => p.handle === 'winter-comfort-box');
+    if (winterBoxIndex > -1) {
+        const [winterBox] = featuredBundles.splice(winterBoxIndex, 1);
+        featuredBundles.unshift(winterBox);
+    }
+
     // Fallback: If no best-sellers collection, use generic products
     if (bestSellingProducts.length === 0 && fallbackProducts?.nodes) {
         bestSellingProducts = fallbackProducts.nodes
@@ -78,9 +85,11 @@ export default function Homepage() {
                         <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold text-primary mb-6 animate-fade-in-up delay-100">
                             {t('home.hero.title')}
                         </h1>
-                        <p className="font-sans text-lg md:text-xl text-dark/80 mb-10 max-w-xl animate-fade-in-up delay-200">
-                            {t('home.hero.subtitle')}
-                        </p>
+                        <div className='flex justify-center'>
+                            <p className="font-sans text-lg md:text-xl text-dark/80 mb-10 max-w-xl animate-fade-in-up delay-200">
+                                {t('home.hero.subtitle')}
+                            </p>
+                        </div>
                         <div className="flex flex-col w-full sm:w-auto gap-4 sm:flex-row animate-fade-in-up delay-300">
                             <Link to={`${locale.pathPrefix}/collections/bundles`} className="btn-primary sm:w-auto sm:px-10 hover-lift">
                                 {t('home.hero.shopBundles')}

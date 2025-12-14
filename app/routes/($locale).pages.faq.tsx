@@ -23,6 +23,7 @@ export default function FAQ() {
         {
             category: t('faq.category.products'),
             items: [
+                { q: t('faq.products.turnips.q'), a: t('faq.products.turnips.a') },
                 { q: t('faq.products.jar_weights.q'), a: t('faq.products.jar_weights.a') },
                 { q: t('faq.products.handmade.q'), a: t('faq.products.handmade.a') },
                 { q: t('faq.products.heat_levels.q'), a: t('faq.products.heat_levels.a') },

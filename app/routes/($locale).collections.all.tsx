@@ -63,7 +63,7 @@ export default function Collection() {
       <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <PaginatedResourceSection<CollectionItemFragment>
           connection={products}
-          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
+          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8"
         >
           {({ node: product, index }) => (
             <ProductItem

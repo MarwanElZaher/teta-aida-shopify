@@ -373,6 +373,7 @@ export const TRANSLATIONS = {
                 'Olives Heat': 'Olives Heat',
                 'Cucumbers Heat': 'Cucumbers Heat',
                 'Cabbage Heat': 'Cabbage Heat',
+                'Turnips Heat': 'Turnips Heat',
                 'Heat Level': 'Heat Level',
             },
             hostingBox: {
@@ -407,6 +408,87 @@ export const TRANSLATIONS = {
                 selectAll: 'Select All Heat Levels',
                 addToCart: 'Add Hosting Box to Cart',
                 trust: 'Premium · Clean · Guest-approved',
+            },
+            winterBox: {
+                title: 'Winter Comfort Box',
+                tagline: 'Light, Crisp & Comforting — Your Seasonal Winter Pickle Duo',
+                included: 'Included',
+                turnips: 'Vintage-Style Turnips — Beetroot Color',
+                cucumbers: 'Low-Salt Cucumbers with Celery',
+                description: 'A winter seasonal bundle featuring Vintage-Style Turnips colored naturally with beetroot and Low-Salt Cucumbers. Clean, crisp, nostalgic flavors crafted in small batches.',
+                why: {
+                    title: 'Why You\'ll Love It',
+                    1: 'Winter-friendly pickle duo',
+                    2: 'Nostalgic Egyptian flavors — but elevated',
+                    3: 'Light, crisp, clean ingredients',
+                    4: 'Balanced acidity and gentle spice',
+                    5: 'Seasonal colors that brighten any table',
+                    6: 'Perfect for daily meals, gatherings & warm dishes',
+                },
+                uses: {
+                    title: 'Usage Moments',
+                    1: 'Cozy winter dinners',
+                    2: 'Family gatherings',
+                    3: 'Sandwiches, wraps & BBQ meals',
+                    4: 'Daily snacking',
+                    5: 'Comfort-food plates (beans, lentils, grilled meats)',
+                    6: 'Winter mezze tables',
+                },
+                reviews: {
+                    title: 'Real Reviews',
+                    1: 'The turnip color is stunning — and the taste reminds me of homemade winter jars.',
+                    2: 'Perfect light combo for everyday meals.',
+                    3: 'A beautiful seasonal box — refreshing and nostalgic.',
+                },
+                microTrust: {
+                    naturalColor: 'Natural color',
+                    smallBatch: 'Small-batch crafted',
+                    seasonal: 'Seasonal limited release',
+                },
+                addToCart: 'Add Winter Comfort Box to Cart',
+            },
+            turnips: {
+                name: 'Vintage-Style Turnips',
+                tagline: 'Crisp. Lightly Spiced. Beautifully Nostalgic.',
+                description: 'Crisp hand-cut turnips pickled gently with natural beetroot for a vibrant magenta color and a clean, balanced brine. Light spice, refreshing acidity, and a nostalgic flavor that feels just like homemade winter jars — but refined with Teta Aida’s artisanal craftsmanship.',
+                microTrust: {
+                    naturalColor: 'Natural color',
+                    clean: 'Clean ingredients',
+                    smallBatch: 'Small-batch crafted',
+                },
+                benefits: {
+                    title: 'Key Benefits',
+                    1: 'Naturally colored with real beetroot (no artificial dyes)',
+                    2: 'Light, balanced brine — not overly salty',
+                    3: 'Gentle spice suitable for all palates',
+                    4: 'Crisp, refreshing texture',
+                    5: 'Clean ingredients only',
+                    6: 'Small-batch handcrafted consistency',
+                    7: 'Nostalgic flavor — familiar, comforting, elevated',
+                },
+                flavorProfile: {
+                    title: 'Flavor Profile',
+                    texture: 'Firm, crisp slices',
+                    taste: 'Light acidity, mild spice, clean brine',
+                    aroma: 'Fresh, earthy notes from beetroot',
+                    color: 'Natural magenta hue — visually stunning on any table',
+                },
+                usage: {
+                    title: 'Usage Ideas',
+                    1: 'Hosting & mezze tables',
+                    2: 'Daily meals',
+                    3: 'Sandwiches & wraps',
+                    4: 'BBQ and grilled meats',
+                    5: 'Winter comfort dishes (beans, lentils, soups)',
+                    6: 'Healthy bowls',
+                },
+                reviews: {
+                    title: 'Reviews',
+                    1: 'Finally — turnips that taste clean and premium.',
+                    2: 'The color is gorgeous on the table. A new favorite.',
+                    3: 'Tastes like homemade, but much more refined.',
+                },
+                addToCart: 'Add Vintage-Style Turnips to Cart',
             },
         },
         heatLevelSelector: {
@@ -630,45 +712,37 @@ export const TRANSLATIONS = {
                     q: 'Do the jars have heat level options?',
                     a: "Yes — all jars come with heat-level selection:\n• Tuffaahy Olives: Mild / Normal / Spicy\n• Cucumbers: Mild / Normal\n• Tangerine Cabbage: Mild / Normal\n• Harissa Lemons: Mild / Spicy",
                 },
-                preservatives: {
-                    q: 'Do you use preservatives?',
-                    a: 'No artificial preservatives. Only clean, fresh ingredients.',
+                payments: {
+                    payment_methods: {
+                        q: 'How can I pay?',
+                        a: 'We accept Cash on Delivery (COD) and Instapay.',
+                    },
+                    minimum_order: {
+                        q: 'Is there a minimum order?',
+                        a: 'No minimum order.',
+                    },
+                    discounts: {
+                        q: 'Do you offer discounts?',
+                        a: 'Occasionally on selected bundles and promotional campaigns.',
+                    },
                 },
-                shelf_life: {
-                    q: 'How long do the products last?',
-                    a: 'Shelf life varies per item. Please store jars in a cool place and refrigerate after opening.',
-                },
-            },
-            payments: {
-                payment_methods: {
-                    q: 'How can I pay?',
-                    a: 'We accept Cash on Delivery (COD) and Instapay.',
-                },
-                minimum_order: {
-                    q: 'Is there a minimum order?',
-                    a: 'No minimum order.',
-                },
-                discounts: {
-                    q: 'Do you offer discounts?',
-                    a: 'Occasionally on selected bundles and promotional campaigns.',
-                },
-            },
-            returns: {
-                return_taste: {
-                    q: 'Can I return a jar if I don\'t like the taste?',
-                    a: 'For safety reasons, we cannot accept opened jars or items returned due to personal preference.',
-                },
-                damaged: {
-                    q: 'What if the product arrives damaged?',
-                    a: 'We will replace or refund immediately. Please send us a photo within 24 hours.',
-                },
-                wrong_item: {
-                    q: 'What if I received the wrong item?',
-                    a: 'We\'ll arrange a replacement as quickly as possible.',
-                },
-                request_return: {
-                    q: 'How do I request a return?',
-                    a: 'Contact us on WhatsApp with your Order number, Photo/video, and Issue description. We respond within 1 business day.',
+                returns: {
+                    return_taste: {
+                        q: 'Can I return a jar if I don\'t like the taste?',
+                        a: 'For safety reasons, we cannot accept opened jars or items returned due to personal preference.',
+                    },
+                    damaged: {
+                        q: 'What if the product arrives damaged?',
+                        a: 'We will replace or refund immediately. Please send us a photo within 24 hours.',
+                    },
+                    wrong_item: {
+                        q: 'What if I received the wrong item?',
+                        a: 'We\'ll arrange a replacement as quickly as possible.',
+                    },
+                    request_return: {
+                        q: 'How do I request a return?',
+                        a: 'Contact us on WhatsApp with your Order number, Photo/video, and Issue description. We respond within 1 business day.',
+                    },
                 },
             },
         },
@@ -677,7 +751,7 @@ export const TRANSLATIONS = {
         nav: {
             home: 'الرئيسية',
             shop: 'تسوق',
-            bundles: 'المجموعات',
+            bundles: 'العروض',
             about: 'عنّا',
             contact: 'تواصل معنا',
             account: 'حسابي',
@@ -728,7 +802,7 @@ export const TRANSLATIONS = {
             bundles: {
                 title: 'الأكثر مبيعاً',
                 subtitle: 'مجموعات مُختارة بعناية لكل مناسبة… من الضيافه للأكل الصحي.',
-                coming_soon: 'المجموعات هتكون متاحة قريبًا…',
+                coming_soon: 'العروض هتكون متاحة قريبًا…',
             },
             bestsellers: {
                 title: 'أفضل إبداعاتنا المميّزة',
@@ -1082,6 +1156,87 @@ export const TRANSLATIONS = {
                 addToCart: 'أضف تشكيلة الضيافة للسلة',
                 trust: 'فاخرة · نظيفة · تشرّفك',
             },
+            winterBox: {
+                title: 'Winter Comfort Box',
+                tagline: 'Light, Crisp & Comforting — Your Seasonal Winter Pickle Duo',
+                included: 'Included',
+                turnips: 'Vintage-Style Turnips — Beetroot Color',
+                cucumbers: 'Low-Salt Cucumbers with Celery',
+                description: 'A winter seasonal bundle featuring Vintage-Style Turnips colored naturally with beetroot and Low-Salt Cucumbers. Clean, crisp, nostalgic flavors crafted in small batches.',
+                why: {
+                    title: 'Why You\'ll Love It',
+                    1: 'Winter-friendly pickle duo',
+                    2: 'Nostalgic Egyptian flavors — but elevated',
+                    3: 'Light, crisp, clean ingredients',
+                    4: 'Balanced acidity and gentle spice',
+                    5: 'Seasonal colors that brighten any table',
+                    6: 'Perfect for daily meals, gatherings & warm dishes',
+                },
+                uses: {
+                    title: 'Usage Moments',
+                    1: 'Cozy winter dinners',
+                    2: 'Family gatherings',
+                    3: 'Sandwiches, wraps & BBQ meals',
+                    4: 'Daily snacking',
+                    5: 'Comfort-food plates (beans, lentils, grilled meats)',
+                    6: 'Winter mezze tables',
+                },
+                reviews: {
+                    title: 'Real Reviews',
+                    1: 'The turnip color is stunning — and the taste reminds me of homemade winter jars.',
+                    2: 'Perfect light combo for everyday meals.',
+                    3: 'A beautiful seasonal box — refreshing and nostalgic.',
+                },
+                microTrust: {
+                    naturalColor: 'Natural color',
+                    smallBatch: 'Small-batch crafted',
+                    seasonal: 'Seasonal limited release',
+                },
+                addToCart: 'Add Winter Comfort Box to Cart',
+            },
+            turnips: {
+                name: 'Vintage-Style Turnips',
+                tagline: 'Crisp. Lightly Spiced. Beautifully Nostalgic.',
+                description: 'Crisp hand-cut turnips pickled gently with natural beetroot for a vibrant magenta color and a clean, balanced brine. Light spice, refreshing acidity, and a nostalgic flavor that feels just like homemade winter jars — but refined with Teta Aida’s artisanal craftsmanship.',
+                microTrust: {
+                    naturalColor: 'Natural color',
+                    clean: 'Clean ingredients',
+                    smallBatch: 'Small-batch crafted',
+                },
+                benefits: {
+                    title: 'Key Benefits',
+                    1: 'Naturally colored with real beetroot (no artificial dyes)',
+                    2: 'Light, balanced brine — not overly salty',
+                    3: 'Gentle spice suitable for all palates',
+                    4: 'Crisp, refreshing texture',
+                    5: 'Clean ingredients only',
+                    6: 'Small-batch handcrafted consistency',
+                    7: 'Nostalgic flavor — familiar, comforting, elevated',
+                },
+                flavorProfile: {
+                    title: 'Flavor Profile',
+                    texture: 'Firm, crisp slices',
+                    taste: 'Light acidity, mild spice, clean brine',
+                    aroma: 'Fresh, earthy notes from beetroot',
+                    color: 'Natural magenta hue — visually stunning on any table',
+                },
+                usage: {
+                    title: 'Usage Ideas',
+                    1: 'Hosting & mezze tables',
+                    2: 'Daily meals',
+                    3: 'Sandwiches & wraps',
+                    4: 'BBQ and grilled meats',
+                    5: 'Winter comfort dishes (beans, lentils, soups)',
+                    6: 'Healthy bowls',
+                },
+                reviews: {
+                    title: 'Reviews',
+                    1: 'Finally — turnips that taste clean and premium.',
+                    2: 'The color is gorgeous on the table. A new favorite.',
+                    3: 'Tastes like homemade, but much more refined.',
+                },
+                addToCart: 'Add Vintage-Style Turnips to Cart',
+            },
         },
 
         heatLevelSelector: {
@@ -1112,7 +1267,7 @@ export const TRANSLATIONS = {
             placeholder: 'ابحث عن المنتجات...',
             noResults: 'لا توجد نتائج',
             products: 'المنتجات',
-            collections: 'المجموعات',
+            collections: 'العروض',
             pages: 'الصفحات',
             articles: 'المقالات',
             suggestions: 'اقتراحات',
@@ -1176,7 +1331,7 @@ export const TRANSLATIONS = {
             priceDesc: 'السعر: من الأعلى للأقل',
             newest: 'الأحدث',
             bundles: {
-                title: 'المجموعات',
+                title: 'العروض',
                 description: 'تشكيلات مختارة لكل مناسبة — من الصحة للضيافة.',
             },
             bestSellers: {
@@ -1293,6 +1448,10 @@ export const TRANSLATIONS = {
                 },
             },
             products: {
+                turnips: {
+                    q: 'لماذا التوم في المخلل لونه وردي؟',
+                    a: 'هذا بسبب استخدام البنجر الطبيعي في التخليل لإعطائه اللون الوردي الجميل وطعم مميز.',
+                },
                 jar_weights: {
                     q: 'وزن البرطمان كام؟',
                     a: 'كل برطمان وزنه الإجمالي ١ كجم.',
@@ -1349,7 +1508,6 @@ export const TRANSLATIONS = {
         }
     }
 }
-
 
 export function useTranslation() {
     const root = useMatches().find((match) => match.id === 'root');

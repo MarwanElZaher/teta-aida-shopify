@@ -110,14 +110,61 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-8`}>
-        <h1>{displayTitle}</h1>
-        <p className="collection-description">{displayDescription}</p>
-      </div>
+      {collection.handle === 'bundles' ? (
+        <div
+          ref={section1.ref}
+          className={`relative w-full mb-12 cursor-none transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
+          onClick={() => (section2.ref.current as any)?.scrollIntoView({ behavior: 'smooth' })}
+          onMouseMove={(e) => {
+            const arrow = document.getElementById('hero-cursor-arrow');
+            if (arrow) {
+              arrow.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+              arrow.style.opacity = '1';
+            }
+          }}
+          onMouseLeave={() => {
+            const arrow = document.getElementById('hero-cursor-arrow');
+            if (arrow) arrow.style.opacity = '0';
+          }}
+        >
+          <div className="w-full">
+            <img
+              src="/images/bundle-hero.jpg"
+              alt={displayTitle}
+              className="w-full h-auto object-contain"
+            />
+            {/* Gradient overlay for text readability if needed, or remove if "fit totally" means clear image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+          </div>
+
+          <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none p-4">
+            {/* Simple Title Overlay at bottom */}
+            <h1 className="text-white text-3xl md:text-5xl font-serif drop-shadow-md">{displayTitle}</h1>
+          </div>
+
+          {/* Custom Follow Cursor Arrow */}
+          <div
+            id="hero-cursor-arrow"
+            className="fixed top-0 left-0 w-12 h-12 pointer-events-none z-50 text-white mix-blend-difference transition-opacity duration-200 opacity-0 flex items-center justify-center"
+            style={{ marginTop: '-24px', marginLeft: '-24px' }}
+          >
+            <div className="animate-bounce">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-10 h-10">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div ref={section1.ref} className={`transition-all duration-700 ${section1.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-8`}>
+          <h1>{displayTitle}</h1>
+          <p className="collection-description">{displayDescription}</p>
+        </div>
+      )}
       <div ref={section2.ref} className={`transition-all duration-700 delay-200 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <PaginatedResourceSection<ProductItemFragment>
           connection={collection.products}
-          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"
+          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8"
         >
           {({ node: product, index }) => (
             collection.handle === 'bundles' ? (
