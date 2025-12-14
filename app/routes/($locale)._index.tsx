@@ -46,6 +46,13 @@ export async function loader({ context }: Route.LoaderArgs) {
             .slice(0, 4);
     }
 
+    // Prioritize Vintage-Style Turnips if present
+    const turnipsIndex = bestSellingProducts.findIndex((p: any) => p.handle === 'vintage-style-turnips');
+    if (turnipsIndex > -1) {
+        const [turnips] = bestSellingProducts.splice(turnipsIndex, 1);
+        bestSellingProducts.unshift(turnips);
+    }
+
     return {
         featuredBundles,
         bestSellers: bestSellingProducts,
@@ -113,7 +120,7 @@ export default function Homepage() {
                         <p className="text-dark/70 max-w-2xl mx-auto">{t('home.bundles.subtitle')}</p>
                     </div>
 
-                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-4 md:overflow-visible scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                    <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-5 md:overflow-visible scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                         {data.featuredBundles.length > 0 ? (
                             data.featuredBundles.map((product: any) => (
                                 <div key={product.id} className="min-w-[280px] snap-center md:min-w-0">
@@ -135,7 +142,7 @@ export default function Homepage() {
                         <p className="text-dark/70 max-w-2xl mx-auto">{t('home.bestsellers.subtitle')}</p>
                     </div>
 
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10 md:gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-10 md:gap-8">
                         {data.bestSellers.length > 0 ? (
                             data.bestSellers.map((product: any) => (
                                 <ProductItem key={product.id} product={product} />
@@ -282,7 +289,7 @@ const HOMEPAGE_QUERY = `#graphql
     featured: collection(handle: "bundles") {
       id
       title
-      products(first: 4) {
+      products(first: 5) {
         nodes {
           ...ProductCard
         }
@@ -291,7 +298,7 @@ const HOMEPAGE_QUERY = `#graphql
     bestSellers: collection(handle: "best-sellers") {
       id
       title
-      products(first: 4) {
+      products(first: 5) {
         nodes {
           ...ProductCard
         }

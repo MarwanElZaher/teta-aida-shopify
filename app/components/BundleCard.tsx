@@ -43,6 +43,12 @@ export function BundleCard({ product }: BundleCardProps) {
         ? t(`product.${dictionaryKey}.tagline`)
         : metaTagline;
 
+    // Get micro-trust badge (e.g., "Seasonal limited release")
+    const metaMicroTrust = product.metafields?.find((m: any) => m?.key === 'micro_trust')?.value;
+    const microTrust = (dictionaryKey && t(`product.${dictionaryKey}.microTrust.seasonal`) !== `product.${dictionaryKey}.microTrust.seasonal`)
+        ? t(`product.${dictionaryKey}.microTrust.seasonal`)
+        : metaMicroTrust;
+
     return (
         <Link to={`${locale.pathPrefix}/products/${handle}`} className="group flex flex-col h-full min-h-[450px] hover-lift">
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-[#F0EFEB] mb-4">
@@ -56,9 +62,9 @@ export function BundleCard({ product }: BundleCardProps) {
                 )}
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/5" />
 
-                {/* Optional: "Bundle" Badge */}
+                {/* Micro-trust Badge or Bundle Badge */}
                 <div className="absolute top-3 left-3 bg-primary text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full">
-                    {t('product.bundle')}
+                    {microTrust || t('product.bundle')}
                 </div>
             </div>
 
