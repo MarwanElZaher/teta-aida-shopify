@@ -95,6 +95,215 @@ export const TRANSLATIONS = {
                 viewAll: 'View Reviews',
             },
         },
+        returnsExchange: {
+            title: 'Returns & Exchanges',
+            subtitle: 'Your satisfaction is our priority',
+            policyTitle: 'Return Policy',
+            quality: {
+                title: 'Quality Guarantee',
+                desc: "We take pride in our artisanal craftsmanship. If you receive a product that doesn't meet our premium standards, we'll make it right.",
+                items: [
+                    'Returns accepted within 7 days of delivery',
+                    'Products must be unopened and in original packaging',
+                    'Seal must be intact for food safety compliance'
+                ]
+            },
+            damaged: {
+                title: 'Damaged or Defective Items',
+                desc: "If you receive a damaged jar or notice any quality issues, please contact us immediately with photos. We'll arrange a replacement or full refund at no additional cost."
+            },
+            howTo: {
+                title: 'How to Request a Return',
+                step1: {
+                    title: 'Contact Us',
+                    whatsappText: 'Reach out via WhatsApp:',
+                    buttonText: 'Chat on WhatsApp',
+                    emailText: 'or email us at'
+                },
+                step2: { title: 'Provide Details', desc: 'Share your order number, reason for return, and photos if applicable.' },
+                step3: { title: 'Arrange Pickup or Return', desc: "We'll coordinate pickup or provide return instructions based on your location." },
+                step4: { title: 'Refund or Exchange', desc: "Once we receive the item, we'll process your refund within 3-5 business days or send a replacement." }
+            },
+            nonReturnable: {
+                title: 'Non-Returnable Items',
+                desc: 'For food safety and hygiene reasons, we cannot accept returns on:',
+                items: [
+                    'Opened or partially consumed jars',
+                    'Products with broken seals',
+                    'Items purchased from third-party sellers'
+                ]
+            },
+            cta: {
+                title: 'Need Help?',
+                desc: 'Our team is here to assist with any questions about returns or exchanges',
+                button: 'Contact Support'
+            }
+        },
+        shippingPage: {
+            hero: {
+                title: 'Shipping & Delivery',
+                subtitle: 'Fresh batches delivered to your door across Cairo'
+            },
+            areas: {
+                title: 'Delivery Areas',
+                cairo: {
+                    title: 'Cairo & Giza',
+                    desc: 'We currently deliver to all areas within Greater Cairo and Giza. Fast, reliable delivery to ensure your pickles arrive fresh.'
+                },
+                time: {
+                    title: 'Delivery Time',
+                    desc: 'Orders are typically delivered within 2-3 business days. We prepare fresh batches weekly to ensure premium quality.'
+                }
+            },
+            fees: {
+                title: 'Shipping Fees',
+                standard: {
+                    title: 'Standard Delivery',
+                    price: 'Delivery vary depending on zone',
+                    time: '2-3 business days'
+                },
+                free: {
+                    title: 'Free Delivery',
+                    price: 'Orders over EGP 1500',
+                    desc: 'Enjoy complimentary shipping'
+                }
+            },
+            tracking: {
+                title: 'Order Tracking',
+                step1: { title: 'Order Confirmation', desc: "You'll receive an email confirmation with your order details immediately after purchase." },
+                step2: { title: 'Preparation', desc: 'Your order is carefully prepared and packaged with premium care.' },
+                step3: { title: 'Delivery Updates', desc: "We'll notify you via WhatsApp when your order is out for delivery." }
+            },
+            cta: {
+                title: 'Have Questions?',
+                desc: 'Contact us for any delivery inquiries',
+                button: 'Contact Support'
+            }
+        },
+        policies: {
+            'shipping-policy': {
+                title: 'Shipping & Delivery Policy',
+                content: `
+        <h2>Shipping Areas</h2>
+        <p>We currently deliver across Greater Cairo. Additional areas will be introduced soon.</p>
+        
+        <h2>Delivery Time</h2>
+        <p>Delivery times vary based on courier routing and zone schedules:</p>
+        <ul>
+          <li><strong>1–2 working days:</strong> New Cairo, Nasr City, Heliopolis, Sheraton</li>
+          <li><strong>Up to 7–10 working days:</strong> Other serviced Cairo districts (depending on courier route availability)</li>
+        </ul>
+
+        <h2>Delivery Fees</h2>
+        <p>Delivery fees are calculated based on your location as per the table below.</p>
+        <p><em>(Shipping rates table coming soon)</em></p>
+
+        <h2>Packaging & Handling</h2>
+        <p>All jars are securely sealed and packaged to ensure safe arrival. If your order arrives damaged, please contact us immediately.</p>
+
+        <h2>Delivery Attempts</h2>
+        <p>The courier will make two delivery attempts. If unsuccessful, the order may be cancelled and delivery fees applied.</p>
+
+        <h2>Order Confirmation</h2>
+        <p>You will receive updates via SMS, WhatsApp, or email.</p>
+      `
+            },
+            'refund-policy': {
+                title: 'Refund Policy',
+                content: `
+        <h2>Refund Eligibility</h2>
+        <p>Refunds are issued ONLY in the following cases:</p>
+        <ul>
+          <li>Order arrived damaged</li>
+          <li>Wrong item was delivered</li>
+          <li>Product quality issue confirmed by our team</li>
+          <li>Delivery failed due to our error</li>
+        </ul>
+        <p>Refunds are processed within 3–7 working days depending on your payment method.</p>
+
+        <h2>Non-Refundable Items</h2>
+        <p>Refunds are not issued for:</p>
+        <ul>
+          <li>Opened jars</li>
+          <li>Incorrect heat-level selection</li>
+          <li>Change of mind</li>
+          <li>Incorrect address provided by customer</li>
+          <li>Failed delivery after 2 attempts</li>
+        </ul>
+      `
+            },
+            'privacy-policy': {
+                title: 'Privacy Policy',
+                content: `
+        <p>At Teta Aida, your privacy is important to us. We collect only the information needed to prepare and deliver your order.</p>
+
+        <h2>Information We Collect</h2>
+        <ul>
+          <li>Name</li>
+          <li>Phone number</li>
+          <li>Delivery address</li>
+          <li>Order details</li>
+          <li>Optional email address</li>
+        </ul>
+
+        <h2>How We Use Your Information</h2>
+        <ul>
+          <li>To process and deliver your order</li>
+          <li>To communicate about delivery updates</li>
+          <li>To improve our service</li>
+        </ul>
+
+        <h2>We Do NOT:</h2>
+        <ul>
+          <li>Sell your data</li>
+          <li>Share it with third parties unrelated to your delivery</li>
+          <li>Store payment details on our servers (payments are processed securely by your bank or payment gateway)</li>
+        </ul>
+
+        <h2>Cookies</h2>
+        <p>We use cookies to improve website performance and provide a better experience.</p>
+
+        <h2>Your Rights</h2>
+        <p>You may request to update or delete your information at any time via WhatsApp.</p>
+      `
+            },
+            'terms-of-service': {
+                title: 'Return & Exchange Policy',
+                content: `
+        <p>Because our products are fresh, edible items, we follow strict safety and hygiene guidelines.</p>
+
+        <h2>We Accept Returns ONLY If:</h2>
+        <ul>
+          <li>The product arrived damaged</li>
+          <li>The jar was broken or leaked</li>
+          <li>You received the wrong item</li>
+        </ul>
+        <p>In these cases, we will replace the jar or refund the full amount.</p>
+
+        <h2>We Do NOT Accept Returns If:</h2>
+        <ul>
+          <li>The jar was opened</li>
+          <li>The product was partially consumed</li>
+          <li>You changed your mind</li>
+          <li>Heat level selection was chosen incorrectly</li>
+          <li>You decided to switch flavors after delivery</li>
+        </ul>
+        <p>This is for product safety, quality, and customer protection.</p>
+
+        <h2>Time Limit</h2>
+        <p>Return requests must be submitted within 24 hours of receiving your order.</p>
+
+        <h2>How to Request a Return</h2>
+        <p>Send us on WhatsApp:</p>
+        <ul>
+          <li>Photo of the jar</li>
+          <li>Order number</li>
+          <li>Short explanation</li>
+        </ul>
+        <p>We respond within 1 working day.</p>
+      `
+            }
+        },
         product: {
             customizeBundle: 'Customize Your Bundle',
             selectHeatInstructions: 'Select the heat level for each item in your bundle:',
@@ -843,6 +1052,218 @@ export const TRANSLATIONS = {
                 quote4: 'بقى الزيتون المفضل عندي.',
                 viewAll: 'عرض كل المراجعات',
             },
+        },
+        returnsExchange: {
+            title: 'سياسة الاسترجاع والاستبدال',
+            subtitle: 'رضاك هو أولويتنا',
+            policyTitle: 'سياسة الاسترجاع',
+            quality: {
+                title: 'ضمان الجودة',
+                desc: "نظرًا لطبيعة المنتجات (طعام طازج)، نتّبع أعلى معايير السلامة. يُقبل الاسترجاع فقط إذا:",
+                items: [
+                    'وصل المنتج تالفًا',
+                    'البرطمان مكسور أو مسرّب',
+                    'استلمت منتجًا مختلفًا'
+                ]
+            },
+            damaged: {
+                title: 'الاستبدال والاسترجاع',
+                desc: "في الحالات المذكورة أعلاه: نعيد الإرسال أو نُرجع المبلغ كاملًا. يجب تقديم طلب الاسترجاع خلال 24 ساعة من الاستلام."
+            },
+            howTo: {
+                title: 'طريقة طلب الاسترجاع',
+                step1: {
+                    title: 'تواصل معنا',
+                    whatsappText: 'تواصل معنا عبر واتساب:',
+                    buttonText: 'راسلنا على واتساب',
+                    emailText: 'أو راسلنا على الإيميل'
+                },
+                step2: { title: 'أرسل التفاصيل', desc: 'صورة للمنتج، رقم الطلب، ووصف بسيط للمشكلة.' },
+                step3: { title: 'ترتيب الاستلام', desc: 'سنقوم بالتنسيق معك لترتيب استرجاع المنتج.' },
+                step4: { title: 'الاسترداد أو الاستبدال', desc: 'نرد خلال يوم عمل واحد ونقوم بالإجراء اللازم.' }
+            },
+            nonReturnable: {
+                title: 'لا يُقبل الاسترجاع إذا:',
+                desc: 'حرصاً على السلامة العامة، لا نقبل الاسترجاع في الحالات التالية:',
+                items: [
+                    'تم فتح البرطمان أو استهلاك جزء من المنتج',
+                    'تغيّر رأيك',
+                    'اختيار مستوى الحِدّة كان خطأ',
+                    'رغبت في تغيير النكهة بعد التوصيل'
+                ]
+            },
+            cta: {
+                title: 'محتاج مساعدة؟',
+                desc: 'فريقنا موجود عشان يساعدك في أي استفسار',
+                button: 'تواصل مع الدعم'
+            }
+        },
+        shippingPage: {
+            hero: {
+                title: 'الشحن والتوصيل',
+                subtitle: 'دفعات طازجة توصل لباب بيتك في القاهرة'
+            },
+            areas: {
+                title: 'مناطق التوصيل',
+                cairo: {
+                    title: 'القاهرة والجيزة',
+                    desc: 'بنوصّل حالياً لكل المناطق في القاهرة الكبرى والجيزة. توصيل سريع وموثوق عشان نضمن إن المخلل يوصل فريش.'
+                },
+                time: {
+                    title: 'وقت التوصيل',
+                    desc: 'الطلبات بتوصل عادةً خلال 2-3 أيام عمل. بنحضّر دفعات فريش أسبوعياً عشان نضمن الجودة الممتازة.'
+                }
+            },
+            fees: {
+                title: 'رسوم الشحن',
+                standard: {
+                    title: 'التوصيل العادي',
+                    price: 'التوصيل بيختلف حسب المنطقة',
+                    time: '2-3 أيام عمل'
+                },
+                free: {
+                    title: 'توصيل مجاني',
+                    price: 'للطلبات فوق 1500 جنيه',
+                    desc: 'استمتع بشحن مجاني'
+                }
+            },
+            tracking: {
+                title: 'تتبع الطلب',
+                step1: { title: 'تأكيد الطلب', desc: 'هيوصلك إيميل بتفاصيل طلبك فوراً بعد الشراء.' },
+                step2: { title: 'التحضير', desc: 'طلبك بيتحضّر ويتغلّف بعناية فائقة.' },
+                step3: { title: 'تحديثات التوصيل', desc: 'هنبعتلك على واتساب لما الطلب يخرج للتوصيل.' }
+            },
+            cta: {
+                title: 'عندك أسئلة؟',
+                desc: 'تواصل معنا لأي استفسار بخصوص التوصيل',
+                button: 'تواصل مع الدعم'
+            }
+        },
+        policies: {
+            'shipping-policy': {
+                title: 'الشحن والتوصيل',
+                content: `
+        <h2>مناطق الشحن</h2>
+        <p>نوفّر التوصيل حاليًا داخل القاهرة الكبرى و الجيزه.</p>
+        <p>وسيتم إضافة مناطق جديدة قريبًا.</p>
+        
+        <h2>مدة التوصيل</h2>
+        <p>حسب خط السير والحي:</p>
+        <ul>
+          <li><strong>١–٢ يوم عمل:</strong> التجمع • مدينة نصر • مصر الجديدة • شيراتون</li>
+          <li><strong>٧–١٠ أيام عمل:</strong> المناطق الأخرى داخل القاهرة (حسب توافر خط السير)</li>
+        </ul>
+
+        <h2>رسوم التوصيل</h2>
+        <p>تُحسب الرسوم حسب المنطقة — وسيتم توفير جدول تفصيلي لاحقًا.</p>
+
+        <h2>التغليف</h2>
+        <p>جميع البرطمانات تُغلّف بإحكام لضمان وصولها بأفضل حال.</p>
+        <p>في حال حدوث كسر أو تسريب — نرجو التواصل فورًا.</p>
+
+        <h2>محاولات التوصيل</h2>
+        <p>يقوم المندوب بمحاولتين للتسليم.</p>
+        <p>في حال عدم الاستلام قد يُلغى الطلب ويتم إضافة رسوم التوصيل.</p>
+
+        <h2>تأكيد الطلب</h2>
+        <p>ستصلك رسائل تأكيد عبر واتساب / SMS / أو البريد.</p>
+
+        <h2>مساعدة؟</h2>
+        <p>واتساب: <a href="https://wa.me/201007666649" target="_blank" dir="ltr">+20 100 766 6649</a></p>
+      `
+            },
+            'refund-policy': {
+                title: 'سياسة الاسترداد',
+                content: `
+        <h2>يتم إصدار الاسترداد فقط في الحالات التالية:</h2>
+        <ul>
+          <li>المنتج وصل تالفًا</li>
+          <li>خطأ في الطلب</li>
+          <li>مشكلة جودة مثبتة</li>
+          <li>فشل التوصيل بسبب خطأ منا</li>
+        </ul>
+        <p>الاسترداد يتم خلال ٣–٧ أيام عمل حسب طريقة الدفع.</p>
+
+        <h2>لا يتم الاسترداد إذا:</h2>
+        <ul>
+          <li>البرطمان مفتوح</li>
+          <li>اختيار مستوى الحِدّة غير صحيح</li>
+          <li>تراجع عن الشراء</li>
+          <li>عنوان خاطئ</li>
+          <li>فشل التسليم بعد محاولتين</li>
+        </ul>
+      `
+            },
+            'privacy-policy': {
+                title: 'سياسة الخصوصية',
+                content: `
+        <p>في تيته عايدة، خصوصيتك مهمة جدًا.</p>
+
+        <h2>المعلومات التي نجمعها:</h2>
+        <ul>
+          <li>الاسم</li>
+          <li>رقم الهاتف</li>
+          <li>عنوان التوصيل</li>
+          <li>تفاصيل الطلب</li>
+          <li>البريد الإلكتروني (اختياري)</li>
+        </ul>
+
+        <h2>كيف نستخدم بياناتك؟</h2>
+        <ul>
+          <li>تجهيز الطلب</li>
+          <li>التنسيق مع المندوب</li>
+          <li>تحسين الخدمة</li>
+        </ul>
+
+        <h2>لا نقوم أبدًا بـ:</h2>
+        <ul>
+          <li>✘ بيع بياناتك</li>
+          <li>✘ مشاركتها مع طرف خارجي غير مسؤول التوصيل</li>
+          <li>✘ تخزين بيانات الدفع على خوادمنا</li>
+        </ul>
+
+        <h2>الكوكيز</h2>
+        <p>نستخدمها لتحسين الأداء وتجربة الاستخدام.</p>
+
+        <h2>حقوقك</h2>
+        <p>يمكنك طلب تعديل أو حذف بياناتك في أي وقت عبر واتساب.</p>
+      `
+            },
+            'terms-of-service': {
+                title: 'سياسة الاسترجاع',
+                content: `
+        <p>نظرًا لطبيعة المنتجات (طعام طازج)، نتّبع أعلى معايير السلامة.</p>
+
+        <h2>يُقبل الاسترجاع فقط إذا:</h2>
+        <ul>
+          <li>وصل المنتج تالفًا</li>
+          <li>البرطمان مكسور أو مسرّب</li>
+          <li>استلمت منتجًا مختلفًا</li>
+        </ul>
+        <p>في هذه الحالات: نعيد الإرسال أو نُرجع المبلغ كاملًا.</p>
+
+        <h2>لا يُقبل الاسترجاع إذا:</h2>
+        <ul>
+          <li>تم فتح البرطمان</li>
+          <li>تم استهلاك جزء من المنتج</li>
+          <li>تغيّر رأيك</li>
+          <li>اختيار مستوى الحِدّة كان خطأ</li>
+          <li>رغبت في تغيير النكهة بعد التوصيل</li>
+        </ul>
+
+        <h2>المدة الزمنية</h2>
+        <p>يجب تقديم طلب الاسترجاع خلال 24 ساعة من الاستلام.</p>
+
+        <h2>طريقة الطلب</h2>
+        <p>أرسل عبر واتساب:</p>
+        <ul>
+          <li>صورة للمنتج</li>
+          <li>رقم الطلب</li>
+          <li>وصف بسيط للمشكلة</li>
+        </ul>
+        <p>نرد خلال يوم عمل واحد.</p>
+      `
+            }
         },
         product: {
             customizeBundle: 'صمم مجموعتك',

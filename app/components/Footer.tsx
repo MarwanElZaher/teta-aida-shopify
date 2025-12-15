@@ -129,6 +129,7 @@ function getFooterMenuItemTranslation(title: string, t: (key: string) => string)
     'Returns & Exchanges': t('pages.returns'),
     'Terms of Service': t('pages.terms'),
     'Whatsapp': t('pages.whatsapp'),
+    'التعليمات': t('pages.faq'),
   };
 
   return titleMap[title] || title;
