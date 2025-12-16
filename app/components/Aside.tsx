@@ -75,7 +75,7 @@ export function Aside({
         <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white flex-shrink-0">
           <h3 className="font-serif text-xl font-bold text-primary uppercase tracking-wide">{heading}</h3>
           <button
-            className="w-8 h-8 flex items-center justify-center text-2xl text-dark/50 hover:text-primary transition-colors rounded-full hover:bg-gray-100"
+            className="z-50 w-8 h-8 flex items-center justify-center text-2xl text-dark/50 hover:text-primary transition-colors rounded-full hover:bg-gray-100"
             onClick={close}
             aria-label="Close"
           >
