@@ -137,9 +137,9 @@ export default function Collection() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
           </div>
 
-          <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none p-4">
+          <div className="absolute bottom-2 left-0 right-0 text-center pointer-events-none p-4">
             {/* Simple Title Overlay at bottom */}
-            <h1 className="text-white text-3xl md:text-5xl font-serif drop-shadow-md">{displayTitle}</h1>
+            <h3 className="text-white text-2xl md:text-5xl font-serif drop-shadow-md">{displayTitle}</h3>
           </div>
 
           {/* Custom Follow Cursor Arrow */}

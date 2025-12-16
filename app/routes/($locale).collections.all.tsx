@@ -99,7 +99,7 @@ export default function Collection() {
         </div>
 
         <div className="absolute bottom-4 md:bottom-8 left-0 right-0 text-center pointer-events-none p-4">
-          <h1 className="text-white text-2xl md:text-5xl font-serif drop-shadow-md">{t('collections.allProducts')}</h1>
+          <h3 className="text-white text-2xl md:text-5xl font-serif drop-shadow-md">{t('collections.allProducts')}</h3>
         </div>
 
         {/* Custom Follow Cursor Arrow */}
