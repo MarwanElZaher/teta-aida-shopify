@@ -211,7 +211,7 @@ export default function LemonsALP() {
 
             {/* Sticky CTA */}
             {isSticky && (
-                <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-50 md:hidden">
+                <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-dark/10 shadow-lg z-40 md:hidden">
                     <div className="px-4 py-3">
                         <AddToCartButton {...addToCartProps} className="w-full h-12 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm">
                             {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}

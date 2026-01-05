@@ -71,7 +71,7 @@ export function Aside({
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside className="flex flex-col">
+      <aside className="flex flex-col z-50">
         <header className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-white flex-shrink-0">
           <h3 className="font-serif text-xl font-bold text-primary uppercase tracking-wide">{heading}</h3>
           <button
