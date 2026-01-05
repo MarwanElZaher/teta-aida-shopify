@@ -38,12 +38,15 @@ type HeatLevels = {
 
 export default function HostingBoxALP() {
     const { product } = useLoaderData<typeof loader>();
-    const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        olives1: null,
-        olives2: null,
-        harissa: null,
-        choice: null,
-    });
+    // Parse bundle_items from metafields
+    const bundleItemsMetafield = product.metafields?.find((m: any) => m?.key === 'bundle_items')?.value;
+    const bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
+        ? JSON.parse(bundleItemsMetafield) as { name: string; heatLevels: string[] }[]
+        : [];
+
+    // State for selections
+    const [selections, setSelections] = useState<Record<string, string>>({});
+
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
     const { t, locale, isRtl } = useTranslation();
@@ -66,7 +69,7 @@ export default function HostingBoxALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const allHeatLevelsSelected = heatLevels.olives1 !== null && heatLevels.olives2 !== null && heatLevels.harissa !== null && heatLevels.choice !== null;
+    const allHeatLevelsSelected = bundleItems.length > 0 && bundleItems.every((item) => selections[item.name]);
 
     const addToCartProps = {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
@@ -74,12 +77,10 @@ export default function HostingBoxALP() {
         lines: selectedVariant && allHeatLevelsSelected ? [{
             merchandiseId: selectedVariant.id,
             quantity: 1,
-            attributes: [
-                { key: t('product.attributes.Olives 1 Heat'), value: t(`product.heatLevels.${heatLevels.olives1}`) },
-                { key: t('product.attributes.Olives 2 Heat'), value: t(`product.heatLevels.${heatLevels.olives2}`) },
-                { key: t('product.attributes.Harissa Heat'), value: t(`product.heatLevels.${heatLevels.harissa}`) },
-                { key: t('product.attributes.Cabbage/Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.choice}`) },
-            ],
+            attributes: bundleItems.map(item => ({
+                key: `${item.name} Heat`,
+                value: t(`product.heatLevels.${selections[item.name]?.toLowerCase()}`)
+            })),
         }] : [],
     };
 
@@ -114,81 +115,50 @@ export default function HostingBoxALP() {
                             {t('product.hostingBox.included')}
                         </h2>
 
-                        {/* Olives 1 */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.hostingBox.olives1')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal', 'spicy'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, olives1: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives1 === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        {bundleItems.map((item, index) => {
+                            // Map English names to translation keys
+                            let displayName = item.name;
+                            const nameLower = item.name.toLowerCase();
 
-                        {/* Olives 2 */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.hostingBox.olives2')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal', 'spicy'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, olives2: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.olives2 === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                            if (nameLower.includes('olives')) {
+                                displayName = t('product.olives.name');
+                                // Handle numbered olives if distinguished in name, or just use generic name
+                                if (nameLower.includes('#1') || nameLower.includes('1')) displayName = `${t('product.olives.name')} (1)`;
+                                if (nameLower.includes('#2') || nameLower.includes('2')) displayName = `${t('product.olives.name')} (2)`;
+                            } else if (nameLower.includes('cucumber')) {
+                                displayName = t('product.cucumbers.name');
+                            } else if (nameLower.includes('cabbage')) {
+                                displayName = t('product.cabbage.name');
+                            } else if (nameLower.includes('lemon') || nameLower.includes('harissa')) {
+                                displayName = t('product.lemons.name');
+                            }
 
-                        {/* Harissa */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.hostingBox.harissa')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'spicy'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, harissa: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.harissa === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                            return (
+                                <div key={item.name} className={`mb-6 pb-6 ${index !== bundleItems.length - 1 ? 'border-b border-dark/10' : ''}`}>
+                                    <h3 className="font-bold text-dark mb-2">• {displayName}</h3>
+                                    <div className="flex gap-2 mt-3">
+                                        {item.heatLevels.map((level) => (
+                                            <button
+                                                key={level}
+                                                onClick={() => setSelections(prev => ({ ...prev, [item.name]: level }))}
+                                                className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${selections[item.name] === level
+                                                    ? 'border-primary bg-primary text-white'
+                                                    : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                                    }`}
+                                            >
+                                                {t(`product.heatLevels.${level.toLowerCase()}`)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
 
-                        {/* Choice */}
-                        <div className="mb-6">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.hostingBox.choice')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, choice: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.choice === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        {bundleItems.length === 0 && (
+                            <p className="text-dark/60 italic text-center">
+                                {t('product.loadingConfig') || "Loading bundle configuration..."}
+                            </p>
+                        )}
                     </div>
 
                     {/* Price & CTA */}
@@ -297,6 +267,10 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {
+        key
+        value
+      }
       featuredImage {
         id
         url

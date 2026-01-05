@@ -36,10 +36,15 @@ type HeatLevels = {
 
 export default function HealthyLivingALP() {
     const { product } = useLoaderData<typeof loader>();
-    const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        cucumbers: null,
-        cabbage: null,
-    });
+    // Parse bundle_items from metafields
+    const bundleItemsMetafield = product.metafields?.find((m: any) => m?.key === 'bundle_items')?.value;
+    const bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
+        ? JSON.parse(bundleItemsMetafield) as { name: string; heatLevels: string[] }[]
+        : [];
+
+    // State for selections
+    const [selections, setSelections] = useState<Record<string, string>>({});
+
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
     const { t } = useTranslation();
@@ -62,7 +67,7 @@ export default function HealthyLivingALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const allHeatLevelsSelected = heatLevels.cucumbers !== null && heatLevels.cabbage !== null;
+    const allHeatLevelsSelected = bundleItems.length > 0 && bundleItems.every((item) => selections[item.name]);
 
     const addToCartProps = {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
@@ -70,10 +75,10 @@ export default function HealthyLivingALP() {
         lines: selectedVariant && allHeatLevelsSelected ? [{
             merchandiseId: selectedVariant.id,
             quantity: 1,
-            attributes: [
-                { key: t('product.attributes.Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.cucumbers}`) },
-                { key: t('product.attributes.Cabbage Heat'), value: t(`product.heatLevels.${heatLevels.cabbage}`) },
-            ],
+            attributes: bundleItems.map(item => ({
+                key: `${item.name} Heat`,
+                value: t(`product.heatLevels.${selections[item.name]?.toLowerCase()}`)
+            })),
         }] : [],
     };
 
@@ -108,43 +113,42 @@ export default function HealthyLivingALP() {
                             {t('product.healthyBox.included')}
                         </h2>
 
-                        {/* Cucumbers */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.healthyBox.cucumbers')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, cucumbers: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.cucumbers === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                        {bundleItems.map((item, index) => {
+                            let displayName = item.name;
+                            const nameLower = item.name.toLowerCase();
 
-                        {/* Cabbage */}
-                        <div className="mb-6">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.healthyBox.cabbage')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, cabbage: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.cabbage === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                            if (nameLower.includes('cucumber')) {
+                                displayName = t('product.cucumbers.name');
+                            } else if (nameLower.includes('cabbage')) {
+                                displayName = t('product.cabbage.name');
+                            }
+
+                            return (
+                                <div key={item.name} className={`mb-6 pb-6 ${index !== bundleItems.length - 1 ? 'border-b border-dark/10' : ''}`}>
+                                    <h3 className="font-bold text-dark mb-2">• {displayName}</h3>
+                                    <div className="flex gap-2 mt-3">
+                                        {item.heatLevels.map((level) => (
+                                            <button
+                                                key={level}
+                                                onClick={() => setSelections(prev => ({ ...prev, [item.name]: level }))}
+                                                className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${selections[item.name] === level
+                                                    ? 'border-primary bg-primary text-white'
+                                                    : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                                    }`}
+                                            >
+                                                {t(`product.heatLevels.${level.toLowerCase()}`)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                        {bundleItems.length === 0 && (
+                            <p className="text-dark/60 italic text-center">
+                                {t('product.loadingConfig') || "Loading bundle configuration..."}
+                            </p>
+                        )}
                     </div>
 
                     {/* Price & CTA */}
@@ -253,6 +257,10 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {
+        key
+        value
+      }
       featuredImage {
         id
         url

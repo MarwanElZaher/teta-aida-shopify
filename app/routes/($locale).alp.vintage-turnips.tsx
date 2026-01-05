@@ -32,7 +32,29 @@ export async function loader({ context }: LoaderFunctionArgs) {
 
 export default function TurnipsALP() {
     const { product } = useLoaderData<typeof loader>();
-    const [selectedHeat, setSelectedHeat] = useState<'mild' | null>('mild'); // Default to Mild/Light Spicy
+    // Parse bundle_items from metafields (expected to be an array with 1 item for single products)
+    const bundleItemsMetafield = product.metafields?.find((m: any) => m?.key === 'bundle_items')?.value;
+    const bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
+        ? JSON.parse(bundleItemsMetafield) as { name: string; heatLevels: string[] }[]
+        : [];
+
+    const productItem = bundleItems[0];
+
+    let availableHeatLevels: string[] = [];
+    if (productItem?.heatLevels) {
+        availableHeatLevels = productItem.heatLevels;
+    } else if (product.options) {
+        // Fallback
+        const heatOption = product.options.find((o: any) =>
+            o.name.toLowerCase().includes('heat') || o.name.toLowerCase().includes('spice') || o.name.toLowerCase().includes('level')
+        ) || product.options[0];
+
+        if (heatOption?.values) {
+            availableHeatLevels = heatOption.values;
+        }
+    }
+
+    const [selectedHeat, setSelectedHeat] = useState<string | null>(null);
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
     const { t } = useTranslation();
@@ -42,8 +64,20 @@ export default function TurnipsALP() {
     const section3 = useScrollAnimation();
     const section4 = useScrollAnimation();
 
-    const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
-    const price = selectedVariant?.price;
+    // Determine which variant to use
+    const hasBundleConfig = bundleItems.length > 0;
+    let effectiveVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
+
+    if (!hasBundleConfig && selectedHeat && product.variants?.nodes) {
+        const matchedVariant = product.variants.nodes.find((v: any) =>
+            v.selectedOptions.some((opt: any) => opt.value === selectedHeat)
+        );
+        if (matchedVariant) {
+            effectiveVariant = matchedVariant;
+        }
+    }
+
+    const price = effectiveVariant?.price;
 
     useEffect(() => {
         const handleScroll = () => {
@@ -54,13 +88,20 @@ export default function TurnipsALP() {
     }, []);
 
     const addToCartProps = {
-        disabled: !selectedVariant?.availableForSale,
+        disabled: !effectiveVariant?.availableForSale || !selectedHeat,
         onClick: () => open('cart'),
-        lines: selectedVariant ? [{
-            merchandiseId: selectedVariant.id,
+        lines: effectiveVariant && selectedHeat ? [{
+            merchandiseId: effectiveVariant.id,
             quantity: 1,
-            selectedVariant,
-            attributes: [{ key: t('product.attributes.Heat Level'), value: t('product.heatLevels.Mild') }],
+            selectedVariant: effectiveVariant,
+            attributes: hasBundleConfig
+                ? [{
+                    key: t('product.attributes.Heat Level'),
+                    value: ['mild', 'normal', 'spicy'].includes(selectedHeat.toLowerCase())
+                        ? t(`product.heatLevels.${selectedHeat.toLowerCase()}`)
+                        : selectedHeat
+                }]
+                : [],
         }] : [],
     };
 
@@ -93,15 +134,40 @@ export default function TurnipsALP() {
                                 <span className="font-bold">{t('product.grossWeight')}:</span> 1 Kg
                             </div>
 
-                            {/* Heat Level Display (Fixed) */}
-                            <div className="space-y-3">
-                                <label className="block text-sm font-bold text-dark uppercase tracking-wide">
-                                    {t('product.heatLevel')}:
-                                </label>
-                                <div className="inline-block py-2 px-4 rounded-lg border-2 border-primary bg-primary text-white font-bold uppercase text-sm tracking-wide">
-                                    {t('product.heatLevels.mild')}
+                            {/* Heat Level Selector */}
+                            {availableHeatLevels.length > 0 && (
+                                <div className="space-y-3">
+                                    <label className="block text-sm font-bold text-dark uppercase tracking-wide">
+                                        {t('product.selectHeatLevel')}:
+                                    </label>
+                                    <div className="flex gap-3">
+                                        {availableHeatLevels.map((level) => {
+                                            const heatKey = level.toLowerCase();
+                                            const isKnownKey = ['mild', 'normal', 'spicy'].includes(heatKey);
+                                            const label = isKnownKey ? t(`product.heatLevels.${heatKey}`) : level;
+
+                                            return (
+                                                <button
+                                                    key={level}
+                                                    onClick={() => setSelectedHeat(level)}
+                                                    className={`flex-1 py-3 px-4 rounded-lg border-2 font-bold uppercase text-sm tracking-wide transition-all ${selectedHeat === level
+                                                        ? 'border-primary bg-primary text-white'
+                                                        : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                                        }`}
+                                                >
+                                                    {label}
+                                                </button>
+                                            )
+                                        })}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+
+                            {availableHeatLevels.length === 0 && (
+                                <p className="text-sm text-dark/40 italic">
+                                    {t('product.loadingConfig') || "Loading options..."}
+                                </p>
+                            )}
 
                             {/* Price */}
                             {price && (
@@ -112,7 +178,7 @@ export default function TurnipsALP() {
 
                             {/* Add to Cart */}
                             <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
-                                {t('product.addToCart')}
+                                {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                             </AddToCartButton>
 
                             <div className="flex justify-center gap-4 text-xs text-dark/60">
@@ -226,6 +292,10 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {
+        key
+        value
+      }
       media(first: 10) {
         nodes {
           ... on MediaImage {
@@ -244,6 +314,10 @@ const PRODUCT_QUERY = `#graphql
         nodes {
           id
           availableForSale
+          selectedOptions {
+             name
+             value
+          }
           price {
             amount
             currencyCode
@@ -254,6 +328,29 @@ const PRODUCT_QUERY = `#graphql
             altText
             width
             height
+          }
+          product {
+            handle
+            title
+          }
+        }
+      }
+      options {
+        name
+        values
+      }
+      variants(first: 20) {
+        nodes {
+          id
+          title
+          availableForSale
+          selectedOptions {
+            name
+            value
+          }
+          price {
+            amount
+            currencyCode
           }
           product {
             handle

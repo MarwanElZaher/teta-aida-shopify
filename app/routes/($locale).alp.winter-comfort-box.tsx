@@ -10,7 +10,7 @@ import { useTranslation } from '~/lib/translations';
 export const meta: MetaFunction = () => {
     return [
         { title: 'Winter Comfort Box | Seasonal Bundle | Teta Aida' },
-        { name: 'description', content: 'A limited winter seasonal bundle featuring Vintage-Style Beetroot Turnips and Low-Salt Cucumbers. Clean, crisp, nostalgic winter flavors.' },
+        { name: 'description', content: 'A limited winter seasonal bundle featuring Vintage-Style Beetroot Turnips and Infused Cabbage. Clean, crisp, nostalgic winter flavors.' },
         { name: 'keywords', content: 'winter pickles egypt, winter comfort box, seasonal bundles cairo, turnip pickles beetroot, winter mezze box' },
     ];
 };
@@ -29,20 +29,45 @@ export async function loader({ context }: LoaderFunctionArgs) {
     return { product };
 }
 
-type HeatLevels = {
-    turnips: 'mild' | null;
-    cucumbers: 'mild' | 'normal' | null;
-};
 
 export default function WinterComfortALP() {
     const { product } = useLoaderData<typeof loader>();
-    const [heatLevels, setHeatLevels] = useState<HeatLevels>({
-        turnips: 'mild', // Default to mild as per brief
-        cucumbers: null,
-    });
+    // Parse bundle_items from metafields
+    const bundleItemsMetafield = product.metafields?.find((m: any) => m?.key === 'bundle_items')?.value;
+    let bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
+        ? JSON.parse(bundleItemsMetafield) as { name: string; heatLevels: string[] }[]
+        : [];
+
+    // Fallback: If no bundle_items, try to derive from product options (variants)
+    // This allows the page to work for single products (one item bundle) without a metafield.
+    const hasBundleConfig = bundleItems.length > 0;
+    if (!hasBundleConfig && product.options) {
+        // Look for an option that represents heat/spice
+        const heatOption = product.options.find((opt: any) =>
+            /heat|spice|level|flavor/i.test(opt.name)
+        ) || product.options[0]; // Default to first option if no match
+
+        if (heatOption && heatOption.values.length > 0) {
+            // Treat the product itself as the single item in the bundle
+            bundleItems = [{
+                name: product.title,
+                heatLevels: heatOption.values
+            }];
+        }
+    }
+
+    // State for selections
+    const [selections, setSelections] = useState<Record<string, string>>({});
+
     const [isSticky, setIsSticky] = useState(false);
     const { open } = useAside();
     const { t } = useTranslation();
+
+    // Derived state for fallback variant selection
+    const selectedHeat = Object.values(selections)[0] || '';
+    const effectiveVariant = product.variants?.nodes?.find((variant: any) =>
+        variant.selectedOptions.some((opt: any) => opt.value === selectedHeat)
+    );
 
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
@@ -62,18 +87,23 @@ export default function WinterComfortALP() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const allHeatLevelsSelected = heatLevels.turnips !== null && heatLevels.cucumbers !== null;
+    const allHeatLevelsSelected = bundleItems.length > 0 && bundleItems.every((item) => selections[item.name]);
 
     const addToCartProps = {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
         onClick: () => open('cart'),
         lines: selectedVariant && allHeatLevelsSelected ? [{
-            merchandiseId: selectedVariant.id,
+            merchandiseId: hasBundleConfig ? selectedVariant.id : effectiveVariant?.id || selectedVariant.id,
             quantity: 1,
-            attributes: [
-                { key: t('product.attributes.Turnips Heat'), value: t(`product.heatLevels.${heatLevels.turnips}`) },
-                { key: t('product.attributes.Cucumbers Heat'), value: t(`product.heatLevels.${heatLevels.cucumbers}`) },
-            ],
+            selectedVariant: hasBundleConfig ? selectedVariant : effectiveVariant || selectedVariant,
+            attributes: hasBundleConfig
+                ? bundleItems.map(item => ({
+                    key: `${item.name} Heat`,
+                    value: ['mild', 'normal', 'spicy'].includes(selections[item.name]?.toLowerCase())
+                        ? t(`product.heatLevels.${selections[item.name]?.toLowerCase()}`)
+                        : selections[item.name]
+                }))
+                : [], // No custom attributes if using direct variant fallback
         }] : [],
     };
 
@@ -108,34 +138,44 @@ export default function WinterComfortALP() {
                             {t('product.winterBox.included')}
                         </h2>
 
-                        {/* Turnips - Fixed Heat Level */}
-                        <div className="mb-6 pb-6 border-b border-dark/10">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.winterBox.turnips')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                <div className="py-2 px-3 rounded-lg border-2 border-primary bg-primary text-white font-bold uppercase text-xs tracking-wide">
-                                    {t('product.heatLevels.mild')}
-                                </div>
-                            </div>
-                        </div>
+                        {bundleItems.map((item, index) => {
+                            let displayName = item.name;
+                            const nameLower = item.name.toLowerCase();
 
-                        {/* Cucumbers - Selector */}
-                        <div className="mb-6">
-                            <h3 className="font-bold text-dark mb-2">• {t('product.winterBox.cucumbers')}</h3>
-                            <div className="flex gap-2 mt-3">
-                                {(['mild', 'normal'] as const).map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setHeatLevels({ ...heatLevels, cucumbers: level })}
-                                        className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${heatLevels.cucumbers === level
-                                            ? 'border-primary bg-primary text-white'
-                                            : 'border-dark/20 bg-white text-dark hover:border-primary'
-                                            }`}
-                                    >
-                                        {t(`product.heatLevels.${level}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
+                            if (nameLower.includes('turnip')) {
+                                displayName = t('product.turnips.name');
+                            } else if (nameLower.includes('cucumber')) {
+                                displayName = t('product.cucumbers.name');
+                            } else if (nameLower.includes('cabbage')) {
+                                displayName = t('product.cabbage.name');
+                            }
+
+                            return (
+                                <div key={item.name} className={`mb-6 pb-6 ${index !== bundleItems.length - 1 ? 'border-b border-dark/10' : ''}`}>
+                                    <h3 className="font-bold text-dark mb-2">• {displayName}</h3>
+                                    <div className="flex gap-2 mt-3">
+                                        {item.heatLevels.map((level) => (
+                                            <button
+                                                key={level}
+                                                onClick={() => setSelections(prev => ({ ...prev, [item.name]: level }))}
+                                                className={`flex-1 py-2 px-3 rounded-lg border-2 font-bold uppercase text-xs tracking-wide transition-all ${selections[item.name] === level
+                                                    ? 'border-primary bg-primary text-white'
+                                                    : 'border-dark/20 bg-white text-dark hover:border-primary'
+                                                    }`}
+                                            >
+                                                {t(`product.heatLevels.${level.toLowerCase()}`)}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+
+                        {bundleItems.length === 0 && (
+                            <p className="text-dark/60 italic text-center">
+                                {t('product.loadingConfig') || "Loading bundle configuration..."}
+                            </p>
+                        )}
                     </div>
 
                     {/* Price & CTA */}
@@ -244,6 +284,10 @@ const PRODUCT_QUERY = `#graphql
       id
       title
       handle
+      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {
+        key
+        value
+      }
       featuredImage {
         id
         url
@@ -269,6 +313,29 @@ const PRODUCT_QUERY = `#graphql
             altText
             width
             height
+          }
+          product {
+            handle
+            title
+          }
+        }
+      }
+      options {
+        name
+        values
+      }
+      variants(first: 20) {
+        nodes {
+          id
+          title
+          availableForSale
+          selectedOptions {
+            name
+            value
+          }
+          price {
+            amount
+            currencyCode
           }
           product {
             handle
