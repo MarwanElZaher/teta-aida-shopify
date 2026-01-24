@@ -8,6 +8,17 @@ import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
+    const locale = data?.locale || { language: 'EN' };
+    const isArabic = locale.language === 'AR';
+
+    if (isArabic) {
+        return [
+            { title: 'تشكيلة عشّاق الزيتون | زيتون تفاحي مهروس | تيتا عايدة' },
+            { name: 'description', content: 'اكتشف تشكيلة عشّاق الزيتون من تيتا عايدة — ٤ برطمانات من زيتون تفاحي مهروس بخلطة مميّزة، مُحضّرة على باتشات صغيرة وتوصيل طازج داخل القاهرة.' },
+            { name: 'keywords', content: 'تشكيلة زيتون، زيتون تفاحي مهروس، مخلل زيتون رمضان، مخللات فاخرة القاهرة، تيتا عايدة زيتون' }
+        ];
+    }
+
     return [
         { title: `${data?.product.title} | Premium Pickle Box for Ramadan | Teta Aida` },
         { name: 'description', content: data?.product.description || 'Discover the Ramadan Signature Box by Teta Aida.' },
@@ -26,7 +37,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
         throw new Response(null, { status: 404 });
     }
 
-    return { product };
+    return { product, locale: context.storefront.i18n };
 }
 
 

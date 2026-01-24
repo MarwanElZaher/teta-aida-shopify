@@ -8,6 +8,17 @@ import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
+    const locale = data?.locale || { language: 'EN' };
+    const isArabic = locale.language === 'AR';
+
+    if (isArabic) {
+        return [
+            { title: 'تشكيلة رمضان المميّزة | مخللات رمضان | تيتا عايدة' },
+            { name: 'description', content: 'تشكيلة مختارة من زيتون تفاحي، ليمون معصفر بالهريسة، ولفت بلمسة بنجر… توصيل داخل القاهرة.' },
+            { name: 'keywords', content: 'مخللات رمضان مصر، مخللات رمضان القاهرة، أكل رمضان فاخر، زيتون رمضان، ليمون رمضان، لفت رمضان, تيتا عايدة رمضان' }
+        ];
+    }
+
     return [
         { title: `${data?.product.title} | Premium Pickle Box for Ramadan | Teta Aida` },
         { name: 'description', content: data?.product.description || 'Discover the Ramadan Signature Box by Teta Aida.' },
@@ -26,7 +37,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
         throw new Response(null, { status: 404 });
     }
 
-    return { product };
+    return { product, locale: context.storefront.i18n };
 }
 
 

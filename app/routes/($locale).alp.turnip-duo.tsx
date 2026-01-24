@@ -8,6 +8,17 @@ import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
+    const locale = data?.locale || { language: 'EN' };
+    const isArabic = locale.language === 'AR';
+
+    if (isArabic) {
+        return [
+            { title: 'ثنائي اللفت | لفت بلمسة بنجر منعش | تيتا عايدة' },
+            { name: 'description', content: 'اكتشف ثنائي اللفت من تيتا عايدة — برطمانين لفت بلمسة بنجر خفيف ومنعش… مناسب لسفرة رمضان.' },
+            { name: 'keywords', content: 'ثنائي اللفت مصر, لفت بنجر, مخلل لفت رمضان' }
+        ];
+    }
+
     return [
         { title: `${data?.product.title} | Premium Pickle Box for Ramadan | Teta Aida` },
         { name: 'description', content: data?.product.description || 'Discover the Ramadan Signature Box by Teta Aida.' },
@@ -26,7 +37,7 @@ export async function loader({ context }: LoaderFunctionArgs) {
         throw new Response(null, { status: 404 });
     }
 
-    return { product };
+    return { product, locale: context.storefront.i18n };
 }
 
 
