@@ -123,7 +123,8 @@ export default function Product() {
   const usageIdeas = getJsonMetafield('usage_ideas') as string[] | null;
   const reviews = getJsonMetafield('reviews') as string[] | null;
   const heatLevels = getJsonMetafield('heat_levels') as string[] | null;
-  const bundleContents = getJsonMetafield('bundle_contents') as string[] | null;
+  const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string, description: string })[] | null;
+  const usageMoments = getJsonMetafield('usage_moments') as string[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
   const bundleItems = rawBundleItems?.map(item => ({
@@ -231,14 +232,27 @@ export default function Product() {
             {/* Bundle Contents (if bundle) - Hidden in Arabic as it's included in description */}
             {isBundle && bundleContents && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
-                <ul className="mt-4 space-y-2">
-                  {bundleContents.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-gray-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-800" />
-                      {item}
-                    </li>
-                  ))}
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whatsInside')}</h3>
+                <ul className="mt-6 space-y-6">
+                  {bundleContents.map((item, i) => {
+                    // Handle both string format and object format
+                    const name = typeof item === 'string' ? item : item.name;
+                    const description = typeof item === 'object' ? item.description : null;
+
+                    return (
+                      <li key={i} className="flex flex-col gap-1">
+                        <span className="font-bold text-gray-900 flex items-center gap-2">
+                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+                          {name}
+                        </span>
+                        {description && (
+                          <span className="text-sm text-gray-600 pl-4 border-l-2 border-gray-100 ml-0.5">
+                            {description}
+                          </span>
+                        )}
+                      </li>
+                    );
+                  })}
                 </ul>
                 {whyBundle && (
                   <p className="mt-4 text-sm text-gray-500 italic">"{whyBundle}"</p>
@@ -246,15 +260,29 @@ export default function Product() {
               </div>
             )}
 
-            {/* Key Benefits - Hidden in Arabic as it's included in description */}
+            {/* Why You'll Love It (Key Benefits) */}
             {keyBenefits && locale.language !== 'AR' && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.whyLoveIt')}</h3>
-                <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whyLoveIt')}</h3>
+                <ul className="mt-6 space-y-3">
                   {keyBenefits.map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                      <span className="mt-1 text-green-600">✓</span>
+                    <li key={i} className="flex items-start gap-3 text-gray-600">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-secondary" />
                       {benefit}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Usage Moments */}
+            {usageMoments && locale.language !== 'AR' && (
+              <div className="mt-10 border-t border-gray-200 pt-10">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.usageMoments')}</h3>
+                <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {usageMoments.map((moment, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-50 px-4 py-2 rounded-lg">
+                      <span className="text-secondary">✦</span> {moment}
                     </li>
                   ))}
                 </ul>

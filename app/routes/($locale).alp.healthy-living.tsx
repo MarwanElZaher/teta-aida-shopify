@@ -97,7 +97,7 @@ export default function HealthyLivingALP() {
                     </div>
 
                     {/* Product Image */}
-                    <div className="relative aspect-square overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
+                    <div className="relative  overflow-hidden rounded-2xl bg-[#F0EFEB] mb-8">
                         {productImage && (
                             <Image
                                 data={productImage}

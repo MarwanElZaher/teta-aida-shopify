@@ -19,15 +19,61 @@ export function BundleAddToCartButton({
 }) {
     const { t } = useTranslation();
 
-    // Helper to map English product names to Attribute Keys
-    const getAttributeKey = (name: string) => {
-        const cleanName = name.replace(/_\d+$/, ''); // Remove index
-        if (cleanName.includes('Olives')) return t('product.attributes.Olives Heat');
-        if (cleanName.includes('Cucumber')) return t('product.attributes.Cucumbers Heat');
-        if (cleanName.includes('Cabbage')) return t('product.attributes.Cabbage Heat');
-        if (cleanName.includes('Harissa')) return t('product.attributes.Harissa Heat');
-        if (cleanName.includes('Lemon')) return t('product.attributes.Olives Heat'); // Fallback or new key if needed, defaulting to Olives structure or generic
-        return cleanName; // Fallback
+    // Map from product name (in metafields) to translation key suffix
+    const ATTRIBUTE_KEY_MAP: Record<string, string> = {
+        'Olives': 'Olives Heat',
+        'Cucumber': 'Cucumbers Heat',
+        'Cucumbers': 'Cucumbers Heat',
+        'Cabbage': 'Cabbage Heat',
+        'Harissa': 'Harissa Heat',
+        'Lemon': 'Lemon Heat',
+        'Turnip': 'Turnip Heat',
+    };
+
+    // Helper to format numbers based on locale
+    const formatNumber = (num: number) => {
+        const locale = t('locale.code') === 'ar' ? 'ar-EG' : 'en-US';
+        return new Intl.NumberFormat(locale).format(num);
+    };
+
+    // Calculate item counts to determine when to show indices
+    const itemCounts = customProperties ? Object.keys(customProperties).reduce((acc: Record<string, number>, key) => {
+        const match = key.match(/^(.+)_(\d+)$/);
+        if (match) {
+            const base = match[1];
+            acc[base] = (acc[base] || 0) + 1;
+        } else {
+            // Handle legacy/simple keys without index
+            acc[key] = (acc[key] || 0) + 1;
+        }
+        return acc;
+    }, {}) : {};
+
+    // Helper to map product names + index to localized Attribute Keys
+    const getAttributeKey = (key: string) => {
+        const match = key.match(/^(.+)_(\d+)$/);
+        let baseName = key;
+        let index = 0;
+        let isIndexed = false;
+
+        if (match) {
+            baseName = match[1];
+            index = parseInt(match[2], 10);
+            isIndexed = true;
+        }
+
+        // Determine base translation
+        const mapKey = ATTRIBUTE_KEY_MAP[baseName] || `${baseName} Heat`;
+        const translatedBase = t(`product.attributes.${mapKey}`);
+        // Fallback to English/Code key if translation missing
+        const label = translatedBase !== `product.attributes.${mapKey}` ? translatedBase : `${baseName} Heat`;
+
+        // Only append index if multiple items of this type exist
+        if (isIndexed && (itemCounts[baseName] || 0) > 1) {
+            return `${label} ${formatNumber(index + 1)}`;
+        }
+
+        return label;
     };
 
     // Add custom properties to the line items

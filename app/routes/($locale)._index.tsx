@@ -5,6 +5,7 @@ import { Image } from '@shopify/hydrogen';
 import { useTranslation, TRANSLATIONS } from '~/lib/translations';
 import { BundleCard } from '~/components/BundleCard';
 import { ProductItem } from '~/components/ProductItem';
+import { RamadanCollectionsHome } from '~/components/RamadanCollectionsHome';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
@@ -13,14 +14,18 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
     const t = TRANSLATIONS[lang];
 
     return [
-        { title: t?.seo?.home?.title || 'Teta Aida | Premium Artisanal Pickles' },
-        { name: 'description', content: t?.seo?.home?.description || 'Premium small-batch artisanal pickles.' },
+        { title: 'Teta Aida | Premium Artisanal Pickles | Ramadan Collections & Signature Flavors' },
+        { name: 'description', content: 'Premium small-batch artisanal pickles crafted with clean, carefully selected ingredients. Discover our Ramadan Signature Collection, olive, lemon, and turnip collections — handcrafted and delivered fresh across Cairo.' },
+        { name: 'keywords', content: 'premium Ramadan food Egypt, Ramadan pickles Egypt, olive pickles Ramadan, lemon pickles Ramadan, Teta Aida Ramadan' },
+        // Old SEO Backup:
+        // { title: t?.seo?.home?.title || 'Teta Aida | Premium Artisanal Pickles' },
+        // { name: 'description', content: t?.seo?.home?.description || 'Premium small-batch artisanal pickles.' },
     ];
 };
 
 export async function loader({ context }: Route.LoaderArgs) {
     const { storefront } = context;
-    const { featured, bestSellers, fallbackProducts } = await storefront.query(HOMEPAGE_QUERY);
+    const { featured, bestSellers, fallbackProducts, ramadanCollection } = await storefront.query(HOMEPAGE_QUERY);
 
     let featuredBundles = featured?.products.nodes || [];
     let bestSellingProducts = bestSellers?.products.nodes || [];
@@ -56,6 +61,7 @@ export async function loader({ context }: Route.LoaderArgs) {
     return {
         featuredBundles,
         bestSellers: bestSellingProducts,
+        ramadanProducts: ramadanCollection?.products.nodes || [],
         locale: context.storefront.i18n,
     };
 }
@@ -105,12 +111,22 @@ export default function Homepage() {
                                 {t('home.hero.shopAll')}
                             </Link>
                         </div>
+
+                        {/* Seasonal Shortcut */}
+                        <div className="animate-fade-in-up delay-300">
+                            <Link to={`${locale.pathPrefix}/collections/ramadan-collections`} className="text-primary font-serif italic text-lg hover:text-secondary transition-colors inline-flex items-center gap-2">
+                                🌙 <span>{t('ramadan.discoverShortcut')}</span>
+                            </Link>
+                        </div>
                         <p className="mt-8 text-xs font-bold uppercase tracking-widest text-dark/60 animate-fade-in-up delay-300">
                             {t('home.hero.footer')}
                         </p>
                     </div>
                 </div>
             </section>
+
+            {/* RAMADAN COLLECTIONS (New) */}
+            <RamadanCollectionsHome products={data.ramadanProducts} />
 
             {/* 2. FEATURED BUNDLES (Horizontal Scroll on Mobile) */}
             <section ref={section1.ref} className={`${section1.isVisible ? 'opacity-100 transition-opacity duration-500 translate-y-0' : 'opacity-0 transition-opacity duration-500 translate-y-10'} py-16 md:py-24 bg-cream`}>
@@ -309,6 +325,16 @@ const HOMEPAGE_QUERY = `#graphql
         ...ProductCard
       }
     }
+    ramadanCollection: collection(handle: "ramadan-collections") {
+       id
+       title
+       products(first: 10) {
+         nodes {
+           ...ProductCard
+         }
+       }
+    }
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
+
