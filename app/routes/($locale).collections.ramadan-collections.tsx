@@ -15,7 +15,11 @@ export const meta: MetaFunction = () => {
 export async function loader({ context }: LoaderFunctionArgs) {
   const { storefront } = context;
   const { collection } = await storefront.query(COLLECTION_QUERY, {
-    variables: { handle: 'ramadan-collections' },
+    variables: {
+      handle: 'ramadan-collections',
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
   });
 
 
@@ -155,7 +159,11 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
 ` as const;
 
 const COLLECTION_QUERY = `#graphql
-  query RamadanCollection($handle: String!) {
+  query RamadanCollection(
+    $handle: String!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
       title

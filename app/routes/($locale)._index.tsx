@@ -25,7 +25,12 @@ export const meta: MetaFunction<typeof loader> = ({ data }) => {
 
 export async function loader({ context }: Route.LoaderArgs) {
     const { storefront } = context;
-    const { featured, bestSellers, fallbackProducts, ramadanCollection } = await storefront.query(HOMEPAGE_QUERY);
+    const { featured, bestSellers, fallbackProducts, ramadanCollection } = await storefront.query(HOMEPAGE_QUERY, {
+        variables: {
+            country: storefront.i18n.country,
+            language: storefront.i18n.language,
+        },
+    });
 
     let featuredBundles = featured?.products.nodes || [];
     let bestSellingProducts = bestSellers?.products.nodes || [];
@@ -301,7 +306,10 @@ const PRODUCT_CARD_FRAGMENT = `#graphql
 ` as const;
 
 const HOMEPAGE_QUERY = `#graphql
-  query Homepage {
+  query Homepage(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
     featured: collection(handle: "bundles") {
       id
       title
