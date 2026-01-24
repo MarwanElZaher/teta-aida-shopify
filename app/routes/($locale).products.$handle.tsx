@@ -26,9 +26,25 @@ import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle, getLocalizedDescription } from '~/lib/localized-content';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const product = data?.product;
+  const locale = data?.locale || { language: 'EN' };
+  const isArabic = locale.language === 'AR';
+
+  if (!product) {
+    return [{ title: 'Product Not Found | Teta Aida' }];
+  }
+
+  // Get localized SEO values from metafields
+  const metafields = product.metafields || [];
+  const arabicTitle = metafields.find((m: any) => m?.key === 'arabic_title')?.value;
+  const arabicDescription = metafields.find((m: any) => m?.key === 'arabic_description')?.value;
+
+  const title = isArabic && arabicTitle ? arabicTitle : product.title;
+  const description = isArabic && arabicDescription ? arabicDescription : product.description;
+
   return [
-    { title: `${data?.product.title ?? ''} | Teta Aida` },
-    { name: 'description', content: data?.product.description ?? '' },
+    { title: `${title} | Teta Aida` },
+    { name: 'description', content: description ?? '' },
   ];
 };
 
@@ -50,7 +66,7 @@ export async function loader({ context, params, request }: LoaderFunctionArgs) {
     throw new Response(null, { status: 404 });
   }
 
-  return { product };
+  return { product, locale: context.storefront.i18n };
 }
 
 export default function Product() {
