@@ -36,7 +36,10 @@ export function RamadanCollectionsHome({ products }: { products: any[] }) {
                 {/* Collection Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                     {displayProducts.map((product: any) => {
-                        const tagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+                        const isArabic = locale.language === 'AR';
+                        const tagline = isArabic
+                            ? product.metafields?.find((m: any) => m?.key === 'arabic_tagline')?.value || product.metafields?.find((m: any) => m?.key === 'tagline')?.value
+                            : product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
 
                         return (
                             <div key={product.id} className="group relative flex flex-col">
@@ -55,7 +58,9 @@ export function RamadanCollectionsHome({ products }: { products: any[] }) {
                                 <div className="flex-1 flex flex-col text-center">
                                     <h3 className="font-serif text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
                                         <Link to={`${locale.pathPrefix}/products/${product.handle}`}>
-                                            {product.title}
+                                            {isArabic
+                                                ? product.metafields?.find((m: any) => m?.key === 'arabic_title')?.value || product.title
+                                                : product.title}
                                         </Link>
                                     </h3>
 

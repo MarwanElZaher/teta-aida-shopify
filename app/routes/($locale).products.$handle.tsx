@@ -245,8 +245,8 @@ export default function Product() {
               )}
             </div>
 
-            {/* Bundle Contents (if bundle) - Hidden in Arabic as it's included in description */}
-            {isBundle && bundleContents && locale.language !== 'AR' && (
+            {/* Bundle Contents (if bundle) */}
+            {isBundle && bundleContents && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whatsInside')}</h3>
                 <ul className="mt-6 space-y-6">
@@ -277,7 +277,7 @@ export default function Product() {
             )}
 
             {/* Why You'll Love It (Key Benefits) */}
-            {keyBenefits && locale.language !== 'AR' && (
+            {keyBenefits && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whyLoveIt')}</h3>
                 <ul className="mt-6 space-y-3">
@@ -292,7 +292,7 @@ export default function Product() {
             )}
 
             {/* Usage Moments */}
-            {usageMoments && locale.language !== 'AR' && (
+            {usageMoments && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.usageMoments')}</h3>
                 <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -305,8 +305,8 @@ export default function Product() {
               </div>
             )}
 
-            {/* Flavor Profile - Hidden in Arabic as it's included in description */}
-            {flavorProfile && locale.language !== 'AR' && (
+            {/* Flavor Profile */}
+            {flavorProfile && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="text-lg font-bold text-gray-900">{t('product.flavorProfile')}</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
@@ -329,8 +329,8 @@ export default function Product() {
               />
             </div>
 
-            {/* Usage Ideas - Hidden in Arabic as it's included in description */}
-            {usageIdeas && locale.language !== 'AR' && (
+            {/* Usage Ideas */}
+            {usageIdeas && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="text-lg font-bold text-gray-900">{t('product.perfectFor')}</h3>
                 <div className="mt-4 flex flex-wrap gap-2">

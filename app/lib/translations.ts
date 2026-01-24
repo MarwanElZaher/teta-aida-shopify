@@ -986,10 +986,10 @@ export const TRANSLATIONS = {
             search: 'بحث',
         },
         ramadan: {
-            title: 'تشكيلة رمضان',
+            title: 'تشكيلات رمضان',
             subtitle: 'صناديق مخلل مختارة بعناية لتزيين سفرة رمضان وتخزين يكفي الشهر.',
             explore: 'اكتشف التشكيلة',
-            viewAll: 'تصفح كل عروض رمضان',
+            viewAll: 'عرض كل تشكيلات رمضان',
             discoverShortcut: 'تسوّق تشكيلات رمضان',
         },
         common: {

@@ -69,7 +69,14 @@ export default function RamadanCollectionsPage() {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {sortedProducts.map((product: any) => {
-            const tagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+            const isArabic = locale.language === 'AR';
+            const tagline = isArabic
+              ? product.metafields?.find((m: any) => m?.key === 'arabic_tagline')?.value || product.metafields?.find((m: any) => m?.key === 'tagline')?.value
+              : product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+
+            const title = isArabic
+              ? product.metafields?.find((m: any) => m?.key === 'arabic_title')?.value || product.title
+              : product.title;
 
             return (
               <div key={product.id} className="group relative flex flex-col">
@@ -88,7 +95,7 @@ export default function RamadanCollectionsPage() {
                 <div className="flex-1 flex flex-col text-center gap-2">
                   <h3 className="font-serif text-xl text-primary mb-3 group-hover:text-secondary transition-colors">
                     <a href={`${locale.pathPrefix}/products/${product.handle}`}>
-                      {product.title}
+                      {title}
                     </a>
                   </h3>
 
@@ -142,6 +149,8 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     }
     metafields(identifiers: [
       {namespace: "custom", key: "tagline"},
+      {namespace: "custom", key: "arabic_tagline"},
+      {namespace: "custom", key: "arabic_title"},
       {namespace: "custom", key: "heat_levels"}
     ]) {
       key

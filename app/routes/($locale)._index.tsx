@@ -296,6 +296,7 @@ const PRODUCT_CARD_FRAGMENT = `#graphql
     }
     metafields(identifiers: [
       {namespace: "custom", key: "tagline"},
+      {namespace: "custom", key: "arabic_tagline"},
       {namespace: "custom", key: "arabic_title"},
       {namespace: "custom", key: "arabic_description"}
     ]) {
