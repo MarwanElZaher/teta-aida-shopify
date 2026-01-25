@@ -42,7 +42,12 @@ export async function loader({ context, params, request }: LoaderFunctionArgs) {
 
   const [{ product }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
+      variables: {
+        handle,
+        selectedOptions: getSelectedProductOptions(request),
+        country: storefront.i18n.country,
+        language: storefront.i18n.language,
+      },
     }),
   ]);
 
@@ -123,7 +128,7 @@ export default function Product() {
   const usageIdeas = getJsonMetafield('usage_ideas') as string[] | null;
   const reviews = getJsonMetafield('reviews') as string[] | null;
   const heatLevels = getJsonMetafield('heat_levels') as string[] | null;
-  const bundleContents = getJsonMetafield('bundle_contents') as string[] | null;
+  const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string; weight?: string; description?: string })[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
   const bundleItems = rawBundleItems?.map(item => ({
@@ -233,12 +238,22 @@ export default function Product() {
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
                 <ul className="mt-4 space-y-2">
-                  {bundleContents.map((item, i) => (
-                    <li key={i} className="flex items-center gap-2 text-gray-600">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green-800" />
-                      {item}
-                    </li>
-                  ))}
+                  {bundleContents.map((item, i) => {
+                    // Handle both string format and object format
+                    const itemText = typeof item === 'string' ? item : item.name;
+                    const itemWeight = typeof item === 'object' && item.weight ? ` (${item.weight})` : '';
+                    const itemDesc = typeof item === 'object' && item.description ? item.description : null;
+
+                    return (
+                      <li key={i} className="flex items-start gap-2 text-gray-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
+                        <div>
+                          <span className="font-medium">{itemText}{itemWeight}</span>
+                          {itemDesc && <p className="text-sm text-gray-500 mt-1">{itemDesc}</p>}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
                 {whyBundle && (
                   <p className="mt-4 text-sm text-gray-500 italic">"{whyBundle}"</p>
