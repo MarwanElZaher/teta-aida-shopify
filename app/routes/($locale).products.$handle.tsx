@@ -131,11 +131,18 @@ export default function Product() {
   const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string; weight?: string; description?: string })[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
-  const bundleItems = rawBundleItems?.map(item => ({
-    ...item,
-    displayName: getLocalizedTitle(item.name, [], locale.language),
-    name: item.name // Keep original name for keys
-  })) || null;
+  const bundleItems = rawBundleItems?.map(item => {
+    console.log('Bundle Item Mapping:', {
+      name: item.name,
+      locale: locale.language,
+      localized: getLocalizedTitle(item.name, [], locale.language)
+    });
+    return {
+      ...item,
+      displayName: getLocalizedTitle(item.name, [], locale.language),
+      name: item.name // Keep original name for keys
+    }
+  }) || null;
 
   const isBundle = !!bundleContents;
   const isBundleWithConfig = !!bundleItems && bundleItems.length > 0;
@@ -240,16 +247,16 @@ export default function Product() {
                 <ul className="mt-4 space-y-2">
                   {bundleContents.map((item, i) => {
                     // Handle both string format and object format
-                    const itemText = typeof item === 'string' ? item : item.name;
-                    const itemWeight = typeof item === 'object' && item.weight ? ` (${item.weight})` : '';
-                    const itemDesc = typeof item === 'object' && item.description ? item.description : null;
+                    const rawName = typeof item === 'string' ? item : item.name;
+                    const name = getLocalizedTitle(rawName, [], locale.language);
+                    const description = typeof item === 'object' ? item.description : null;
 
                     return (
                       <li key={i} className="flex items-start gap-2 text-gray-600">
                         <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
                         <div>
-                          <span className="font-medium">{itemText}{itemWeight}</span>
-                          {itemDesc && <p className="text-sm text-gray-500 mt-1">{itemDesc}</p>}
+                          <span className="font-medium">{name}</span>
+                          {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
                         </div>
                       </li>
                     );
