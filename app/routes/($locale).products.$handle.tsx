@@ -131,18 +131,11 @@ export default function Product() {
   const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string; weight?: string; description?: string })[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
-  const bundleItems = rawBundleItems?.map(item => {
-    console.log('Bundle Item Mapping:', {
-      name: item.name,
-      locale: locale.language,
-      localized: getLocalizedTitle(item.name, [], locale.language)
-    });
-    return {
-      ...item,
-      displayName: getLocalizedTitle(item.name, [], locale.language),
-      name: item.name // Keep original name for keys
-    }
-  }) || null;
+  const bundleItems = rawBundleItems?.map(item => ({
+    ...item,
+    displayName: getLocalizedTitle(item.name, [], locale.language),
+    name: item.name // Keep original name for keys
+  })) || null;
 
   const isBundle = !!bundleContents;
   const isBundleWithConfig = !!bundleItems && bundleItems.length > 0;
