@@ -58,7 +58,12 @@ export async function loader({ context, params, request }: LoaderFunctionArgs) {
 
   const [{ product }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
+      variables: {
+        handle,
+        selectedOptions: getSelectedProductOptions(request),
+        country: storefront.i18n.country,
+        language: storefront.i18n.language,
+      },
     }),
   ]);
 
@@ -140,7 +145,7 @@ export default function Product() {
   const reviews = getJsonMetafield('reviews') as string[] | null;
   const heatLevels = getJsonMetafield('heat_levels') as string[] | null;
   const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string, description: string })[] | null;
-  const usageMoments = getJsonMetafield('usage_moments') as string[] | null;
+  const usageMoments = getJsonMetafield('usage_moments') as (string | { name: string; weight?: string; description?: string })[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
   const bundleItems = rawBundleItems?.map(item => ({
@@ -248,24 +253,21 @@ export default function Product() {
             {/* Bundle Contents (if bundle) */}
             {isBundle && bundleContents && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whatsInside')}</h3>
-                <ul className="mt-6 space-y-6">
+                <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
+                <ul className="mt-4 space-y-2">
                   {bundleContents.map((item, i) => {
                     // Handle both string format and object format
-                    const name = typeof item === 'string' ? item : item.name;
+                    const rawName = typeof item === 'string' ? item : item.name;
+                    const name = getLocalizedTitle(rawName, [], locale.language);
                     const description = typeof item === 'object' ? item.description : null;
 
                     return (
-                      <li key={i} className="flex flex-col gap-1">
-                        <span className="font-bold text-gray-900 flex items-center gap-2">
-                          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-                          {name}
-                        </span>
-                        {description && (
-                          <span className="text-sm text-gray-600 pl-4 border-l-2 border-gray-100 ml-0.5">
-                            {description}
-                          </span>
-                        )}
+                      <li key={i} className="flex items-start gap-2 text-gray-600">
+                        <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
+                        <div>
+                          <span className="font-medium">{name}</span>
+                          {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+                        </div>
                       </li>
                     );
                   })}

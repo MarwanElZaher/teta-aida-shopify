@@ -21,31 +21,28 @@ export function getLocalizedTitle(
     metafields: MetafieldReference[] | null | undefined,
     language: string
 ): string {
-    if (language !== 'AR' || !metafields || !Array.isArray(metafields)) {
-        // Fallback for Healthy Living Box if no metafields but language is AR
-        if (language === 'AR' && defaultTitle === 'Healthy Living Box') {
-            return 'تشكيلة الحياة الصحية';
-        }
-        if (language === 'AR' && defaultTitle.includes('Low-Salt Cucumbers')) {
-            return 'خيار قليل الملح بالكرفس';
-        }
-        return defaultTitle;
+    // 1. Check for Metafield Translation (Priority)
+    if (language === 'AR' && metafields && Array.isArray(metafields)) {
+        const arabicTitle = metafields.find(
+            (m) => m && m.key && (m.key === 'title_ar' || m.key === 'arabic_title')
+        );
+        if (arabicTitle?.value) return arabicTitle.value;
     }
 
-    const arabicTitle = metafields.find(
-        (m) => m && m.key && (m.key === 'title_ar' || m.key === 'arabic_title')
-    );
+    // 2. Hardcoded Fallbacks for known products
+    if (language === 'AR') {
+        if (defaultTitle === 'Healthy Living Box') return 'تشكيلة الحياة الصحية';
+        if (defaultTitle.includes('Low-Salt Cucumbers')) return 'خيار قليل الملح بالكرفس';
+        if (defaultTitle.includes('Tangerine-Infused Cabbage')) return 'كرنب بلمسة يوسفي';
+        if (defaultTitle.includes('Half-Preserved Lemons') || defaultTitle.includes('Half Lemons')) return 'ليمون معصفر بالهريسة';
+        if (defaultTitle.includes('Tuffaahy Olives')) return 'زيتون تفّاحي — الخلطة المميّزة';
+        if (defaultTitle.includes('Signature Box') || defaultTitle.includes('All Four Premium Flavors')) return 'التشكيلة المميّزة';
+        if (defaultTitle.includes('Spicy Lovers Box')) return 'تشكيلة عشّاق السبايسي';
+        if (defaultTitle.includes('Hosting Box')) return 'تشكيلة الضيافة';
+        if (defaultTitle.includes('Vintage-Style Turnips')) return 'لفت (فينتاج) — لون بنجر طبيعي';
+    }
 
-    return arabicTitle?.value || (
-        defaultTitle === 'Healthy Living Box' ? 'تشكيلة الحياة الصحية' :
-            (defaultTitle.includes('Low-Salt Cucumbers') ? 'خيار قليل الملح بالكرفس' :
-                (defaultTitle.includes('Tangerine-Infused Cabbage') ? 'كرنب بلمسة يوسفي' :
-                    (defaultTitle.includes('Half-Preserved Lemons') || defaultTitle.includes('Half Lemons') ? 'ليمون معصفر بالهريسة' :
-                        (defaultTitle.includes('Tuffaahy Olives') ? 'زيتون تفّاحي — الخلطة المميّزة' :
-                            (defaultTitle.includes('Signature Box') || defaultTitle.includes('All Four Premium Flavors') ? 'التشكيلة المميّزة' :
-                                (defaultTitle.includes('Spicy Lovers Box') ? 'تشكيلة عشّاق السبايسي' :
-                                    (defaultTitle.includes('Hosting Box') ? 'تشكيلة الضيافة' : defaultTitle)))))))
-    );
+    return defaultTitle;
 }
 
 /**
