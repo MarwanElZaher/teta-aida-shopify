@@ -29,7 +29,11 @@ export function HeatLevelSelector({ availableLevels, selectedLevel, onSelect }: 
                                 : 'bg-white text-dark/70 border-gray-200 hover:border-secondary hover:text-secondary'}
             `}
                     >
-                        {t(`heatLevels.${level}`)}
+                        {(() => {
+                            const key = `heatLevels.${level}`;
+                            const translated = t(key);
+                            return translated === key ? level : translated;
+                        })()}
                     </button>
                 ))}
             </div>

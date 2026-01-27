@@ -70,13 +70,21 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                                                 : 'bg-white text-dark/70 border-gray-200 hover:border-secondary hover:text-secondary'}
                     `}
                                     >
-                                        {t(`product.heatLevels.${level.toLowerCase()}`)}
+                                        {(() => {
+                                            const key = `product.heatLevels.${level.toLowerCase()}`;
+                                            const translated = t(key);
+                                            return translated === key ? level : translated;
+                                        })()}
                                     </button>
                                 ))}
                             </div>
                             {selections[itemKey] && (
                                 <p className="mt-2 text-xs text-secondary font-medium">
-                                    ✓ {t('product.selected')} {t(`product.heatLevels.${selections[itemKey].toLowerCase()}`)}
+                                    ✓ {t('product.selected')} {(() => {
+                                        const key = `product.heatLevels.${selections[itemKey].toLowerCase()}`;
+                                        const translated = t(key);
+                                        return translated === key ? selections[itemKey] : translated;
+                                    })()}
                                 </p>
                             )}
                         </div>
