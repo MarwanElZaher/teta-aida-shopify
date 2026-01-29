@@ -116,9 +116,12 @@ export default function Homepage() {
                                 {t('home.hero.shopAll')}
                             </Link>
                         </div>
-                        <p className="mt-8 text-xs font-bold uppercase tracking-widest text-dark/60 animate-fade-in-up delay-300">
+                        <Link to={`${locale.pathPrefix}/collections/ramadan-collections`} className="w-fit mx-auto underline text-sm uppercase font-semibold text-primary hover:text-secondary hover-lift">
+                            🌙 {t('ramadan.discoverShortcut')}
+                        </Link>
+                        {/* <p className="mt-8 text-xs font-bold uppercase tracking-widest text-dark/60 animate-fade-in-up delay-300">
                             {t('home.hero.footer')}
-                        </p>
+                        </p> */}
                     </div>
                 </div>
             </section>
