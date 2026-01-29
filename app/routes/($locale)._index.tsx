@@ -116,13 +116,6 @@ export default function Homepage() {
                                 {t('home.hero.shopAll')}
                             </Link>
                         </div>
-
-                        {/* Seasonal Shortcut */}
-                        <div className="animate-fade-in-up delay-300">
-                            <Link to={`${locale.pathPrefix}/collections/ramadan-collections`} className="text-primary font-serif italic text-lg hover:text-secondary transition-colors inline-flex items-center gap-2">
-                                🌙 <span>{t('ramadan.discoverShortcut')}</span>
-                            </Link>
-                        </div>
                         <p className="mt-8 text-xs font-bold uppercase tracking-widest text-dark/60 animate-fade-in-up delay-300">
                             {t('home.hero.footer')}
                         </p>
