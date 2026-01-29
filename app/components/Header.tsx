@@ -134,7 +134,7 @@ export function HeaderMenu({
 
         return (
           <NavLink
-            className={({ isActive }) => `text-3xl font-serif font-bold tracking-wide transition-all duration-300 hover:scale-105 ${isActive ? 'text-primary' : 'text-dark/80 hover:text-primary'}`}
+            className={({ isActive }) => `text-xl font-serif font-bold tracking-wide transition-all duration-300 hover:scale-105 ${isActive ? 'text-primary' : 'text-dark/80 hover:text-primary'}`}
             end
             key={item.id}
             onClick={close}
