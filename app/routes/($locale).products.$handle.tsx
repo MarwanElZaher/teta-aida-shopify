@@ -323,13 +323,15 @@ export default function Product() {
             )}
 
             {/* Description */}
-            <div className="mt-10 border-t border-gray-200 pt-10">
-              <h3 className="text-lg font-bold text-gray-900">{t('product.description')}</h3>
-              <div
-                className="prose prose-sm mt-4 text-gray-600"
-                dangerouslySetInnerHTML={{ __html: displayDescription }}
-              />
-            </div>
+            {displayDescription && (
+              <div className="mt-10 border-t border-gray-200 pt-10">
+                <h3 className="text-lg font-bold text-gray-900">{t('product.description')}</h3>
+                <div
+                  className="prose prose-sm mt-4 text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: displayDescription }}
+                />
+              </div>
+            )}
 
             {/* Usage Ideas */}
             {usageIdeas && (
