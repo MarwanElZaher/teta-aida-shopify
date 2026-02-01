@@ -6,6 +6,7 @@ import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
+import { getLocalizedTitle } from '~/lib/localized-content';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
     const locale = data?.locale || { language: 'EN' };
@@ -57,7 +58,7 @@ export default function OliveLoversALP() {
 
     const tagline = getMetafield('tagline');
     const microTrust = getMetafield('micro_trust');
-    const bundleContents = getJsonMetafield('bundle_contents') as string[]; // Cast to strings
+    const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string, description: string })[] | null;
     const keyBenefits = getJsonMetafield('key_benefits') as string[]; // Cast to strings
     const usageMoments = getJsonMetafield('usage_moments') as string[]; // Cast to strings
     const reviews = getJsonMetafield('reviews') as string[]; // Cast to strings
@@ -168,14 +169,27 @@ export default function OliveLoversALP() {
                                 </div>
                             ))
                         ) : (
-                            <ul className="space-y-4">
-                                {(bundleContents as string[])?.map((content, i) => (
-                                    <li key={i} className="flex items-start gap-3">
-                                        <span className="text-primary font-bold mt-1">•</span>
-                                        <span className="text-dark font-medium">{content}</span>
-                                    </li>
-                                ))}
-                            </ul>
+                            <div className="mt-10 border-t border-gray-200 pt-10">
+                                <ul className="mt-4 space-y-2">
+                                    {bundleContents?.map((item, i) => {
+                                        // Handle both string format and object format
+                                        const rawName = typeof item === 'string' ? item : item.name;
+                                        const name = getLocalizedTitle(rawName, [], locale.language);
+                                        const description = typeof item === 'object' ? item.description : null;
+
+                                        return (
+                                            <li key={i} className="flex items-start gap-2 text-gray-600">
+                                                <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
+                                                <div>
+                                                    <span className="font-medium">{name}</span>
+                                                    {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+                                                </div>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+
+                            </div>
                         )}
 
                         {!hasBundleConfig && (!bundleContents || bundleContents.length === 0) && (
