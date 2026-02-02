@@ -335,6 +335,10 @@ const PRODUCT_QUERY = `#graphql
       }
       selectedOrFirstAvailableVariant: variants(first: 1) {
         nodes {
+          product {
+            handle
+            title
+          }
           id
           availableForSale
           price {
