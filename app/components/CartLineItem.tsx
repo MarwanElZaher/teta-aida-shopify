@@ -34,14 +34,14 @@ export function CartLineItem({
   const displayTitle = getLocalizedTitle(product.title, (product as any).metafields || [], locale.language);
 
   // Filter out "Default Title" from selected options
-  const relevantOptions = selectedOptions.filter(
+  const relevantOptions = (selectedOptions || []).filter(
     option => !(option.name === 'Title' && option.value === 'Default Title')
   );
 
   // Parse heat level attributes (for both bundles and individual products)
-  const heatLevelAttributes = attributes?.filter(attr =>
+  const heatLevelAttributes = (attributes || []).filter(attr =>
     attr.key.includes('Heat') || attr.key.includes('Level')
-  ) || [];
+  );
 
   return (
     <li key={id} className="flex gap-4 border-b border-gray-200 pb-4">

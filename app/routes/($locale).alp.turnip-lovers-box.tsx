@@ -362,6 +362,10 @@ const PRODUCT_QUERY = `#graphql
           }
           id
           availableForSale
+          selectedOptions {
+            name
+            value
+          }
           price {
             amount
             currencyCode
