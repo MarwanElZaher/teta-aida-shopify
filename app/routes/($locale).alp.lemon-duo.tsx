@@ -65,17 +65,26 @@ export default function LemonDuoALP() {
 
     // Bundle Items for Heat Selection logic
     const bundleItemsMetafield = getMetafield('bundle_items');
-    const bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
+    let bundleItems: { name: string; heatLevels: string[] }[] = bundleItemsMetafield
         ? (JSON.parse(bundleItemsMetafield) as { name: string; heatLevels: string[] }[])
         : [];
 
     const hasBundleConfig = bundleItems.length > 0;
 
-    // Logic to treat product as single item if no bundle config found (fallback)
-    // (Simplified vs Winter Box as this is specifically a bundle)
+    // Fallback: If no bundle_items, derive from product options
+    if (bundleItems.length === 0 && product.options) {
+        bundleItems = product.options.map((opt: any) => ({
+            name: opt.name,
+            heatLevels: opt.values
+        }));
+    }
+
+    const hasAnySelections = bundleItems.length > 0;
 
     // Variant Selection Logic
-    const selectedHeat = Object.values(selections)[0] || '';
+    const effectiveVariant = product.variants?.nodes?.find((variant: any) =>
+        variant.selectedOptions.every((opt: any) => selections[opt.name] === opt.value)
+    );
     const selectedVariant = product.selectedOrFirstAvailableVariant?.nodes?.[0];
     const price = selectedVariant?.price;
     const compareAtPrice = selectedVariant?.compareAtPrice;
@@ -100,9 +109,9 @@ export default function LemonDuoALP() {
         disabled: !selectedVariant?.availableForSale || !allHeatLevelsSelected,
         onClick: () => open('cart'),
         lines: selectedVariant && allHeatLevelsSelected ? [{
-            merchandiseId: selectedVariant.id,
+            merchandiseId: hasBundleConfig || !effectiveVariant ? selectedVariant.id : effectiveVariant.id,
             quantity: 1,
-            selectedVariant: selectedVariant,
+            selectedVariant: hasBundleConfig || !effectiveVariant ? selectedVariant : effectiveVariant,
             attributes: hasBundleConfig
                 ? bundleItems.map(item => ({
                     key: `${item.name} Heat`,
@@ -148,7 +157,7 @@ export default function LemonDuoALP() {
                         {/* If we have bundle items config (selectors), show them. 
                             If not, show the simple description list from `bundle_contents` metafield. */}
 
-                        {hasBundleConfig ? (
+                        {hasAnySelections ? (
                             bundleItems.map((item, index) => (
                                 <div key={item.name} className={`mb-6 pb-6 ${index !== bundleItems.length - 1 ? 'border-b border-dark/10' : ''}`}>
                                     <h3 className="font-bold text-dark mb-2 text-center">• {item.name}</h3>
@@ -192,7 +201,7 @@ export default function LemonDuoALP() {
                             </div>
                         )}
 
-                        {!hasBundleConfig && (!bundleContents || bundleContents.length === 0) && (
+                        {!hasAnySelections && (!bundleContents || bundleContents.length === 0) && (
                             <p className="text-dark/60 italic text-center">
                                 Bundle details coming soon...
                             </p>
@@ -214,7 +223,7 @@ export default function LemonDuoALP() {
                             </div>
                         )}
                         <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all flex items-center justify-center">
-                            {!allHeatLevelsSelected ? (t('product.selectHeatLevel') || 'Select Options') : (t('product.addToCart') || 'Add to Cart')}
+                            {hasAnySelections && !allHeatLevelsSelected ? (t('product.selectHeatLevel') || 'Select Options') : (t('product.addToCart') || 'Add to Cart')}
                         </AddToCartButton>
                         {microTrust && (
                             <p className="text-xs text-dark/60 mt-3">
@@ -355,6 +364,29 @@ const PRODUCT_QUERY = `#graphql
             altText
             width
             height
+          }
+        }
+      }
+      options {
+        name
+        values
+      }
+      variants(first: 20) {
+        nodes {
+          id
+          title
+          availableForSale
+          selectedOptions {
+            name
+            value
+          }
+          price {
+            amount
+            currencyCode
+          }
+          product {
+            handle
+            title
           }
         }
       }
