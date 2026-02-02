@@ -149,15 +149,12 @@ export default function TurnipLoversALP() {
                     </div>
 
                     {/* What's Inside (Generated from Bundle Contents text array OR Bundle Items config) */}
-                    <div className="bg-white rounded-2xl p-8 shadow-sm mb-8">
-                        <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
-                            {t('product.whatsInside') || "What's Inside"}
-                        </h2>
+                    <>
 
                         {/* If we have bundle items config (selectors), show them. 
                             If not, show the simple description list from `bundle_contents` metafield. */}
 
-                        {hasAnySelections ? (
+                        {hasAnySelections &&
                             bundleItems.map((item, index) => (
                                 <div key={item.name} className={`mb-6 pb-6 ${index !== bundleItems.length - 1 ? 'border-b border-dark/10' : ''}`}>
                                     <h3 className="font-bold text-dark mb-2 text-center">• {item.name}</h3>
@@ -177,37 +174,18 @@ export default function TurnipLoversALP() {
                                     </div>
                                 </div>
                             ))
-                        ) : (
-                            <div className="mt-10 border-t border-gray-200 pt-10">
-                                <ul className="mt-4 space-y-2">
-                                    {bundleContents?.map((item, i) => {
-                                        // Handle both string format and object format
-                                        const rawName = typeof item === 'string' ? item : item.name;
-                                        const name = getLocalizedTitle(rawName, [], locale.language);
-                                        const description = typeof item === 'object' ? item.description : null;
+                        }
 
-                                        return (
-                                            <li key={i} className="flex items-start gap-2 text-gray-600">
-                                                <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
-                                                <div>
-                                                    <span className="font-medium">{name}</span>
-                                                    {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
-                                                </div>
-                                            </li>
-                                        );
-                                    })}
-                                </ul>
 
-                            </div>
 
-                        )}
+
 
                         {!hasAnySelections && (!bundleContents || bundleContents.length === 0) && (
                             <p className="text-dark/60 italic text-center">
                                 Bundle details coming soon...
                             </p>
                         )}
-                    </div>
+                    </>
 
                     {/* Price & CTA */}
                     <div className="flex flex-col mb-6 text-center">
@@ -235,6 +213,39 @@ export default function TurnipLoversALP() {
                 </div>
             </div>
 
+
+
+            {bundleContents && (
+                <div ref={section2.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+                    <div className="bg-white rounded-2xl p-8 shadow-sm">
+
+                        <h2 className="font-serif text-2xl text-primary uppercase tracking-wide mb-6">
+                            {t('product.whatsInside') || "What's Inside"}
+                        </h2>
+                        <div className="mt-10 border-t border-gray-200 pt-10">
+                            <ul className="mt-4 space-y-2">
+                                {bundleContents?.map((item, i) => {
+                                    // Handle both string format and object format
+                                    const rawName = typeof item === 'string' ? item : item.name;
+                                    const name = getLocalizedTitle(rawName, [], locale.language);
+                                    const description = typeof item === 'object' ? item.description : null;
+
+                                    return (
+                                        <li key={i} className="flex items-start gap-2 text-gray-600">
+                                            <span className="h-1.5 w-1.5 rounded-full bg-green-800 mt-2 flex-shrink-0" />
+                                            <div>
+                                                <span className="font-medium">{name}</span>
+                                                {description && <p className="text-sm text-gray-500 mt-1">{description}</p>}
+                                            </div>
+                                        </li>
+                                    );
+                                })}
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            )}
             {/* Why You'll Love It */}
             {keyBenefits && keyBenefits.length > 0 && (
                 <div ref={section2.ref} className={`mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8 transition-all duration-700 delay-100 ${section2.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
