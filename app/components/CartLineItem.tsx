@@ -46,15 +46,17 @@ export function CartLineItem({
   return (
     <li key={id} className="flex gap-4 border-b border-gray-200 pb-4">
       {image && (
-        <Image
-          alt={displayTitle}
-          aspectRatio="1/1"
-          data={image}
-          height={100}
-          loading="lazy"
-          width={100}
-          className="rounded-lg object-cover"
-        />
+        <div className="w-24 h-24 flex-shrink-0 overflow-hidden rounded-lg bg-[#F0EFEB]">
+          <Image
+            alt={displayTitle}
+            aspectRatio="1/1"
+            data={image}
+            height={100}
+            loading="lazy"
+            width={100}
+            className="w-full h-full object-cover"
+          />
+        </div>
       )}
 
       <div className="flex-1 flex flex-col justify-between">
