@@ -103,6 +103,24 @@ aside {
   @apply absolute inset-0 cursor-default;
 }
 
+/* Left-side Drawer Support */
+.aside-left {
+  @apply left-0 right-auto -translate-x-full;
+}
+
+.overlay.expanded .aside-left {
+  @apply translate-x-0;
+}
+
+/* RTL overrides for left-side drawer (it becomes right-side in RTL) */
+[dir="rtl"] .aside-left {
+  @apply right-0 left-auto translate-x-full;
+}
+
+[dir="rtl"] .overlay.expanded .aside-left {
+  @apply translate-x-0;
+}
+
 
 /* Ensure images are responsive */
 img {

@@ -26,9 +26,23 @@ import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle, getLocalizedDescription } from '~/lib/localized-content';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const product = data?.product;
+  if (!product) return [];
+
+  const locale = data?.locale || { language: 'EN' };
+  const isArabic = locale.language === 'AR';
+
+  // Get localized SEO values from metafields
+  const metafields = product.metafields || [];
+  const arabicTitle = metafields.find((m: any) => m?.key === 'arabic_title')?.value;
+  const arabicDescription = metafields.find((m: any) => m?.key === 'arabic_description')?.value;
+
+  const title = isArabic && arabicTitle ? arabicTitle : product.title;
+  const description = isArabic && arabicDescription ? arabicDescription : product.description;
+
   return [
-    { title: `${data?.product.title ?? ''} | Teta Aida` },
-    { name: 'description', content: data?.product.description ?? '' },
+    { title: `${title} | Teta Aida` },
+    { name: 'description', content: description ?? '' },
   ];
 };
 
@@ -55,7 +69,7 @@ export async function loader({ context, params, request }: LoaderFunctionArgs) {
     throw new Response(null, { status: 404 });
   }
 
-  return { product };
+  return { product, locale: storefront.i18n };
 }
 
 export default function Product() {
@@ -129,6 +143,7 @@ export default function Product() {
   const reviews = getJsonMetafield('reviews') as string[] | null;
   const heatLevels = getJsonMetafield('heat_levels') as string[] | null;
   const bundleContents = getJsonMetafield('bundle_contents') as (string | { name: string; weight?: string; description?: string })[] | null;
+  const usageMoments = getJsonMetafield('usage_moments') as (string | { name: string; weight?: string; description?: string })[] | null;
   const whyBundle = getMetafield('why_bundle');
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
   const bundleItems = rawBundleItems?.map(item => ({
@@ -233,10 +248,10 @@ export default function Product() {
               )}
             </div>
 
-            {/* Bundle Contents (if bundle) - Hidden in Arabic as it's included in description */}
-            {isBundle && bundleContents && locale.language !== 'AR' && (
+            {/* Bundle Contents (if bundle) */}
+            {isBundle && bundleContents && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.whatsInside')}</h3>
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whatsInside')}</h3>
                 <ul className="mt-4 space-y-2">
                   {bundleContents.map((item, i) => {
                     // Handle both string format and object format
@@ -261,14 +276,14 @@ export default function Product() {
               </div>
             )}
 
-            {/* Key Benefits - Hidden in Arabic as it's included in description */}
-            {keyBenefits && locale.language !== 'AR' && (
+            {/* Why You'll Love It (Key Benefits) */}
+            {keyBenefits && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.whyLoveIt')}</h3>
-                <ul className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.whyLoveIt')}</h3>
+                <ul className="mt-6 space-y-3">
                   {keyBenefits.map((benefit, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                      <span className="mt-1 text-green-600">✓</span>
+                    <li key={i} className="flex items-start gap-3 text-gray-600">
+                      <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-secondary" />
                       {benefit}
                     </li>
                   ))}
@@ -276,10 +291,24 @@ export default function Product() {
               </div>
             )}
 
-            {/* Flavor Profile - Hidden in Arabic as it's included in description */}
-            {flavorProfile && locale.language !== 'AR' && (
+            {/* Usage Moments */}
+            {usageMoments && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.flavorProfile')}</h3>
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.usageMoments')}</h3>
+                <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {usageMoments.map((moment, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-50 px-4 py-2 rounded-lg">
+                      <span className="text-secondary">✦</span> {moment as string}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Flavor Profile */}
+            {flavorProfile && (
+              <div className="mt-10 border-t border-gray-200 pt-10">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.flavorProfile')}</h3>
                 <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
                   {Object.entries(flavorProfile).map(([key, value]) => (
                     <div key={key}>
@@ -292,21 +321,23 @@ export default function Product() {
             )}
 
             {/* Description */}
-            <div className="mt-10 border-t border-gray-200 pt-10">
-              <h3 className="text-lg font-bold text-gray-900">{t('product.description')}</h3>
-              <div
-                className="prose prose-sm mt-4 text-gray-600"
-                dangerouslySetInnerHTML={{ __html: displayDescription }}
-              />
-            </div>
-
-            {/* Usage Ideas - Hidden in Arabic as it's included in description */}
-            {usageIdeas && locale.language !== 'AR' && (
+            {displayDescription && (
               <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="text-lg font-bold text-gray-900">{t('product.perfectFor')}</h3>
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.description')}</h3>
+                <div
+                  className="prose prose-sm mt-4 text-gray-600"
+                  dangerouslySetInnerHTML={{ __html: displayDescription }}
+                />
+              </div>
+            )}
+
+            {/* Usage Ideas */}
+            {usageIdeas && (
+              <div className="mt-10 border-t border-gray-200 pt-10">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.perfectFor')}</h3>
                 <div className="mt-4 flex flex-wrap gap-2">
                   {usageIdeas.map((idea, i) => (
-                    <span key={i} className="rounded-full bg-green-50 px-3 py-1 text-sm font-medium text-green-800">
+                    <span key={i} className="rounded-full bg-cream border border-primary/20 px-3 py-1 text-sm font-medium text-primary">
                       {idea}
                     </span>
                   ))}

@@ -1,5 +1,4 @@
-import { redirect, useLoaderData } from 'react-router';
-import type { Route } from './+types/collections.$handle';
+import { redirect, Await, useLoaderData, type MetaFunction, type LoaderFunctionArgs } from 'react-router';
 import { getPaginationVariables, Analytics } from '@shopify/hydrogen';
 import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
 import { redirectIfHandleIsLocalized } from '~/lib/redirect';
@@ -9,11 +8,13 @@ import type { ProductItemFragment } from 'storefrontapi.generated';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
-export const meta: Route.MetaFunction = ({ data }) => {
-  return [{ title: `Hydrogen | ${data?.collection.title ?? ''} Collection` }];
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  const collection = data?.collection;
+  if (!collection) return [];
+  return [{ title: `Teta Aida | ${collection.title ?? ''} Collection` }];
 };
 
-export async function loader(args: Route.LoaderArgs) {
+export async function loader(args: LoaderFunctionArgs) {
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
@@ -27,7 +28,7 @@ export async function loader(args: Route.LoaderArgs) {
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({ context, params, request }: Route.LoaderArgs) {
+async function loadCriticalData({ context, params, request }: LoaderFunctionArgs) {
   const { handle } = params;
   const { storefront } = context;
   const paginationVariables = getPaginationVariables(request, {
@@ -76,18 +77,19 @@ async function loadCriticalData({ context, params, request }: Route.LoaderArgs) 
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({ context }: Route.LoaderArgs) {
+function loadDeferredData({ context }: LoaderFunctionArgs) {
   return {};
 }
 
 export default function Collection() {
   const { collection } = useLoaderData<typeof loader>();
-  const { t } = useTranslation();
+  const { t, locale } = useTranslation();
   const section1 = useScrollAnimation();
   const section2 = useScrollAnimation();
 
   // Use localized title and description for specific collections
   const getLocalizedCollectionData = (handle: string) => {
+    // 1. Check for specific hardcoded IDs/handles if needed
     if (handle === 'bundles') {
       return {
         title: t('collections.bundles.title'),
@@ -100,6 +102,18 @@ export default function Collection() {
         description: t('collections.bestSellers.description'),
       };
     }
+
+    // 2. Check for metafield translations (Arabic)
+    const arabicTitle = collection.metafields?.find((m: any) => m?.key === 'arabic_title')?.value;
+    const arabicDescription = collection.metafields?.find((m: any) => m?.key === 'arabic_description')?.value;
+
+    if (locale.language === 'AR') {
+      return {
+        title: arabicTitle || collection.title,
+        description: arabicDescription || collection.description,
+      };
+    }
+
     return {
       title: collection.title,
       description: collection.description,
@@ -249,6 +263,13 @@ const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      metafields(identifiers: [
+        {namespace: "custom", key: "arabic_title"},
+        {namespace: "custom", key: "arabic_description"}
+      ]) {
+        key
+        value
+      }
       products(
         first: $first,
         last: $last,

@@ -44,7 +44,7 @@ export function ProductItem({
             data={image}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"
-            className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-105"
+            className="h-full w-full object-contain transition-transform duration-700 ease-out group-hover:scale-105"
           />
         )}
         {/* Optional: Overlay on hover */}

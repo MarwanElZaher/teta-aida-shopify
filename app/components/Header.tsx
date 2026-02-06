@@ -47,14 +47,6 @@ export function Header({
           {/* Left: Mobile Menu Toggle / Desktop Menu */}
           <div className="flex items-center gap-8 flex-1">
             <HeaderMenuMobileToggle />
-            <div className="hidden lg:block">
-              <HeaderMenu
-                menu={menu}
-                viewport="desktop"
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            </div>
           </div>
 
           {/* Center: Logo - Absolutely positioned to stay centered */}
@@ -118,54 +110,13 @@ export function HeaderMenu({
 
   const { locale, t } = useTranslation();
 
-  if (viewport === 'mobile') {
-    return (
-      <nav className="flex flex-col gap-4 p-6" role="navigation">
-        {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-          if (!item.url) return null;
-          const url =
-            item.url.includes('myshopify.com') ||
-              item.url.includes(publicStoreDomain) ||
-              item.url.includes(primaryDomainUrl)
-              ? new URL(item.url).pathname
-              : item.url;
-
-          const pathPrefix = locale.pathPrefix;
-          const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
-
-          // Remove existing path prefix if present to avoid duplication
-          const urlWithoutPrefix = pathPrefix && normalizedUrl.startsWith(pathPrefix)
-            ? normalizedUrl.slice(pathPrefix.length)
-            : normalizedUrl;
-
-          const finalUrl = `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`;
-
-          return (
-            <NavLink
-              className={({ isActive }) => `text-lg font-medium tracking-wide ${isActive ? 'text-primary' : 'text-dark'}`}
-              end
-              key={item.id}
-              onClick={close}
-              prefetch="intent"
-              to={finalUrl}
-            >
-              {getMenuItemTranslation(item.title, t)}
-            </NavLink>
-          );
-        })}
-
-        {/* Mobile Language Selector */}
-        <div className="mt-6 pt-6 border-t border-gray-100">
-          <p className="text-sm text-dark/50 mb-4 uppercase tracking-widest">{t('nav.selectLanguage') || 'Select Language'}</p>
-          <LanguageSelector />
-        </div>
-      </nav>
-    );
-  }
-
-  // Desktop Menu
+  // Unified Menu (Nostalgic Style)
+  // We use this for all viewports now as it lives in the drawer
   return (
-    <nav className="flex gap-4 lg:gap-6" role="navigation">
+    <nav className="flex flex-col gap-8 p-8 items-center justify-center min-h-[60vh]" role="navigation">
+      {/* Decorative Top Element */}
+      <div className="w-16 h-px bg-primary/20 mb-4"></div>
+
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
         const url =
@@ -177,19 +128,14 @@ export function HeaderMenu({
 
         const pathPrefix = locale.pathPrefix;
         const normalizedUrl = url.startsWith('/') ? url : `/${url}`;
-
-        // Remove existing path prefix if present to avoid duplication (e.g. /ar/ar/...)
         const urlWithoutPrefix = pathPrefix && normalizedUrl.startsWith(pathPrefix)
           ? normalizedUrl.slice(pathPrefix.length)
           : normalizedUrl;
-
         const finalUrl = `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`;
 
         return (
           <NavLink
-            className={({ isActive }) =>
-              `text-sm font-medium uppercase tracking-widest hover:text-primary transition-colors ${isActive ? 'text-primary border-b border-primary' : 'text-dark'}`
-            }
+            className={({ isActive }) => `text-xl font-serif font-bold tracking-wide transition-all duration-300 hover:scale-105 ${isActive ? 'text-primary' : 'text-dark/80 hover:text-primary'}`}
             end
             key={item.id}
             onClick={close}
@@ -200,6 +146,13 @@ export function HeaderMenu({
           </NavLink>
         );
       })}
+
+      {/* Mobile Language Selector */}
+      <div className="mt-12 flex flex-col items-center gap-4 w-full">
+        <div className="w-16 h-px bg-primary/20 mb-4"></div>
+        <p className="text-xs text-dark/40 uppercase tracking-widest">{t('nav.selectLanguage') || 'Select Language'}</p>
+        <LanguageSelector />
+      </div>
     </nav>
   );
 }
@@ -235,10 +188,13 @@ function HeaderMenuMobileToggle() {
   const { open } = useAside();
   return (
     <button
-      className="md:hidden text-2xl text-dark focus:outline-none"
+      className="text-2xl text-dark focus:outline-none hover:text-primary transition-colors p-2"
       onClick={() => open('mobile')}
     >
-      ☰
+      <span className="sr-only">Menu</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
     </button>
   );
 }
@@ -368,6 +324,15 @@ const FALLBACK_HEADER_MENU = {
       title: 'Contact',
       type: 'HTTP',
       url: '/pages/contact',
+      items: [],
+    },
+    {
+      id: 'ramadan-collections',
+      resourceId: null,
+      tags: [],
+      title: 'Ramadan Collections',
+      type: 'HTTP',
+      url: '/collections/ramadan-collections',
       items: [],
     },
   ],
