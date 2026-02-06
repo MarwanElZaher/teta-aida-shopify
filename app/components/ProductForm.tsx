@@ -12,9 +12,11 @@ import { useTranslation } from '~/lib/translations';
 export function ProductForm({
   productOptions,
   selectedVariant,
+  attributes,
 }: {
   productOptions: MappedProductOptions[];
   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
+  attributes?: { key: string; value: string }[];
 }) {
   const navigate = useNavigate();
   const { open } = useAside();
@@ -107,6 +109,7 @@ export function ProductForm({
       })}
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
+        attributes={attributes}
         onClick={() => {
           open('cart');
         }}

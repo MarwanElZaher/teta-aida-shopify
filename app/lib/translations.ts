@@ -578,6 +578,7 @@ export const TRANSLATIONS = {
             },
             attributes: {
                 title: 'Heat Levels',
+                heatLevelMarker: '(Heat Level)',
                 'Olives 1 Heat': 'Olives 1 Heat',
                 'Olives 2 Heat': 'Olives 2 Heat',
                 'Harissa Heat': 'Harissa Heat',
@@ -1581,6 +1582,7 @@ export const TRANSLATIONS = {
             },
             attributes: {
                 title: 'درجات الحرارة',
+                heatLevelMarker: '(درجة الحرارة)',
                 'Olives 1 Heat': 'حرارة الزيتون ١',
                 'Olives 2 Heat': 'حرارة الزيتون ٢',
                 'Harissa Heat': 'حرارة الهريسة',

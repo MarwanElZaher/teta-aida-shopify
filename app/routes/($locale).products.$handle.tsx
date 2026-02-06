@@ -221,6 +221,7 @@ export default function Product() {
                   <BundleAddToCartButton
                     {...addToCartButtonProps}
                     customProperties={bundleConfig}
+                    bundleItems={bundleItems || []}
                   >
                     {!allBundleItemsSelected
                       ? t('product.selectHeatLevel')
@@ -243,6 +244,15 @@ export default function Product() {
                   <ProductForm
                     productOptions={productOptions}
                     selectedVariant={selectedVariant}
+                    attributes={selectedHeat ? [{
+                      key: `${t('product.heatLevel')} ${t('product.attributes.heatLevelMarker')}`,
+                      value: (() => {
+                        const lowerHeat = selectedHeat.toLowerCase();
+                        return (lowerHeat === 'mild' || lowerHeat === 'normal' || lowerHeat === 'spicy')
+                          ? t(`product.heatLevels.${lowerHeat}`)
+                          : selectedHeat;
+                      })()
+                    }] : []}
                   />
                 </>
               )}

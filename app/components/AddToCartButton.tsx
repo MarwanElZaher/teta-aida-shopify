@@ -8,6 +8,7 @@ export function AddToCartButton({
   disabled,
   lines,
   onClick,
+  attributes,
 }: {
   className?: string;
   analytics?: unknown;
@@ -15,10 +16,20 @@ export function AddToCartButton({
   disabled?: boolean;
   lines: Array<OptimisticCartLineInput>;
   onClick?: () => void;
+  attributes?: { key: string; value: string }[];
 }) {
   return (
     <div className="w-full [&>form]:w-full flex justify-start">
-      <CartForm route="/cart" inputs={{ lines }} action={CartForm.ACTIONS.LinesAdd}>
+      <CartForm
+        route="/cart"
+        inputs={{
+          lines: lines.map(line => ({
+            ...line,
+            attributes: attributes || line.attributes || [],
+          }))
+        }}
+        action={CartForm.ACTIONS.LinesAdd}
+      >
         {(fetcher: FetcherWithComponents<any>) => (
           <>
             <input

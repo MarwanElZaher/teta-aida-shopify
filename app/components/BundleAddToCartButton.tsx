@@ -9,6 +9,7 @@ export function BundleAddToCartButton({
     lines,
     onClick,
     customProperties,
+    bundleItems,
 }: {
     analytics?: unknown;
     children: React.ReactNode;
@@ -16,27 +17,39 @@ export function BundleAddToCartButton({
     lines: Array<OptimisticCartLineInput>;
     onClick?: () => void;
     customProperties?: Record<string, string>;
+    bundleItems?: any[];
 }) {
     const { t } = useTranslation();
 
     // Helper to map English product names to Attribute Keys
     const getAttributeKey = (name: string) => {
         const cleanName = name.replace(/_\d+$/, ''); // Remove index
-        if (cleanName.includes('Olives')) return t('product.attributes.Olives Heat');
-        if (cleanName.includes('Cucumber')) return t('product.attributes.Cucumbers Heat');
-        if (cleanName.includes('Cabbage')) return t('product.attributes.Cabbage Heat');
-        if (cleanName.includes('Harissa')) return t('product.attributes.Harissa Heat');
-        if (cleanName.includes('Lemon')) return t('product.attributes.Olives Heat'); // Fallback or new key if needed, defaulting to Olives structure or generic
-        return cleanName; // Fallback
+        const indexSuffix = name.match(/_\d+$/)?.[0] || ''; // Keep it for uniqueness
+
+        // Find the localized name from bundleItems
+        const item = bundleItems?.find(i => i.name === cleanName);
+        const displayName = item?.displayName || cleanName;
+
+        // Append technical marker for cart visibility (must contain "Heat" or "حرارة")
+        const marker = t('product.attributes.heatLevelMarker');
+
+        return `${displayName} ${marker}${indexSuffix}`;
     };
 
     // Add custom properties to the line items
     const linesWithProperties = lines.map(line => ({
         ...line,
-        attributes: customProperties ? Object.entries(customProperties).map(([key, value]) => ({
-            key: getAttributeKey(key),
-            value: t(`product.heatLevels.${value.toLowerCase()}`),
-        })) : [],
+        attributes: customProperties ? Object.entries(customProperties).map(([key, value]) => {
+            const lowerValue = value.toLowerCase();
+            const translatedValue = (lowerValue === 'mild' || lowerValue === 'normal' || lowerValue === 'spicy')
+                ? t(`product.heatLevels.${lowerValue}`)
+                : value;
+
+            return {
+                key: getAttributeKey(key),
+                value: translatedValue,
+            };
+        }) : [],
     }));
 
     return (

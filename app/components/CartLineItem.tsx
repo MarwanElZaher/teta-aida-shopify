@@ -39,7 +39,10 @@ export function CartLineItem({
 
   // Parse heat level attributes (for both bundles and individual products)
   const heatLevelAttributes = (attributes || []).filter(attr =>
-    attr.key.includes('Heat') || attr.key.includes('Level')
+    attr.key.includes('Heat') ||
+    attr.key.includes('Level') ||
+    attr.key.includes('حرارة') ||
+    attr.key.includes('سبايسي')
   );
 
   return (
@@ -100,14 +103,26 @@ export function CartLineItem({
                     <span className="font-medium">
                       {(() => {
                         const cleanKey = attr.key.replace(/_\d+$/, '');
-                        // Try to localize the cleaned key using getLocalizedTitle (which has hardcoded fallbacks)
-                        // or check existing translations
-                        // But first checking if it's already localized effectively
-                        const localizedKey = getLocalizedTitle(cleanKey, [], locale.language);
+                        const markerEn = '(Heat Level)';
+                        const markerAr = '(درجة الحرارة)';
 
-                        // If getLocalizedTitle returns same english key (no fallback found), try translation keys
-                        // But first checking if it's already localized effectively
-                        return localizedKey !== cleanKey ? localizedKey : (t(`product.attributes.${attr.key}`) !== `product.attributes.${attr.key}` ? t(`product.attributes.${attr.key}`) : cleanKey);
+                        // Remove technical markers if they were appended
+                        const displayKey = cleanKey
+                          .replace(markerEn, '')
+                          .replace(markerAr, '')
+                          .replace(/[:：]\s*$/, '')
+                          .trim();
+
+                        // 1. Try getLocalizedTitle (hardcoded fallbacks + future extensions)
+                        const localizedKey = getLocalizedTitle(displayKey, [], locale.language);
+                        if (localizedKey !== displayKey) return localizedKey;
+
+                        // 2. Try translations.ts
+                        const translatedKey = t(`product.attributes.${displayKey}`);
+                        if (translatedKey !== `product.attributes.${displayKey}`) return translatedKey;
+
+                        // 3. Fallback to the name as sent from Admin (already localized if added in /ar)
+                        return displayKey;
                       })()}:
                     </span> {' '}
                     {t(`product.heatLevels.${(attr.value || '').toLowerCase()}`) !== `product.heatLevels.${(attr.value || '').toLowerCase()}` ? t(`product.heatLevels.${(attr.value || '').toLowerCase()}`) : (attr.value || '')}
