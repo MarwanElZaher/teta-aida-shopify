@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Pagination } from '@shopify/hydrogen';
+import { useTranslation } from '~/lib/translations';
 
 /**
  * <PaginatedResourceSection > is a component that encapsulate how the previous and next behaviors throughout your application.
@@ -13,6 +14,7 @@ export function PaginatedResourceSection<NodesType>({
   children: React.FunctionComponent<{ node: NodesType; index: number }>;
   resourcesClassName?: string;
 }) {
+  const { t } = useTranslation();
   const nextLinkRef = React.useRef<HTMLAnchorElement>(null);
   const observerRef = React.useRef<IntersectionObserver | null>(null);
 
@@ -43,23 +45,53 @@ export function PaginatedResourceSection<NodesType>({
         );
 
         return (
-          <div>
-            <PreviousLink>
-              {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
-            </PreviousLink>
+          <div className="flex flex-col gap-8">
+            <div className="flex justify-center">
+              <PreviousLink className="btn-secondary !w-auto px-8 gap-2 group">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={2}
+                  stroke="currentColor"
+                  className="w-5 h-5 transition-transform group-hover:-translate-y-1"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+                </svg>
+                {isLoading ? t('common.loading') : t('collections.showing')}
+              </PreviousLink>
+            </div>
+
             {resourcesClassName ? (
               <div className={resourcesClassName}>{resourcesMarkup}</div>
             ) : (
               resourcesMarkup
             )}
-            <NextLink className="inline-block w-full py-4 text-center text-dark/60 hover:text-primary transition-colors cursor-pointer">
-              {isLoading ? (
-                <span className="block animate-pulse">Loading more...</span>
-              ) : (
-                // @ts-ignore
-                <span ref={nextLinkRef} className="block">Load more ↓</span>
-              )}
-            </NextLink>
+
+            <div className="flex justify-center mt-4">
+              <NextLink className="btn-secondary !w-auto px-8 gap-2 group transition-all duration-300">
+                {isLoading ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                    <span>{t('common.loading')}</span>
+                  </>
+                ) : (
+                  <>
+                    <span ref={nextLinkRef}>{t('common.viewMore')}</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={2}
+                      stroke="currentColor"
+                      className="w-5 h-5 transition-transform group-hover:translate-y-1"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                    </svg>
+                  </>
+                )}
+              </NextLink>
+            </div>
           </div>
         );
       }}
