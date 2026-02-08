@@ -71,9 +71,17 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                     `}
                                     >
                                         {(() => {
-                                            const key = `product.heatLevels.${level.toLowerCase()}`;
-                                            const translated = t(key);
-                                            return translated === key ? level : translated;
+                                            // Check if we have a translation for the lowercase key
+                                            const key = level.toLowerCase();
+                                            const translationKey = `product.heatLevels.${key}`;
+                                            const translated = t(translationKey);
+
+                                            // If translation exists and is different from key, use it.
+                                            // Ensure we don't just return the key if translation is missing.
+                                            if (translated !== translationKey) return translated;
+
+                                            // Otherwise assume it's already localized (e.g. from Shopify Admin)
+                                            return level;
                                         })()}
                                     </button>
                                 ))}
@@ -81,9 +89,13 @@ export function BundleConfigurator({ bundleItems, onConfigurationChange }: Bundl
                             {selections[itemKey] && (
                                 <p className="mt-2 text-xs text-secondary font-medium">
                                     ✓ {t('product.selected')} {(() => {
-                                        const key = `product.heatLevels.${selections[itemKey].toLowerCase()}`;
-                                        const translated = t(key);
-                                        return translated === key ? selections[itemKey] : translated;
+                                        const level = selections[itemKey];
+                                        const key = level.toLowerCase();
+                                        const translationKey = `product.heatLevels.${key}`;
+                                        const translated = t(translationKey);
+
+                                        if (translated !== translationKey) return translated;
+                                        return level;
                                     })()}
                                 </p>
                             )}

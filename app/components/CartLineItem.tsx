@@ -56,7 +56,7 @@ export function CartLineItem({
             height={100}
             loading="lazy"
             width={100}
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
           />
         </div>
       )}

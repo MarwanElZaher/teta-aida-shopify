@@ -91,13 +91,12 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
   const { close } = useAside();
-
   const { locale, t } = useTranslation();
 
   // Unified Menu (Nostalgic Style)
   // We use this for all viewports now as it lives in the drawer
   return (
-    <nav className="flex flex-col gap-6 p-8 items-center justify-center min-h-[60vh]" role="navigation">
+    <nav className="flex flex-col gap-8 p-8 items-center justify-center min-h-[60vh]" role="navigation">
       {/* Decorative Top Element */}
       <div className="w-16 h-px bg-primary/20 mb-4"></div>
 
@@ -164,7 +163,7 @@ export function HeaderMenu({
       })}
 
       {/* Mobile Language Selector */}
-      <div className="mt-8 flex flex-col items-center gap-4 w-full">
+      <div className="mt-12 flex flex-col items-center gap-4 w-full">
         <div className="w-16 h-px bg-primary/20 mb-4"></div>
         <p className="text-xs text-dark/40 uppercase tracking-widest">{t('nav.selectLanguage') || 'Select Language'}</p>
         <LanguageSelector />
@@ -172,7 +171,6 @@ export function HeaderMenu({
     </nav>
   );
 }
-
 
 
 
@@ -358,6 +356,15 @@ const FALLBACK_HEADER_MENU = {
       title: 'Contact',
       type: 'HTTP',
       url: '/pages/contact',
+      items: [],
+    },
+    {
+      id: 'ramadan-collections',
+      resourceId: null,
+      tags: [],
+      title: 'Ramadan Collections',
+      type: 'HTTP',
+      url: '/collections/ramadan-collections',
       items: [],
     },
   ],

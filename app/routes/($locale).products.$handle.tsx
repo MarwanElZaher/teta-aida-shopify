@@ -28,10 +28,12 @@ import { getLocalizedTitle, getLocalizedDescription } from '~/lib/localized-cont
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   const product = data?.product;
-  if (!product) return [];
-
   const locale = data?.locale || { language: 'EN' };
   const isArabic = locale.language === 'AR';
+
+  if (!product) {
+    return [{ title: 'Product Not Found | Teta Aida' }];
+  }
 
   // Get localized SEO values from metafields
   const metafields = product.metafields || [];
@@ -369,67 +371,84 @@ export default function Product() {
             )}
 
             {/* Ingredients & Nutrition */}
-            {(ingredients || nutritionFacts) && (
-              <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.ingredients')} & {t('product.nutrition')}</h3>
+            {
+              (ingredients || nutritionFacts) && (
+                <div className="mt-10 border-t border-gray-200 pt-10">
+                  <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.ingredients')} & {t('product.nutrition')}</h3>
 
-                {ingredients && (
-                  <div className="mt-4">
-                    <h4 className="text-sm font-bold text-gray-900 mb-2 uppercase tracking-wide">{t('product.ingredients')}</h4>
-                    <p className="text-sm text-gray-600 leading-relaxed">{ingredients}</p>
-                  </div>
-                )}
-
-                {nutritionFacts && (
-                  <div className="mt-6 bg-gray-50 p-4 rounded-lg">
-                    <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide flex justify-between items-center">
-                      {t('product.nutritionFacts')}
-                      {servingSize && <span className="text-xs font-normal text-gray-500 normal-case">{t('product.servingSize')}: {servingSize}</span>}
-                    </h4>
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
-                      {Object.entries(nutritionFacts as Record<string, string>).map(([key, value]) => (
-                        <div key={key} className="flex justify-between border-b border-gray-200 pb-1 last:border-0">
-                          <span className="text-gray-600 capitalize">{key.replace(/_/g, ' ')}</span>
-                          <span className="font-bold text-gray-900">{value}</span>
-                        </div>
-                      ))}
+                  {ingredients && (
+                    <div className="mt-4">
+                      <h4 className="text-sm font-bold text-gray-900 mb-2 uppercase tracking-wide">{t('product.ingredients')}</h4>
+                      <p className="text-sm text-gray-600 leading-relaxed">{ingredients}</p>
                     </div>
-                  </div>
-                )}
-              </div>
-            )}
+                  )}
+
+                  {nutritionFacts && (
+                    <div className="mt-6 bg-gray-50 p-4 rounded-lg">
+                      <h4 className="text-sm font-bold text-gray-900 mb-3 uppercase tracking-wide flex justify-between items-center">
+                        {t('product.nutritionFacts')}
+                        {servingSize && <span className="text-xs font-normal text-gray-500 normal-case">{t('product.servingSize')}: {servingSize}</span>}
+                      </h4>
+                      <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-sm">
+                        {Object.entries(nutritionFacts as Record<string, string>).map(([key, value]) => (
+                          <div key={key} className="flex justify-between border-b border-gray-200 pb-1 last:border-0">
+                            <span className="text-gray-600 capitalize">{key.replace(/_/g, ' ')}</span>
+                            <span className="font-bold text-gray-900">{value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            }
 
             {/* Usage Moments */}
-            {usageMoments && (
-              <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.usageMoments')}</h3>
-                <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {usageMoments.map((moment, i) => (
-                    <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-50 px-4 py-2 rounded-lg">
-                      <span className="text-secondary">✦</span> {moment as string}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {
+              usageMoments && (
+                <div className="mt-10 border-t border-gray-200 pt-10">
+                  <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.usageMoments')}</h3>
+                  <ul className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {usageMoments.map((moment, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-gray-50 px-4 py-2 rounded-lg">
+                        <span className="text-secondary">✦</span> {moment as string}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
             {/* Flavor Profile */}
-            {flavorProfile && (
-              <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.flavorProfile')}</h3>
-                <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
-                  {Object.entries(flavorProfile).map(([key, value]) => (
-                    <div key={key}>
-                      <dt className="text-xs font-bold uppercase text-gray-900">{key}</dt>
-                      <dd className="mt-1 text-sm font-medium text-gray-700">{value as string}</dd>
-                    </div>
-                  ))}
+            {
+              flavorProfile && (
+                <div className="mt-10 border-t border-gray-200 pt-10">
+                  <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.flavorProfile')}</h3>
+                  <div className="mt-4 grid grid-cols-2 gap-4 rounded-xl bg-gray-50 p-4">
+                    {Object.entries(flavorProfile).map(([key, value]) => (
+                      <div key={key}>
+                        <dt className="text-xs font-bold uppercase text-gray-900">{key}</dt>
+                        <dd className="mt-1 text-sm font-medium text-gray-700">{value as string}</dd>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )
+            }
 
             {/* Description */}
-            {displayDescription && (
+            {
+              displayDescription && (
+                <div className="mt-10 border-t border-gray-200 pt-10">
+                  <h3 className="text-lg font-bold text-gray-900">{t('product.description')}</h3>
+                  <div
+                    className="prose prose-sm mt-4 text-gray-600"
+                    dangerouslySetInnerHTML={{ __html: displayDescription }}
+                  />
+                </div>
+              )}
+
+            {/* Usage Ideas */}
+            {usageIdeas && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.description')}</h3>
                 <div
@@ -437,92 +456,102 @@ export default function Product() {
                   dangerouslySetInnerHTML={{ __html: displayDescription }}
                 />
               </div>
-            )}
+            )
+            }
 
             {/* Usage Ideas */}
-            {usageIdeas && (
-              <div className="mt-10 border-t border-gray-200 pt-10">
-                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.perfectFor')}</h3>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  {usageIdeas.map((idea, i) => (
-                    <span key={i} className="rounded-full bg-cream border border-primary/20 px-3 py-1 text-sm font-medium text-primary">
-                      {idea}
-                    </span>
-                  ))}
+            {
+              usageIdeas && (
+                <div className="mt-10 border-t border-gray-200 pt-10">
+                  <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">{t('product.perfectFor')}</h3>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {usageIdeas.map((idea, i) => (
+                      <span key={i} className="rounded-full bg-cream border border-primary/20 px-3 py-1 text-sm font-medium text-primary">
+                        {idea}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+              )
+            }
+          </div >
+        </div >
 
         {/* Cross-Sell / Recommended Pairing */}
-        {recommendedProduct && (
-          <div className="mt-16 border-t border-gray-200 pt-16">
-            <h2 className="text-center text-2xl font-bold text-gray-900 mb-8">{t('product.completeExperience')}</h2>
-            <div className="mx-auto max-w-sm rounded-xl bg-gray-50 p-6 shadow-sm border border-gray-100">
-              <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 mb-4">
-                {recommendedProduct.featuredImage && (
-                  <img
-                    src={recommendedProduct.featuredImage.url}
-                    alt={recommendedProduct.featuredImage.altText || recommendedProduct.title}
-                    className="h-full w-full object-cover object-center"
-                  />
-                )}
-              </div>
-              <h3 className="text-lg font-bold text-gray-900">{recommendedProduct.title}</h3>
+        {
+          recommendedProduct && (
+            <div className="mt-16 border-t border-gray-200 pt-16">
+              <h2 className="text-center text-2xl font-bold text-gray-900 mb-8">{t('product.completeExperience')}</h2>
+              <div className="mx-auto max-w-sm rounded-xl bg-gray-50 p-6 shadow-sm border border-gray-100">
+                <div className="aspect-square relative overflow-hidden rounded-lg bg-gray-100 mb-4">
+                  {recommendedProduct.featuredImage && (
+                    <img
+                      src={recommendedProduct.featuredImage.url}
+                      alt={recommendedProduct.featuredImage.altText || recommendedProduct.title}
+                      className="h-full w-full object-cover object-center"
+                    />
+                  )}
+                </div>
+                <h3 className="text-lg font-bold text-gray-900">{recommendedProduct.title}</h3>
 
-              <button
-                onClick={() => window.location.href = `/products/${recommendedProduct.handle}`}
-                className="mt-4 w-full rounded-full bg-white border border-primary text-primary px-4 py-2 text-sm font-bold hover:bg-gray-50 transition-colors"
-              >
-                {t('product.viewProduct')}
-              </button>
+                <button
+                  onClick={() => window.location.href = `/products/${recommendedProduct.handle}`}
+                  className="mt-4 w-full rounded-full bg-white border border-primary text-primary px-4 py-2 text-sm font-bold hover:bg-gray-50 transition-colors"
+                >
+                  {t('product.viewProduct')}
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          )
+        }
 
         {/* Reviews Section */}
-        {reviews && reviews.length > 0 && (
-          <div className="mt-16 border-t border-gray-200 pt-16">
-            <h2 className="text-center text-2xl font-bold text-gray-900">{t('product.reviews')}</h2>
-            <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {reviews.map((review, i) => (
-                <div key={i} className="rounded-xl bg-gray-50 p-6 shadow-sm">
-                  <div className="mb-4 flex text-yellow-400">★★★★★</div>
-                  <blockquote className="text-gray-600 italic">"{review}"</blockquote>
-                </div>
-              ))}
+        {
+          reviews && reviews.length > 0 && (
+            <div className="mt-16 border-t border-gray-200 pt-16">
+              <h2 className="text-center text-2xl font-bold text-gray-900">{t('product.reviews')}</h2>
+              <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                {reviews.map((review, i) => (
+                  <div key={i} className="rounded-xl bg-gray-50 p-6 shadow-sm">
+                    <div className="mb-4 flex text-yellow-400">★★★★★</div>
+                    <blockquote className="text-gray-600 italic">"{review}"</blockquote>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
-      </div>
+          )
+        }
+      </div >
 
       {/* Sticky CTA for Mobile */}
-      <StickyCTA
+      < StickyCTA
         title={displayTitle}
         price={selectedVariant?.price}
-        available={selectedVariant?.availableForSale ?? false}
-        isVisible={!isMainButtonVisible}
+        available={selectedVariant?.availableForSale ?? false
+        }
+        isVisible={!isMainButtonVisible
+        }
       >
-        {isBundleWithConfig ? (
-          <BundleAddToCartButton
-            {...addToCartButtonProps}
-            customProperties={bundleConfig}
-          >
-            {!allBundleItemsSelected
-              ? t('product.selectHeatLevel')
-              : selectedVariant?.availableForSale
-                ? t('product.addBundleToCart')
-                : t('product.soldOut')}
-          </BundleAddToCartButton>
-        ) : (
-          <AddToCartButton
-            {...addToCartButtonProps}
-          >
-            {selectedVariant?.availableForSale ? t('product.addToCart') : t('product.soldOut')}
-          </AddToCartButton>
-        )}
-      </StickyCTA>
+        {
+          isBundleWithConfig ? (
+            <BundleAddToCartButton
+              {...addToCartButtonProps}
+              customProperties={bundleConfig}
+            >
+              {!allBundleItemsSelected
+                ? t('product.selectHeatLevel')
+                : selectedVariant?.availableForSale
+                  ? t('product.addBundleToCart')
+                  : t('product.soldOut')}
+            </BundleAddToCartButton >
+          ) : (
+            <AddToCartButton
+              {...addToCartButtonProps}
+            >
+              {selectedVariant?.availableForSale ? t('product.addToCart') : t('product.soldOut')}
+            </AddToCartButton>
+          )}
+      </StickyCTA >
 
       <Analytics.ProductView
         data={{
@@ -539,7 +568,7 @@ export default function Product() {
           ],
         }}
       />
-    </div>
+    </div >
   );
 }
 

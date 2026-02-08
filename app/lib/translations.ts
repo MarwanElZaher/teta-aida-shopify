@@ -16,6 +16,13 @@ export const TRANSLATIONS = {
             search: 'Search',
             cheese: 'Cheese',
         },
+        ramadan: {
+            title: 'Ramadan Collections',
+            subtitle: 'Curated pickle boxes designed for Ramadan tables and longer household stocking.',
+            explore: 'Explore Collection',
+            viewAll: 'Explore All Ramadan Collections',
+            discoverShortcut: 'Discover Ramadan Collections',
+        },
         common: {
             addToCart: 'Add to Cart',
             soldOut: 'Sold Out',
@@ -31,6 +38,7 @@ export const TRANSLATIONS = {
             quantity: 'Quantity',
             subtotal: 'Subtotal',
             checkout: 'Checkout',
+            shopNow: 'Shop Now',
         },
         footer: {
             description: 'Premium small-batch artisanal pickles crafted with clean, carefully selected ingredients. A taste of heritage, elevated for today.',
@@ -319,6 +327,7 @@ export const TRANSLATIONS = {
             viewProduct: 'View Product',
             addToCart: 'Add to Cart',
             addBundleToCart: 'Add Bundle to Cart',
+            usageMoments: 'Usage Moments',
             adding: 'Adding...',
             soldOut: 'Sold Out',
             select: 'Select',
@@ -593,6 +602,8 @@ export const TRANSLATIONS = {
                 'Olives Heat': 'Olives Heat',
                 'Cucumbers Heat': 'Cucumbers Heat',
                 'Cabbage Heat': 'Cabbage Heat',
+                'Lemon Heat': 'Lemon Heat',
+                'Turnip Heat': 'Turnip Heat',
                 'Turnips Heat': 'Turnips Heat',
                 'Heat Level': 'Heat Level',
             },
@@ -987,6 +998,13 @@ export const TRANSLATIONS = {
             search: 'بحث',
             cheese: 'أجبان',
         },
+        ramadan: {
+            title: 'تشكيلات رمضان',
+            subtitle: 'صناديق مخلل مختارة بعناية لتزيين سفرة رمضان وتخزين يكفي الشهر.',
+            explore: 'اكتشف التشكيلة',
+            viewAll: 'عرض كل تشكيلات رمضان',
+            discoverShortcut: 'تسوّق تشكيلات رمضان',
+        },
         common: {
             addToCart: 'أضف إلى السلة',
             soldOut: 'نفذت الكمية',
@@ -1003,6 +1021,7 @@ export const TRANSLATIONS = {
             subtotal: 'المجموع الفرعي',
             checkout: 'إتمام الشراء',
             menu: 'القائمة',
+            shopNow: 'تسوّق الآن',
         },
         footer: {
             description: "مخللات فاخرة مصنوعة يدويًا بمكونات نظيفة مختارة بعناية. نكهة تراثية بلمسة عصرية.",
@@ -1294,6 +1313,7 @@ export const TRANSLATIONS = {
             viewProduct: 'عرض المنتج',
             addToCart: 'أضِف للسلة',
             addBundleToCart: 'أضف المجموعة إلى السلة',
+            usageMoments: 'استخدامات مقترحة',
             adding: 'جاري الإضافة...',
             soldOut: 'غير متاح حاليًا',
             select: 'اختر',
@@ -1606,6 +1626,8 @@ export const TRANSLATIONS = {
                 'Olives Heat': 'حرارة الزيتون',
                 'Cucumbers Heat': 'حرارة الخيار',
                 'Cabbage Heat': 'حرارة الكرنب',
+                'Lemon Heat': 'حرارة الليمون',
+                'Turnip Heat': 'حرارة اللفت',
                 'Heat Level': 'درجة الحرارة',
             },
             hostingBox: {
