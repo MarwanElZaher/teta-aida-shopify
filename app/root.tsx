@@ -119,6 +119,8 @@ async function loadCriticalData({ context }: Route.LoaderArgs) {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+        language: storefront.i18n.language,
+        country: storefront.i18n.country,
       },
     }),
     // Add other queries here, so that they are loaded in parallel

@@ -14,6 +14,7 @@ export const TRANSLATIONS = {
             selectLanguage: 'Select Language',
             menu: 'Menu',
             search: 'Search',
+            cheese: 'Cheese',
         },
         common: {
             addToCart: 'Add to Cart',
@@ -54,6 +55,11 @@ export const TRANSLATIONS = {
             bundles: {
                 title: 'Our Bestselling Bundles',
                 subtitle: 'Curated sets for every occasion, from hosting to healthy living.',
+                sections: {
+                    pickles: 'Pickle Bundles',
+                    cheese: 'Cheese Bundles',
+                    mixed: 'Pickles & Cheese',
+                },
                 coming_soon: 'Bundles coming soon...',
             },
             bestsellers: {
@@ -319,6 +325,7 @@ export const TRANSLATIONS = {
             whatsInside: "What's Inside",
             reviews: 'Reviews',
             whyLoveIt: "Why You'll Love It",
+            completeExperience: 'Complete the Experience',
             flavorProfile: 'Flavor Profile',
             description: 'Description',
             usageMoments: 'Usage Moments',
@@ -785,6 +792,9 @@ export const TRANSLATIONS = {
         collections: {
             allProducts: 'All Products',
             products: 'Products',
+            pickles: 'Pickles',
+            cheese: 'Cheese',
+            ramadan: 'Ramadan Collection',
             filter: 'Filter',
             sort: 'Sort',
             sortBy: 'Sort by',
@@ -975,6 +985,7 @@ export const TRANSLATIONS = {
             selectLanguage: 'اختر اللغة',
             menu: 'القائمة',
             search: 'بحث',
+            cheese: 'أجبان',
         },
         common: {
             addToCart: 'أضف إلى السلة',
@@ -1014,8 +1025,13 @@ export const TRANSLATIONS = {
                 footer: 'تحضير أسبوعي طازج · توصيل سريع داخل القاهرة',
             },
             bundles: {
-                title: 'الأكثر مبيعاً',
-                subtitle: 'مجموعات مُختارة بعناية لكل مناسبة… من الضيافه للأكل الصحي.',
+                title: 'مجموعاتنا الأكثر مبيعاً',
+                subtitle: 'مجموعات مختارة لكل مناسبة، من الضيافة إلى الحياة الصحية.',
+                sections: {
+                    pickles: 'مجموعات المخللات',
+                    cheese: 'مجموعات الأجبان',
+                    mixed: 'مخللات وأجبان',
+                },
                 coming_soon: 'العروض هتكون متاحة قريبًا…',
             },
             bestsellers: {
@@ -1752,6 +1768,9 @@ export const TRANSLATIONS = {
         collections: {
             allProducts: 'كل المنتجات',
             products: 'المنتجات',
+            pickles: 'المخللات',
+            cheese: 'الأجبان',
+            ramadan: 'مجموعة رمضان',
             filter: 'تصفية',
             sort: 'ترتيب',
             sortBy: 'ترتيب حسب',

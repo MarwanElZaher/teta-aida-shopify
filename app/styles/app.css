@@ -31,6 +31,15 @@ h6 {
 }
 
 /* Custom Utilities */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 .btn-primary {
   @apply w-full h-[50px] rounded-[14px] bg-primary text-white font-bold uppercase tracking-wide transition-colors hover:bg-[#143d24] flex items-center justify-center;
 }

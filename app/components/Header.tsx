@@ -65,7 +65,7 @@ export function Header({
               }}
               className="text-xl md:text-2xl lg:text-3xl font-serif font-bold tracking-widest text-primary uppercase whitespace-nowrap pointer-events-auto"
             >
-              {isRtl ? 'تيتا عايدة' : shop.name}
+              {isRtl ? 'تيتا عايدة' : shop?.name || 'Teta Aida'}
             </NavLink>
           </div>
 
@@ -77,22 +77,6 @@ export function Header({
       </div>
     </header>
   );
-}
-
-// Helper function to translate menu item titles
-function getMenuItemTranslation(title: string, t: (key: string) => string): string {
-  const titleMap: Record<string, string> = {
-    'Shop All': t('nav.allProducts'),
-    'Bundles': t('nav.bundles'),
-    'About Us': t('nav.about'),
-    'FAQ': t('pages.faq'),
-    'Contact': t('nav.contact'),
-    'Home': t('nav.home'),
-    'Shop': t('nav.shop'),
-    "Best Sellers": t('nav.bestsellers'),
-  };
-
-  return titleMap[title] || title;
 }
 
 export function HeaderMenu({
@@ -113,7 +97,7 @@ export function HeaderMenu({
   // Unified Menu (Nostalgic Style)
   // We use this for all viewports now as it lives in the drawer
   return (
-    <nav className="flex flex-col gap-8 p-8 items-center justify-center min-h-[60vh]" role="navigation">
+    <nav className="flex flex-col gap-6 p-8 items-center justify-center min-h-[60vh]" role="navigation">
       {/* Decorative Top Element */}
       <div className="w-16 h-px bg-primary/20 mb-4"></div>
 
@@ -134,21 +118,53 @@ export function HeaderMenu({
         const finalUrl = `${pathPrefix}${urlWithoutPrefix.startsWith('/') ? '' : '/'}${urlWithoutPrefix}`;
 
         return (
-          <NavLink
-            className={({ isActive }) => `text-xl font-serif font-bold tracking-wide transition-all duration-300 hover:scale-105 ${isActive ? 'text-primary' : 'text-dark/80 hover:text-primary'}`}
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            to={finalUrl}
-          >
-            {getMenuItemTranslation(item.title, t)}
-          </NavLink>
+          <div key={item.id} className="flex flex-col items-center gap-4">
+            <NavLink
+              className={({ isActive }) => `text-xl font-serif font-bold tracking-wide transition-all duration-300 hover:scale-105 ${isActive ? 'text-primary' : 'text-dark/80 hover:text-primary'}`}
+              end
+              onClick={close}
+              prefetch="intent"
+              to={finalUrl}
+            >
+              {item.title}
+            </NavLink>
+            {item.items && item.items.length > 0 && (
+              <div className="flex flex-col items-center gap-3">
+                {item.items.map((subItem) => {
+                  if (!subItem.url) return null;
+                  const subUrl =
+                    subItem.url.includes('myshopify.com') ||
+                      subItem.url.includes(publicStoreDomain) ||
+                      subItem.url.includes(primaryDomainUrl)
+                      ? new URL(subItem.url).pathname
+                      : subItem.url;
+                  const subNormalizedUrl = subUrl.startsWith('/') ? subUrl : `/${subUrl}`;
+                  const subUrlWithoutPrefix = pathPrefix && subNormalizedUrl.startsWith(pathPrefix)
+                    ? subNormalizedUrl.slice(pathPrefix.length)
+                    : subNormalizedUrl;
+                  const subFinalUrl = `${pathPrefix}${subUrlWithoutPrefix.startsWith('/') ? '' : '/'}${subUrlWithoutPrefix}`;
+
+                  return (
+                    <NavLink
+                      key={subItem.id}
+                      className={({ isActive }) => `text-base font-serif tracking-wide transition-all duration-300 ${isActive ? 'text-primary' : 'text-dark/60 hover:text-primary'}`}
+                      end
+                      onClick={close}
+                      prefetch="intent"
+                      to={subFinalUrl}
+                    >
+                      {subItem.title}
+                    </NavLink>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         );
       })}
 
       {/* Mobile Language Selector */}
-      <div className="mt-12 flex flex-col items-center gap-4 w-full">
+      <div className="mt-8 flex flex-col items-center gap-4 w-full">
         <div className="w-16 h-px bg-primary/20 mb-4"></div>
         <p className="text-xs text-dark/40 uppercase tracking-widest">{t('nav.selectLanguage') || 'Select Language'}</p>
         <LanguageSelector />
@@ -282,10 +298,28 @@ const FALLBACK_HEADER_MENU = {
   id: 'gid://shopify/Menu/199655587896',
   items: [
     {
+      id: 'gid://shopify/MenuItem/home',
+      resourceId: null,
+      tags: [],
+      title: 'Home',
+      type: 'HTTP',
+      url: '/',
+      items: [],
+    },
+    {
+      id: 'gid://shopify/MenuItem/ramadan',
+      resourceId: null,
+      tags: [],
+      title: 'Ramadan Collections',
+      type: 'HTTP',
+      url: '/collections/ramadan-collections',
+      items: [],
+    },
+    {
       id: 'gid://shopify/MenuItem/1',
       resourceId: null,
       tags: [],
-      title: 'Shop All',
+      title: 'Shop All Products',
       type: 'HTTP',
       url: '/collections/all',
       items: [],
@@ -300,6 +334,15 @@ const FALLBACK_HEADER_MENU = {
       items: [],
     },
     {
+      id: 'gid://shopify/MenuItem/cheese',
+      resourceId: null,
+      tags: [],
+      title: 'Cheese',
+      type: 'HTTP',
+      url: '/collections/cheese',
+      items: [],
+    },
+    {
       id: 'gid://shopify/MenuItem/3',
       resourceId: null,
       tags: [],
@@ -309,30 +352,12 @@ const FALLBACK_HEADER_MENU = {
       items: [],
     },
     {
-      id: 'gid://shopify/MenuItem/4',
-      resourceId: null,
-      tags: [],
-      title: 'FAQ',
-      type: 'HTTP',
-      url: '/pages/faq',
-      items: [],
-    },
-    {
       id: 'gid://shopify/MenuItem/5',
       resourceId: null,
       tags: [],
       title: 'Contact',
       type: 'HTTP',
       url: '/pages/contact',
-      items: [],
-    },
-    {
-      id: 'ramadan-collections',
-      resourceId: null,
-      tags: [],
-      title: 'Ramadan Collections',
-      type: 'HTTP',
-      url: '/collections/ramadan-collections',
       items: [],
     },
   ],

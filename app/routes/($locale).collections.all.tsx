@@ -2,11 +2,9 @@ import type { Route } from './+types/collections.all';
 import {
   useLoaderData,
 } from 'react-router';
-import { getPaginationVariables, Image, Money } from '@shopify/hydrogen';
-import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
+import { Image, Money } from '@shopify/hydrogen';
 import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
-import type { CollectionItemFragment } from 'storefrontapi.generated';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
@@ -30,28 +28,29 @@ export async function loader(args: Route.LoaderArgs) {
  */
 async function loadCriticalData({ context, request }: Route.LoaderArgs) {
   const { storefront } = context;
-  const paginationVariables = getPaginationVariables(request, {
-    pageBy: 20, // Increased to handle bundles + products
-  });
 
-  const [{ products }, bundlesCollection] = await Promise.all([
-    storefront.query(CATALOG_QUERY, {
-      variables: { ...paginationVariables },
+  // Fetch all four collections in parallel
+  const [bundlesData, picklesData, cheeseData, ramadanData] = await Promise.all([
+    storefront.query(COLLECTION_QUERY, {
+      variables: { handle: 'bundles', first: 10 },
     }),
-    storefront.query(BUNDLES_QUERY),
+    storefront.query(COLLECTION_QUERY, {
+      variables: { handle: 'pickles-products', first: 20 },
+    }),
+    storefront.query(COLLECTION_QUERY, {
+      variables: { handle: 'cheese-collection', first: 20 },
+    }),
+    storefront.query(COLLECTION_QUERY, {
+      variables: { handle: 'ramadan-collections', first: 20 },
+    }),
   ]);
 
-  // Extract bundles from the bundles collection
-  const bundles = bundlesCollection?.bundles?.products?.nodes || [];
-
-  // Filter out bundles from the main products list to avoid duplicates
-  const bundleIds = new Set(bundles.map((b: any) => b.id));
-  const regularProducts = {
-    ...products,
-    nodes: products.nodes.filter((p: any) => !bundleIds.has(p.id))
+  return {
+    bundles: bundlesData.collection?.products?.nodes || [],
+    pickles: picklesData.collection?.products?.nodes || [],
+    cheese: cheeseData.collection?.products?.nodes || [],
+    ramadan: ramadanData.collection?.products?.nodes || [],
   };
-
-  return { bundles, products: regularProducts };
 }
 
 /**
@@ -64,11 +63,13 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
 }
 
 export default function Collection() {
-  const { bundles, products } = useLoaderData<typeof loader>();
+  const { bundles, pickles, cheese, ramadan } = useLoaderData<typeof loader>();
   const { t } = useTranslation();
   const section1 = useScrollAnimation();
   const section2 = useScrollAnimation();
   const section3 = useScrollAnimation();
+  const section4 = useScrollAnimation();
+  const section5 = useScrollAnimation();
 
   return (
     <div className="collection">
@@ -128,22 +129,53 @@ export default function Collection() {
         </div>
       )}
 
-      {/* Products Section */}
-      <div ref={section3.ref} className={`transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <h2 className="text-2xl font-serif text-primary mb-6">{t('collections.products')}</h2>
-        <PaginatedResourceSection<CollectionItemFragment>
-          connection={products}
-          resourcesClassName="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8"
-        >
-          {({ node: product, index }) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              loading={index < 8 ? 'eager' : undefined}
-            />
-          )}
-        </PaginatedResourceSection>
-      </div>
+      {/* Pickles Section */}
+      {pickles && pickles.length > 0 && (
+        <div ref={section3.ref} className={`transition-all duration-700 delay-200 ${section3.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-16`}>
+          <h2 className="text-2xl font-serif text-primary mb-6">{t('collections.pickles')}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+            {pickles.map((product: any, index: number) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Cheese Section */}
+      {cheese && cheese.length > 0 && (
+        <div ref={section4.ref} className={`transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-16`}>
+          <h2 className="text-2xl font-serif text-primary mb-6">{t('collections.cheese')}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+            {cheese.map((product: any, index: number) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Ramadan Section */}
+      {ramadan && ramadan.length > 0 && (
+        <div ref={section5.ref} className={`transition-all duration-700 delay-400 ${section5.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-16`}>
+          <h2 className="text-2xl font-serif text-primary mb-6">{t('collections.ramadan')}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">
+            {ramadan.map((product: any, index: number) => (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -191,43 +223,20 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
   }
 ` as const;
 
-// NOTE: https://shopify.dev/docs/api/storefront/latest/objects/product
-const CATALOG_QUERY = `#graphql
-  query Catalog(
-    $country: CountryCode
-    $language: LanguageCode
-    $first: Int
-    $last: Int
-    $startCursor: String
-    $endCursor: String
-  ) @inContext(country: $country, language: $language) {
-    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
-      nodes {
-        ...CollectionItem
-      }
-      pageInfo {
-        hasPreviousPage
-        hasNextPage
-        startCursor
-        endCursor
-      }
-    }
-  }
+const COLLECTION_QUERY = `#graphql
   ${COLLECTION_ITEM_FRAGMENT}
-` as const;
-
-const BUNDLES_QUERY = `#graphql
-  query BundlesCollection {
-    bundles: collection(handle: "bundles") {
+  query AllProductsCollection(
+    $handle: String!
+    $first: Int
+  ) {
+    collection(handle: $handle) {
       id
       title
-      products(first: 10) {
+      products(first: $first) {
         nodes {
           ...CollectionItem
         }
       }
     }
   }
-  ${COLLECTION_ITEM_FRAGMENT}
 ` as const;
-
