@@ -43,8 +43,8 @@ export default function CheeseCollection() {
             ? 'مجموعة مختارة من الأجبان الحرفية — صنعت يدويًا بدفعات صغيرة، متوازنة في النكهة، ومصممة لموائدكم اليومية ولحظاتكم الراقية.'
             : 'A curated collection of artisan cheeses — crafted in small batches, balanced in flavor, and designed for everyday tables and elegant moments.',
         trustLine: isRtl
-            ? 'إنتاج دفعات صغيرة · مكونات نظيفة · توصيل طازج'
-            : 'Small-batch crafted · Clean ingredients · Delivered fresh'
+            ? 'أجبان حرفية · مصنوعة بكميات صغيرة · لكل يوم وللاستضافة'
+            : 'Artisan cheeses · Small-batch crafted · Everyday & hosting'
     };
 
     const sections = {

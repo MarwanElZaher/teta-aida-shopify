@@ -69,11 +69,11 @@ export function BundleCard({ product }: BundleCardProps) {
             </div>
 
             <div className="text-center space-y-2 flex-1 flex flex-col">
-                <h3 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-2">
+                <h3 className="font-serif text-sm sm:text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-2">
                     {displayTitle}
                 </h3>
                 {tagline && (
-                    <p className="text-sm text-dark/70 font-sans line-clamp-2 px-2">{tagline}</p>
+                    <p className="text-[11px] sm:text-xs text-dark/70 font-sans line-clamp-2 px-2">{tagline}</p>
                 )}
                 <div className="flex-1" />
                 <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">

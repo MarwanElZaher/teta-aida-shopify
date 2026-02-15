@@ -246,7 +246,6 @@ export default function Product() {
           {/* Product Info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{displayTitle}</h1>
-
             {tagline && (
               <p className="mt-2 text-lg italic text-gray-500">{tagline}</p>
             )}
@@ -332,7 +331,7 @@ export default function Product() {
               </div>
             )}
 
-            {/* Why This Box Works (Prioritized if available) OR Legacy Key Benefits */}
+            {/* Why This Bundle (Prioritized if available) OR Legacy Key Benefits */}
             {(displayWhyWorks || keyBenefits) && (
               <div className="mt-10 border-t border-gray-200 pt-10">
                 <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">

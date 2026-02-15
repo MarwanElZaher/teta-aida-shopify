@@ -29,6 +29,9 @@ export function ProductItem({
     locale.language
   );
 
+  // Get tagline from metafields
+  const tagline = product.metafields?.find((m: any) => m?.key === 'tagline')?.value;
+
   return (
     <Link
       className="group flex flex-col h-full min-h-[450px] hover-lift"
@@ -51,10 +54,14 @@ export function ProductItem({
         <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/5" />
       </div>
 
-      <div className="text-center space-y-2">
-        <h4 className="font-serif text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3 min-h-[4.5rem]">
+      <div className="text-center space-y-2 flex-1 flex flex-col">
+        <h4 className="font-serif text-sm sm:text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3 min-h-[4.5rem]">
           {displayTitle}
         </h4>
+        {tagline && (
+          <p className="text-[11px] sm:text-xs text-dark/70 font-sans line-clamp-2 px-2">{tagline}</p>
+        )}
+        <div className="flex-1" />
         <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
           <span className="text-primary font-bold text-lg">
             {formatCurrency(
@@ -74,7 +81,7 @@ export function ProductItem({
               </span>
             )}
         </div>
-        <button className="w-full mt-2 h-[48px] rounded-[12px] border border-primary text-primary font-bold uppercase tracking-widest text-xs hover:bg-primary hover:text-white transition-all">
+        <button className="w-full mt-3 h-[48px] rounded-[12px] bg-primary text-white font-bold uppercase tracking-widest text-xs hover:bg-[#143d24] transition-all shadow-sm group-hover:shadow-md">
           {t('product.viewProduct')}
         </button>
       </div>

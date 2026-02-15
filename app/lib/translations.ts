@@ -334,7 +334,7 @@ export const TRANSLATIONS = {
             whatsInside: "What's Inside",
             reviews: 'Reviews',
             whyLoveIt: "Why You'll Love It",
-            whyBoxWorks: 'Why This Box Works',
+            whyBoxWorks: 'Why This Bundle',
             completeExperience: 'Complete the Experience',
             flavorProfile: 'Flavor Profile',
             description: 'Description',
