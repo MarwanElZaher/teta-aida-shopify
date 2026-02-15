@@ -187,6 +187,7 @@ export default function Product() {
   })();
 
   const whyThisBoxWorks = getJsonMetafield('why_this_box_works') as string[] | null;
+  const whyYouWillLoveIt = getJsonMetafield('why_you_will_love_it') || getMetafield('why_you_will_love_it');
   const displayWhyWorks = (whyThisBoxWorks || (Array.isArray(whyBundle) ? whyBundle : null)) as string[] | null;
 
   const rawBundleItems = getJsonMetafield('bundle_items') as BundleItem[] | null;
@@ -328,6 +329,29 @@ export default function Product() {
                     );
                   })}
                 </ul>
+              </div>
+            )}
+
+            {/* Why You'll Love It Section */}
+            {whyYouWillLoveIt && (
+              <div className="mt-10 border-t border-gray-200 pt-10">
+                <h3 className="font-serif text-lg font-bold text-primary uppercase tracking-wide">
+                  {t('product.whyLoveIt') || "Why You'll Love It"}
+                </h3>
+                {Array.isArray(whyYouWillLoveIt) ? (
+                  <ul className="mt-6 space-y-3">
+                    {whyYouWillLoveIt.map((point: any, i: number) => (
+                      <li key={i} className="flex items-start gap-3 text-gray-600">
+                        <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-secondary" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-4 text-gray-600 leading-relaxed text-sm">
+                    {whyYouWillLoveIt}
+                  </p>
+                )}
               </div>
             )}
 
@@ -669,7 +693,8 @@ const PRODUCT_FRAGMENT = `#graphql
       {namespace: "custom", key: "arabic_description"},
       {namespace: "custom", key: "ingredients"},
       {namespace: "custom", key: "nutrition_facts"},
-      {namespace: "custom", key: "serving_size"}
+      {namespace: "custom", key: "serving_size"},
+      {namespace: "custom", key: "why_you_will_love_it"}
     ]) {
       key
       value
