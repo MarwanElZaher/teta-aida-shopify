@@ -41,8 +41,9 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
       variables: { handle: 'cheese-collection', first: 20 },
     }),
     storefront.query(COLLECTION_QUERY, {
-      variables: { handle: 'ramadan-collections', first: 20 },
+      variables: { handle: 'ramadan-moments', first: 20 },
     }),
+
   ]);
 
   return {

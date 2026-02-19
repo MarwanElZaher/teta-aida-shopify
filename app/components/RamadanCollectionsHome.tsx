@@ -1,24 +1,19 @@
 import { Link } from 'react-router';
 import { Image, Money } from '@shopify/hydrogen';
 import { useTranslation } from '~/lib/translations';
+import { getLocalizedTitle } from '~/lib/localized-content';
 
-// Explicitly defined 4 collections/products as per requirement
-const RAMADAN_COLLECTION_HANDLES = [
-    'ramadan-signature-box',
-    'olive-lovers-box',
-    'lemon-lovers-box',
-    'turnip-lovers-box',
-];
+
+
+
 
 export function RamadanCollectionsHome({ products }: { products: any[] }) {
     const { t, locale } = useTranslation();
 
-    // Filter and sort products to match the exact order required
-    const displayProducts = RAMADAN_COLLECTION_HANDLES.map(handle =>
-        products.find((p: any) => p.handle === handle)
-    ).filter(Boolean);
+    const displayProducts = products;
 
-    if (displayProducts.length === 0) return null;
+    if (!displayProducts || displayProducts.length === 0) return null;
+
 
     return (
         <section className="py-20 bg-white">
@@ -58,11 +53,10 @@ export function RamadanCollectionsHome({ products }: { products: any[] }) {
                                 <div className="flex-1 flex flex-col text-center">
                                     <h3 className="font-serif text-xl text-primary mb-2 group-hover:text-secondary transition-colors">
                                         <Link to={`${locale.pathPrefix}/products/${product.handle}`}>
-                                            {isArabic
-                                                ? product.metafields?.find((m: any) => m?.key === 'arabic_title')?.value || product.title
-                                                : product.title}
+                                            {getLocalizedTitle(product.title, product.metafields as any, locale.language)}
                                         </Link>
                                     </h3>
+
 
                                     {tagline && (
                                         <p className="text-sm text-dark/70 mb-4 line-clamp-2 min-h-[40px]">
@@ -87,9 +81,10 @@ export function RamadanCollectionsHome({ products }: { products: any[] }) {
                 {/* Bottom CTA */}
                 <div className="text-center mt-16">
                     <Link
-                        to={`${locale.pathPrefix}/collections/ramadan-collections`}
+                        to={`${locale.pathPrefix}/collections/ramadan-moments`}
                         className="btn-secondary px-10 py-3"
                     >
+
                         {t('ramadan.viewAll') || 'Explore All Ramadan Collections'}
                     </Link>
                 </div>

@@ -17,12 +17,13 @@ export const TRANSLATIONS = {
             cheese: 'Cheese',
         },
         ramadan: {
-            title: 'Ramadan Collections',
-            subtitle: 'Curated pickle boxes designed for Ramadan tables and longer household stocking.',
+            title: 'Ramadan Moments',
+            subtitle: 'Curated pairings crafted for hosting, gifting, and comfortable suhoor tables.',
             explore: 'Explore Collection',
-            viewAll: 'Explore All Ramadan Collections',
+            viewAll: 'Explore All Ramadan Moments',
             discoverShortcut: 'Discover Ramadan Moments',
         },
+
         common: {
             addToCart: 'Add to Cart',
             soldOut: 'Sold Out',
@@ -999,12 +1000,13 @@ export const TRANSLATIONS = {
             cheese: 'أجبان',
         },
         ramadan: {
-            title: 'تشكيلات رمضان',
-            subtitle: 'صناديق مخلل مختارة بعناية لتزيين سفرة رمضان وتخزين يكفي الشهر.',
+            title: 'لحظات رمضان',
+            subtitle: 'ثنائيات مختارة بعناية للضيافة، هدايا رمضان، وسُفر سحور دافئة.',
             explore: 'اكتشف التشكيلة',
-            viewAll: 'عرض كل تشكيلات رمضان',
-            discoverShortcut: 'تسوّق تشكيلات رمضان',
+            viewAll: 'عرض كل لحظات رمضان',
+            discoverShortcut: 'تسوّق لحظات رمضان',
         },
+
         common: {
             addToCart: 'أضف إلى السلة',
             soldOut: 'نفذت الكمية',
@@ -1793,7 +1795,7 @@ export const TRANSLATIONS = {
             products: 'المنتجات',
             pickles: 'المخللات',
             cheese: 'الأجبان',
-            ramadan: 'مجموعة رمضان',
+            ramadan: 'لحظات رمضان',
             filter: 'تصفية',
             sort: 'ترتيب',
             sortBy: 'ترتيب حسب',

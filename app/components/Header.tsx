@@ -308,11 +308,12 @@ const FALLBACK_HEADER_MENU = {
       id: 'gid://shopify/MenuItem/ramadan',
       resourceId: null,
       tags: [],
-      title: 'Ramadan Collections',
+      title: 'Ramadan Moments',
       type: 'HTTP',
-      url: '/collections/ramadan-collections',
+      url: '/collections/ramadan-moments',
       items: [],
     },
+
     {
       id: 'gid://shopify/MenuItem/1',
       resourceId: null,
@@ -362,10 +363,11 @@ const FALLBACK_HEADER_MENU = {
       id: 'ramadan-collections',
       resourceId: null,
       tags: [],
-      title: 'Ramadan Collections',
+      title: 'Ramadan Moments',
       type: 'HTTP',
-      url: '/collections/ramadan-collections',
+      url: '/collections/ramadan-moments',
       items: [],
     },
+
   ],
 };

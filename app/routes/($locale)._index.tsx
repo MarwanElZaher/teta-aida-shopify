@@ -330,7 +330,7 @@ const HOMEPAGE_QUERY = `#graphql
         ...ProductCard
       }
     }
-    ramadanCollection: collection(handle: "ramadan-collections") {
+    ramadanCollection: collection(handle: "ramadan-moments") {
        id
        title
        products(first: 10) {
@@ -339,6 +339,7 @@ const HOMEPAGE_QUERY = `#graphql
          }
        }
     }
+
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
