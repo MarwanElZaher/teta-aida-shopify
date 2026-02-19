@@ -76,7 +76,7 @@ export function BundleCard({ product }: BundleCardProps) {
                     <p className="text-[11px] sm:text-xs text-dark/70 font-sans line-clamp-2 px-2">{tagline}</p>
                 )}
                 <div className="flex-1" />
-                <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
+                <div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-sm font-sans font-medium pt-2">
                     <span className="text-primary font-bold text-lg">
                         {formatCurrency(
                             parseFloat(price.amount),

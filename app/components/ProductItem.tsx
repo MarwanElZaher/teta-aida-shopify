@@ -55,14 +55,14 @@ export function ProductItem({
       </div>
 
       <div className="text-center space-y-2 flex-1 flex flex-col">
-        <h4 className="font-serif text-sm sm:text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3 min-h-[4.5rem]">
+        <h4 className="font-serif text-sm sm:text-lg text-primary uppercase tracking-wide leading-tight group-hover:text-secondary transition-colors line-clamp-3">
           {displayTitle}
         </h4>
         {tagline && (
           <p className="text-[11px] sm:text-xs text-dark/70 font-sans line-clamp-2 px-2">{tagline}</p>
         )}
         <div className="flex-1" />
-        <div className="flex justify-center items-center gap-2 text-sm font-sans font-medium pt-2">
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-sm font-sans font-medium pt-2">
           <span className="text-primary font-bold text-lg">
             {formatCurrency(
               parseFloat(product.priceRange.minVariantPrice.amount),
