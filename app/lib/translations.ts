@@ -21,7 +21,7 @@ export const TRANSLATIONS = {
             subtitle: 'Curated pickle boxes designed for Ramadan tables and longer household stocking.',
             explore: 'Explore Collection',
             viewAll: 'Explore All Ramadan Collections',
-            discoverShortcut: 'Discover Ramadan Collections',
+            discoverShortcut: 'Discover Ramadan Moments',
         },
         common: {
             addToCart: 'Add to Cart',
