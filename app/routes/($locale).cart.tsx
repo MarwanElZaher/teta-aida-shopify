@@ -9,7 +9,7 @@ import { CartForm } from '@shopify/hydrogen';
 import { CartMain } from '~/components/CartMain';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: `Hydrogen | Cart` }];
+  return [{ title: `Cart` }];
 };
 
 export const headers: HeadersFunction = ({ actionHeaders }) => actionHeaders;

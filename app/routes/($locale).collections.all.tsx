@@ -9,7 +9,7 @@ import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: `Hydrogen | Products` }];
+  return [{ title: `Products` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {

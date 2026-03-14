@@ -2,14 +2,14 @@ import {
   Link,
   useLoaderData,
 } from 'react-router';
-import type {Route} from './+types/blogs.$blogHandle._index';
-import {Image, getPaginationVariables} from '@shopify/hydrogen';
-import type {ArticleItemFragment} from 'storefrontapi.generated';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import type { Route } from './+types/blogs.$blogHandle._index';
+import { Image, getPaginationVariables } from '@shopify/hydrogen';
+import type { ArticleItemFragment } from 'storefrontapi.generated';
+import { PaginatedResourceSection } from '~/components/PaginatedResourceSection';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Hydrogen | ${data?.blog.title ?? ''} blog`}];
+export const meta: Route.MetaFunction = ({ data }) => {
+  return [{ title: `${data?.blog.title ?? ''} blog` }];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -19,7 +19,7 @@ export async function loader(args: Route.LoaderArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
@@ -36,10 +36,10 @@ async function loadCriticalData({
   });
 
   if (!params.blogHandle) {
-    throw new Response(`blog not found`, {status: 404});
+    throw new Response(`blog not found`, { status: 404 });
   }
 
-  const [{blog}] = await Promise.all([
+  const [{ blog }] = await Promise.all([
     context.storefront.query(BLOGS_QUERY, {
       variables: {
         blogHandle: params.blogHandle,
@@ -50,12 +50,12 @@ async function loadCriticalData({
   ]);
 
   if (!blog?.articles) {
-    throw new Response('Not found', {status: 404});
+    throw new Response('Not found', { status: 404 });
   }
 
-  redirectIfHandleIsLocalized(request, {handle: params.blogHandle, data: blog});
+  redirectIfHandleIsLocalized(request, { handle: params.blogHandle, data: blog });
 
-  return {blog};
+  return { blog };
 }
 
 /**
@@ -63,20 +63,20 @@ async function loadCriticalData({
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: Route.LoaderArgs) {
+function loadDeferredData({ context }: Route.LoaderArgs) {
   return {};
 }
 
 export default function Blog() {
-  const {blog} = useLoaderData<typeof loader>();
-  const {articles} = blog;
+  const { blog } = useLoaderData<typeof loader>();
+  const { articles } = blog;
 
   return (
     <div className="blog">
       <h1>{blog.title}</h1>
       <div className="blog-grid">
         <PaginatedResourceSection<ArticleItemFragment> connection={articles}>
-          {({node: article, index}) => (
+          {({ node: article, index }) => (
             <ArticleItem
               article={article}
               key={article.id}
