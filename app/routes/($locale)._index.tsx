@@ -42,25 +42,12 @@ export async function loader({ context }: Route.LoaderArgs) {
         ).slice(0, 4);
     }
 
-    // Prioritize Winter Comfort Box if present
-    const winterBoxIndex = featuredBundles.findIndex((p: any) => p.handle === 'winter-comfort-box');
-    if (winterBoxIndex > -1) {
-        const [winterBox] = featuredBundles.splice(winterBoxIndex, 1);
-        featuredBundles.unshift(winterBox);
-    }
 
     // Fallback: If no best-sellers collection, use generic products
     if (bestSellingProducts.length === 0 && fallbackProducts?.nodes) {
         bestSellingProducts = fallbackProducts.nodes
             .filter((p: any) => !featuredBundles.find((b: any) => b.id === p.id)) // Avoid duplicates
             .slice(0, 4);
-    }
-
-    // Prioritize Vintage-Style Turnips if present
-    const turnipsIndex = bestSellingProducts.findIndex((p: any) => p.handle === 'vintage-style-turnips');
-    if (turnipsIndex > -1) {
-        const [turnips] = bestSellingProducts.splice(turnipsIndex, 1);
-        bestSellingProducts.unshift(turnips);
     }
 
     return {
