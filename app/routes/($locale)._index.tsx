@@ -32,12 +32,6 @@ export async function loader({ context }: Route.LoaderArgs) {
         ).slice(0, 4);
     }
 
-    // Prioritize Winter Comfort Box if present
-    const winterBoxIndex = featuredBundles.findIndex((p: any) => p.handle === 'winter-comfort-box');
-    if (winterBoxIndex > -1) {
-        const [winterBox] = featuredBundles.splice(winterBoxIndex, 1);
-        featuredBundles.unshift(winterBox);
-    }
 
     // Fallback: If no best-sellers collection, use generic products
     if (bestSellingProducts.length === 0 && fallbackProducts?.nodes) {
