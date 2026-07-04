@@ -34,7 +34,12 @@ export default async function handleRequest(
       signal: request.signal,
       onError(error) {
         console.error(error);
-        responseStatusCode = 500;
+        // Preserve an already-resolved client status (e.g. a 404 thrown from a
+        // loader). Only escalate to 500 for genuine server errors, so
+        // "not found" pages return 404 instead of being clobbered to 500.
+        if (responseStatusCode < 400) {
+          responseStatusCode = 500;
+        }
       },
     },
   );

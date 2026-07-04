@@ -121,7 +121,10 @@ export default function Product() {
     getAdjacentAndFirstAvailableVariants(product),
   );
 
-  useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
+  // Guard: a fully sold-out product has no selectedOrFirstAvailableVariant,
+  // so selectedVariant can be null. Fall back to an empty option list instead
+  // of dereferencing null (which would crash the page with a 500).
+  useSelectedOptionInUrlParam(selectedVariant?.selectedOptions ?? []);
 
   const productOptions = getProductOptions({
     ...product,
