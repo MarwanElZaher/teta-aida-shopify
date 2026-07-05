@@ -9,6 +9,7 @@ import type { HeaderQuery, CartApiQueryFragment } from 'storefrontapi.generated'
 import { useAside } from '~/components/Aside';
 import { useTranslation } from '~/lib/translations';
 import { LanguageSelector } from '~/components/LanguageSelector';
+import { SHOW_CHEESE } from '~/lib/featureFlags';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -18,6 +19,11 @@ interface HeaderProps {
 }
 
 type Viewport = 'desktop' | 'mobile';
+
+const CHEESE_PATTERN = /cheese|جبن|أجبان|اجبان/i;
+function isCheeseMenuItem(item: { url?: string | null; title?: string | null }) {
+  return CHEESE_PATTERN.test(item.url || '') || CHEESE_PATTERN.test(item.title || '');
+}
 
 export function Header({
   header,
@@ -101,7 +107,9 @@ export function HeaderMenu({
       {/* Decorative Top Element */}
       <div className="w-16 h-px bg-primary/20 mb-4"></div>
 
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+      {(menu || FALLBACK_HEADER_MENU).items
+        .filter((item) => SHOW_CHEESE || !isCheeseMenuItem(item))
+        .map((item) => {
         if (!item.url) return null;
         const url =
           item.url.includes('myshopify.com') ||
@@ -130,7 +138,9 @@ export function HeaderMenu({
             </NavLink>
             {item.items && item.items.length > 0 && (
               <div className="flex flex-col items-center gap-3">
-                {item.items.map((subItem) => {
+                {item.items
+                  .filter((subItem) => SHOW_CHEESE || !isCheeseMenuItem(subItem))
+                  .map((subItem) => {
                   if (!subItem.url) return null;
                   const subUrl =
                     subItem.url.includes('myshopify.com') ||
@@ -333,15 +343,19 @@ const FALLBACK_HEADER_MENU = {
       url: '/collections/bundles',
       items: [],
     },
-    {
-      id: 'gid://shopify/MenuItem/cheese',
-      resourceId: null,
-      tags: [],
-      title: 'Cheese',
-      type: 'HTTP',
-      url: '/collections/cheese',
-      items: [],
-    },
+    ...(SHOW_CHEESE
+      ? [
+          {
+            id: 'gid://shopify/MenuItem/cheese',
+            resourceId: null,
+            tags: [],
+            title: 'Cheese',
+            type: 'HTTP',
+            url: '/collections/cheese',
+            items: [],
+          },
+        ]
+      : []),
     {
       id: 'gid://shopify/MenuItem/3',
       resourceId: null,

@@ -4,12 +4,16 @@ import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
+import { SHOW_CHEESE } from '~/lib/featureFlags';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
     return [{ title: "Teta Aida | Cheese Collection" }];
 };
 
 export async function loader({ context, request }: LoaderFunctionArgs) {
+    if (!SHOW_CHEESE) {
+        throw new Response('Not Found', { status: 404 });
+    }
     const { storefront } = context;
 
     const [cheeseSelection, cheeseBundles] = await Promise.all([

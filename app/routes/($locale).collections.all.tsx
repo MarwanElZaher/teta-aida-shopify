@@ -7,6 +7,7 @@ import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
+import { SHOW_CHEESE } from '~/lib/featureFlags';
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Hydrogen | Products` }];
@@ -37,9 +38,11 @@ async function loadCriticalData({ context, request }: Route.LoaderArgs) {
     storefront.query(COLLECTION_QUERY, {
       variables: { handle: 'pickles-products', first: 20 },
     }),
-    storefront.query(COLLECTION_QUERY, {
-      variables: { handle: 'cheese-collection', first: 20 },
-    }),
+    SHOW_CHEESE
+      ? storefront.query(COLLECTION_QUERY, {
+          variables: { handle: 'cheese-collection', first: 20 },
+        })
+      : Promise.resolve({ collection: null }),
     storefront.query(COLLECTION_QUERY, {
       variables: { handle: 'ramadan-collections', first: 20 },
     }),
@@ -146,7 +149,7 @@ export default function Collection() {
       )}
 
       {/* Cheese Section */}
-      {cheese && cheese.length > 0 && (
+      {SHOW_CHEESE && cheese && cheese.length > 0 && (
         <div ref={section4.ref} className={`transition-all duration-700 delay-300 ${section4.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'} mb-16`}>
           <h2 className="text-2xl font-serif text-primary mb-6">{t('collections.cheese')}</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-8">

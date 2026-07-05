@@ -4,6 +4,7 @@ import { ProductItem } from '~/components/ProductItem';
 import { BundleCard } from '~/components/BundleCard';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { useTranslation } from '~/lib/translations';
+import { SHOW_CHEESE } from '~/lib/featureFlags';
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
     return [{ title: "Teta Aida | Bundles Collection" }];
@@ -16,12 +17,16 @@ export async function loader({ context, request }: LoaderFunctionArgs) {
         storefront.query(COLLECTION_QUERY, {
             variables: { handle: 'pickle-bundles', first: 5 },
         }),
-        storefront.query(COLLECTION_QUERY, {
-            variables: { handle: 'cheese-bundles', first: 2 },
-        }),
-        storefront.query(COLLECTION_QUERY, {
-            variables: { handle: 'pickles-and-cheese', first: 2 },
-        }),
+        SHOW_CHEESE
+            ? storefront.query(COLLECTION_QUERY, {
+                  variables: { handle: 'cheese-bundles', first: 2 },
+              })
+            : Promise.resolve({ collection: null }),
+        SHOW_CHEESE
+            ? storefront.query(COLLECTION_QUERY, {
+                  variables: { handle: 'pickles-and-cheese', first: 2 },
+              })
+            : Promise.resolve({ collection: null }),
         storefront.query(COLLECTION_QUERY, {
             variables: { handle: 'bundles', first: 1 }, // Just for the hero/metadata if needed
         }),
@@ -111,7 +116,7 @@ export default function Bundles() {
                 )}
 
                 {/* Section 2: Cheese Bundles */}
-                {cheeseBundles && cheeseBundles.products.nodes.length > 0 && (
+                {SHOW_CHEESE && cheeseBundles && cheeseBundles.products.nodes.length > 0 && (
                     <div ref={cheeseSection.ref} className={`mb-20 transition-all duration-700 ${cheeseSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                         <div className="flex flex-col items-start mb-8 md:mb-12">
                             <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif text-primary uppercase tracking-wider text-center">
@@ -130,7 +135,7 @@ export default function Bundles() {
                 )}
 
                 {/* Section 3: Pickles & Cheese */}
-                {mixedBundles && mixedBundles.products.nodes.length > 0 && (
+                {SHOW_CHEESE && mixedBundles && mixedBundles.products.nodes.length > 0 && (
                     <div ref={mixedSection.ref} className={`mb-20 transition-all duration-700 ${mixedSection.isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
                         <div className="flex flex-col items-start mb-8 md:mb-12">
                             <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif text-primary uppercase tracking-wider text-center">
