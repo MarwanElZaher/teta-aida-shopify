@@ -150,9 +150,14 @@ export function MetaPixel({ pixelId = FALLBACK_META_PIXEL_ID }: { pixelId?: stri
      */
     const track = (fire: (fbq: FbqFunction, eventID: string) => void) => {
       const { canTrack, customerPrivacy } = analyticsRef.current;
-      const allowed = customerPrivacy
-        ? customerPrivacy.marketingAllowed()
-        : canTrack();
+      // This store runs with withPrivacyBanner:false (no consent banner), so
+      // Hydrogen's canTrack() is the authoritative signal (returns true when no
+      // banner is configured). Respect an EXPLICIT marketing opt-out if the
+      // Customer Privacy API reports one, but do not block when it is simply
+      // undefined (which is the case with no banner) — otherwise the pixel never
+      // fires, exactly like GA4/TikTok which track all visitors here.
+      const marketing = customerPrivacy?.marketingAllowed?.();
+      const allowed = marketing === false ? false : canTrack();
       if (!allowed) return;
       fire(ensurePixel(pixelId, nonce), generateEventId());
     };
