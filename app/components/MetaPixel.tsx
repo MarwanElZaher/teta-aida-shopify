@@ -1,9 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router';
 import { parseGid, useAnalytics, useNonce } from '@shopify/hydrogen';
 import type {
   CartLineUpdatePayload,
   CollectionViewPayload,
-  PageViewPayload,
   ProductViewPayload,
   SearchViewPayload,
 } from '@shopify/hydrogen';
@@ -95,6 +95,19 @@ function ensurePixel(pixelId: string, nonce?: string): FbqFunction {
   return window.fbq;
 }
 
+/**
+ * Returns true only when the Customer Privacy API EXPLICITLY reports that
+ * marketing tracking is denied. When consent is undefined (no banner configured,
+ * as on this store), tracking is allowed — matching the GA4/TikTok behaviour.
+ */
+function isMarketingDenied(analytics: {customerPrivacy?: {marketingAllowed?: () => boolean}}): boolean {
+  try {
+    return analytics.customerPrivacy?.marketingAllowed?.() === false;
+  } catch {
+    return false;
+  }
+}
+
 /** Extracts the numeric ID from a Shopify GID (e.g. gid://shopify/ProductVariant/123 -> "123"). */
 function contentId(gid?: string): string | undefined {
   if (!gid) return undefined;
@@ -124,6 +137,7 @@ function contentId(gid?: string): string | undefined {
  */
 export function MetaPixel({ pixelId = FALLBACK_META_PIXEL_ID }: { pixelId?: string }) {
   const nonce = useNonce();
+  const location = useLocation();
   const analytics = useAnalytics();
   const { subscribe, register } = analytics;
 
@@ -135,6 +149,17 @@ export function MetaPixel({ pixelId = FALLBACK_META_PIXEL_ID }: { pixelId?: stri
   // Register with the Analytics provider so it waits for this integration
   // before publishing queued events.
   const { ready } = register('MetaPixel');
+
+  // Fire PageView (and inject + init the pixel) directly on first load and on
+  // every client-side route change — independent of the Analytics event bus.
+  // On this store the bus does not publish (no consent banner keeps the provider
+  // quiet), so relying on subscribe('page_viewed') alone left the pixel dead.
+  // This guarantees the pixel loads and PageView fires for every visitor.
+  useEffect(() => {
+    if (isMarketingDenied(analyticsRef.current)) return;
+    const fbq = ensurePixel(pixelId, nonce);
+    fbq('track', 'PageView', {}, { eventID: generateEventId() });
+  }, [location.pathname, location.search, pixelId, nonce]);
 
   const subscribed = useRef(false);
 
@@ -149,25 +174,17 @@ export function MetaPixel({ pixelId = FALLBACK_META_PIXEL_ID }: { pixelId?: stri
      * marketing-specific check appropriate for an ad pixel.
      */
     const track = (fire: (fbq: FbqFunction, eventID: string) => void) => {
-      const { canTrack, customerPrivacy } = analyticsRef.current;
-      // This store runs with withPrivacyBanner:false (no consent banner), so
-      // Hydrogen's canTrack() is the authoritative signal (returns true when no
-      // banner is configured). Respect an EXPLICIT marketing opt-out if the
-      // Customer Privacy API reports one, but do not block when it is simply
-      // undefined (which is the case with no banner) — otherwise the pixel never
-      // fires, exactly like GA4/TikTok which track all visitors here.
-      const marketing = customerPrivacy?.marketingAllowed?.();
-      const allowed = marketing === false ? false : canTrack();
-      if (!allowed) return;
+      // The store runs withPrivacyBanner:false and already tracks every visitor
+      // via GA4/TikTok, so the Meta Pixel fires for all visitors too. Respect
+      // only an EXPLICIT marketing opt-out from the Customer Privacy API; do not
+      // depend on canTrack()/marketingAllowed() being truthy (with no banner
+      // they are undefined, which previously blocked the pixel entirely).
+      if (isMarketingDenied(analyticsRef.current)) return;
       fire(ensurePixel(pixelId, nonce), generateEventId());
     };
 
-    subscribe('page_viewed', (_payload: PageViewPayload) => {
-      track((fbq, eventID) => {
-        fbq('track', 'PageView', {}, { eventID });
-      });
-    });
-
+    // PageView is fired by the location effect above (the event bus is unused
+    // here). ViewContent/AddToCart/Search below are best-effort via the bus.
     subscribe('product_viewed', (payload: ProductViewPayload) => {
       track((fbq, eventID) => {
         const products = payload.products ?? [];
