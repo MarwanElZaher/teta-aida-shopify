@@ -100,9 +100,12 @@ function ensurePixel(pixelId: string, nonce?: string): FbqFunction {
  * marketing tracking is denied. When consent is undefined (no banner configured,
  * as on this store), tracking is allowed — matching the GA4/TikTok behaviour.
  */
-function isMarketingDenied(analytics: {customerPrivacy?: {marketingAllowed?: () => boolean}}): boolean {
+function isMarketingDenied(analytics: {customerPrivacy?: unknown}): boolean {
   try {
-    return analytics.customerPrivacy?.marketingAllowed?.() === false;
+    const cp = analytics.customerPrivacy as
+      | {marketingAllowed?: () => boolean}
+      | undefined;
+    return cp?.marketingAllowed?.() === false;
   } catch {
     return false;
   }
