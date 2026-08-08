@@ -16,6 +16,7 @@ import { FOOTER_QUERY, HEADER_QUERY } from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import { PageLayout } from './components/PageLayout';
+import { MetaPixel, FALLBACK_META_PIXEL_ID } from './components/MetaPixel';
 
 export type RootLoader = typeof loader;
 
@@ -91,6 +92,7 @@ export async function loader(args: Route.LoaderArgs) {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
+    publicFacebookPixelId: env.PUBLIC_FACEBOOK_PIXEL_ID || FALLBACK_META_PIXEL_ID,
     shop: getShopAnalytics({
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
@@ -194,6 +196,7 @@ export default function App() {
       consent={data.consent}
     >
       <Layout language={data.consent.language}>
+        <MetaPixel pixelId={data.publicFacebookPixelId} />
         <PageLayout {...data}>
           <Outlet />
         </PageLayout>

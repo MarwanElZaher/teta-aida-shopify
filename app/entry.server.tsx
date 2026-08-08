@@ -19,6 +19,25 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    // Meta (Facebook) Pixel — fbevents.js and its beacons.
+    // Note: scriptSrc/imgSrc are not merged with Hydrogen's defaultSrc
+    // fallback, so the default sources ('self', Shopify CDNs) are repeated
+    // here; the CSP nonce is appended to scriptSrc automatically.
+    scriptSrc: [
+      "'self'",
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      'https://connect.facebook.net',
+    ],
+    imgSrc: [
+      "'self'",
+      'data:',
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      'https://www.facebook.com',
+    ],
+    // connectSrc IS merged with Hydrogen's defaults (Shopify domains).
+    connectSrc: ['https://www.facebook.com'],
   });
 
   const body = await renderToReadableStream(
