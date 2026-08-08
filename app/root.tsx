@@ -194,6 +194,15 @@ export default function App() {
       cart={data.cart}
       shop={data.shop}
       consent={data.consent}
+      // Track all visitors. Without this, Hydrogen defaults canTrack to
+      // window.Shopify.customerPrivacy.analyticsProcessingAllowed(), which is
+      // false on this store (withPrivacyBanner:false, no consent collected) —
+      // that no-ops publish() and silently kills the ENTIRE analytics bus
+      // (no Shopify session tracking, no product_viewed/add_to_cart events).
+      // The store already tracks every visitor via GA4/TikTok; this matches that.
+      // NOTE: if selling into GDPR/CCPA regions later, replace with a real
+      // consent-aware function instead of always-true.
+      canTrack={() => true}
     >
       <Layout language={data.consent.language}>
         <MetaPixel pixelId={data.publicFacebookPixelId} />
