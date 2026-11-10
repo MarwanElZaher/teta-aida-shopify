@@ -7,6 +7,7 @@ import type { Route } from './+types/cart';
 import type { CartQueryDataReturn } from '@shopify/hydrogen';
 import { CartForm } from '@shopify/hydrogen';
 import { CartMain } from '~/components/CartMain';
+import { updateCartDiscountCodes } from '~/lib/cartDiscounts';
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: `Hydrogen | Cart` }];
@@ -49,7 +50,12 @@ export async function action({ request, context }: Route.ActionArgs) {
       // Combine discount codes already applied on cart
       discountCodes.push(...inputs.discountCodes);
 
-      result = await cart.updateDiscountCodes(discountCodes);
+      // Not cart.updateDiscountCodes(): Hydrogen 2025.7's built-in mutation is
+      // rejected by the Storefront API (see app/lib/cartDiscounts.ts).
+      result = (await updateCartDiscountCodes(
+        { storefront: context.storefront, cart },
+        discountCodes,
+      )) as CartQueryDataReturn;
       break;
     }
     case CartForm.ACTIONS.GiftCardCodesUpdate: {

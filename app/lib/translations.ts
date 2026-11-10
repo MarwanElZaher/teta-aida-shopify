@@ -733,6 +733,11 @@ export const TRANSLATIONS = {
             discountCode: 'Discount code',
             giftCardCode: 'Gift card code',
             apply: 'Apply',
+            applying: 'Applying…',
+            discount: 'Discount',
+            discountApplied: 'Discount applied',
+            discountInvalid: "This code isn't valid for the items in your cart",
+            totalAfterDiscount: 'Total after discount',
         },
         search: {
             title: 'Search',
@@ -1709,6 +1714,11 @@ export const TRANSLATIONS = {
             discountCode: 'كود الخصم',
             giftCardCode: 'كود بطاقة الهدية',
             apply: 'تطبيق',
+            applying: 'جارٍ التطبيق…',
+            discount: 'الخصم',
+            discountApplied: 'تم تطبيق الخصم',
+            discountInvalid: 'هذا الكود غير صالح لمنتجات السلة',
+            totalAfterDiscount: 'الإجمالي بعد الخصم',
         },
         search: {
             title: 'بحث',

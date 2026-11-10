@@ -3,6 +3,26 @@
 /* eslint-disable */
 import type * as StorefrontAPI from '@shopify/hydrogen/storefront-api-types';
 
+export type CartDiscountCodesUpdateFixedMutationVariables =
+  StorefrontAPI.Exact<{
+    cartId: StorefrontAPI.Scalars['ID']['input'];
+    discountCodes:
+      | Array<StorefrontAPI.Scalars['String']['input']>
+      | StorefrontAPI.Scalars['String']['input'];
+    language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+    country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  }>;
+
+export type CartDiscountCodesUpdateFixedMutation = {
+  cartDiscountCodesUpdate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Cart, 'id'>>;
+    userErrors: Array<
+      Pick<StorefrontAPI.CartUserError, 'code' | 'field' | 'message'>
+    >;
+    warnings: Array<Pick<StorefrontAPI.CartWarning, 'code' | 'message'>>;
+  }>;
+};
+
 export type MoneyFragment = Pick<
   StorefrontAPI.MoneyV2,
   'currencyCode' | 'amount'
@@ -2076,7 +2096,12 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {}
+interface GeneratedMutationTypes {
+  '#graphql\n  mutation CartDiscountCodesUpdateFixed(\n    $cartId: ID!\n    $discountCodes: [String!]!\n    $language: LanguageCode\n    $country: CountryCode\n  ) @inContext(country: $country, language: $language) {\n    cartDiscountCodesUpdate(cartId: $cartId, discountCodes: $discountCodes) {\n      cart {\n        id\n      }\n      userErrors {\n        code\n        field\n        message\n      }\n      warnings {\n        code\n        message\n      }\n    }\n  }\n': {
+    return: CartDiscountCodesUpdateFixedMutation;
+    variables: CartDiscountCodesUpdateFixedMutationVariables;
+  };
+}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}
