@@ -366,6 +366,34 @@ export type FooterQuery = {
   >;
 };
 
+export type OfferProductsQueryVariables = StorefrontAPI.Exact<{
+  handle: StorefrontAPI.Scalars['String']['input'];
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type OfferProductsQuery = {
+  collection?: StorefrontAPI.Maybe<{
+    products: {
+      nodes: Array<
+        Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+          metafields: Array<
+            StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
+          >;
+          featuredImage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+          variants: {
+            nodes: Array<
+              Pick<StorefrontAPI.ProductVariant, 'id' | 'availableForSale'> & {
+                price: Pick<StorefrontAPI.MoneyV2, 'amount'>;
+              }
+            >;
+          };
+        }
+      >;
+    };
+  }>;
+};
+
 export type ProductCardFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'title' | 'handle'
@@ -2012,6 +2040,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Footer(\n    $country: CountryCode\n    $footerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: FooterQuery;
     variables: FooterQueryVariables;
+  };
+  '#graphql\n  query OfferProducts(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    collection(handle: $handle) {\n      products(first: 20) {\n        nodes {\n          id\n          handle\n          title\n          metafields(identifiers: [\n            {namespace: "custom", key: "title_ar"},\n            {namespace: "custom", key: "arabic_title"},\n            {namespace: "custom", key: "heat_levels"}\n          ]) {\n            key\n            value\n          }\n          featuredImage {\n            url\n          }\n          variants(first: 1) {\n            nodes {\n              id\n              availableForSale\n              price {\n                amount\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: OfferProductsQuery;
+    variables: OfferProductsQueryVariables;
   };
   '#graphql\n  query Homepage {\n    featured: collection(handle: "bundles") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    bestSellers: collection(handle: "best-sellers") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    fallbackProducts: products(first: 20) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    handle\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n': {
     return: HomepageQuery;

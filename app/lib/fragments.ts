@@ -262,3 +262,42 @@ export const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 ` as const;
+
+// Jars the cart can suggest as the free 4th item (3 + 1 offer).
+export const OFFER_PRODUCTS_QUERY = `#graphql
+  query OfferProducts(
+    $handle: String!
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(language: $language, country: $country) {
+    collection(handle: $handle) {
+      products(first: 20) {
+        nodes {
+          id
+          handle
+          title
+          metafields(identifiers: [
+            {namespace: "custom", key: "title_ar"},
+            {namespace: "custom", key: "arabic_title"},
+            {namespace: "custom", key: "heat_levels"}
+          ]) {
+            key
+            value
+          }
+          featuredImage {
+            url
+          }
+          variants(first: 1) {
+            nodes {
+              id
+              availableForSale
+              price {
+                amount
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+` as const;

@@ -1,12 +1,14 @@
 import { describe, expect, test } from 'vitest';
 import {
   OFFER,
+  cheapestOfferProducts,
   getOfferProgress,
   isOfferActive,
   isOfferProduct,
   offerProgressKey,
   summarizeCartOffer,
   type OfferLineInput,
+  type OfferProduct,
 } from './offers';
 
 const cfg = { ...OFFER, enabled: true };
@@ -93,5 +95,15 @@ describe('progress message', () => {
     expect(offerProgressKey(getOfferProgress(cfg, 4))).toBe('offer.unlocked');
     expect(offerProgressKey(getOfferProgress(cfg, 6))).toBe('offer.needMore2');
     expect(offerProgressKey(getOfferProgress(cfg, 0))).toBeNull();
+  });
+});
+
+describe('gift picker', () => {
+  test('cheapest available jars first', () => {
+    const p = (title: string, price: number, availableForSale = true): OfferProduct => ({
+      id: title, handle: title, title, variantId: `v-${title}`, price, availableForSale,
+    });
+    const list = [p('olives', 390), p('lemons', 225), p('turnips', 190, false), p('cucumbers', 190), p('cabbage', 225)];
+    expect(cheapestOfferProducts(list).map((x) => x.title)).toEqual(['cucumbers', 'lemons']);
   });
 });

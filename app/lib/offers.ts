@@ -75,6 +75,30 @@ export function getOfferProgress(config: OfferConfig, eligibleQty: number): Offe
   return { state: 'progress', needed, earned, showGiftPicker: needed === 1 };
 }
 
+/** A jar the cart can suggest as the free 4th item. */
+export type OfferProduct = {
+  id: string;
+  handle: string;
+  title: string;
+  titleAr?: string | null;
+  variantId: string;
+  price: number;
+  availableForSale: boolean;
+  imageUrl?: string | null;
+  /** Has a heat-level choice: send the customer to the product page instead of one-tap add. */
+  hasOptions?: boolean;
+};
+
+/** Available jars, cheapest first (ties keep their collection order). */
+export function cheapestOfferProducts(products: readonly OfferProduct[], n = 2): OfferProduct[] {
+  return products
+    .filter((p) => p.availableForSale)
+    .map((p, i) => ({ p, i }))
+    .sort((a, b) => a.p.price - b.p.price || a.i - b.i)
+    .slice(0, n)
+    .map(({ p }) => p);
+}
+
 /** Translation key for the cart progress message; null when nothing to say. */
 export function offerProgressKey(progress: OfferProgress): string | null {
   if (progress.state === 'none') return null;

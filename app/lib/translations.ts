@@ -16,6 +16,9 @@ export const TRANSLATIONS = {
             freeTag: 'Free',
             summaryLine: '3 + 1 offer',
             codeNotWithOffer: "This code can't be combined with the 3 + 1 offer",
+            giftTitle: 'Pick your free jar:',
+            add: '+ Add',
+            choose: 'Choose',
         },
         nav: {
             home: 'Home',
@@ -1006,6 +1009,9 @@ export const TRANSLATIONS = {
             freeTag: 'هدية',
             summaryLine: 'عرض ٣ + ١',
             codeNotWithOffer: 'الكود ده مش بيتجمع مع عرض ٣ + ١',
+            giftTitle: 'اختار هديتك:',
+            add: '+ أضف',
+            choose: 'اختار',
         },
         nav: {
             home: 'الرئيسية',

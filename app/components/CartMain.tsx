@@ -5,6 +5,7 @@ import { useAside } from '~/components/Aside';
 import { CartLineItem } from '~/components/CartLineItem';
 import { CartSummary } from './CartSummary';
 import { CartOfferProgress } from './CartOfferProgress';
+import { CartGiftPicker } from './CartGiftPicker';
 import {
   OFFER,
   getOfferProgress,
@@ -39,6 +40,7 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
   const offerSummary = isOfferActive(OFFER)
     ? summarizeCartOffer(OFFER, lines as unknown as OfferLineInput[])
     : null;
+  const offerProgress = offerSummary ? getOfferProgress(OFFER, offerSummary.eligibleQty) : null;
 
 
   return (
@@ -47,8 +49,10 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
       {/* Cart items with scrolling */}
       <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4">
         <div aria-labelledby="cart-lines">
-          {offerSummary && (
-            <CartOfferProgress progress={getOfferProgress(OFFER, offerSummary.eligibleQty)} />
+          {offerProgress && (
+            <CartOfferProgress progress={offerProgress}>
+              {offerProgress.showGiftPicker && <CartGiftPicker />}
+            </CartOfferProgress>
           )}
           <ul className="space-y-4 pb-4">
             {lines.map((line) => (

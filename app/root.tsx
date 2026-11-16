@@ -12,7 +12,8 @@ import {
 } from 'react-router';
 import type { Route } from './+types/root';
 import favicon from '~/assets/favicon.jpg';
-import { FOOTER_QUERY, HEADER_QUERY } from '~/lib/fragments';
+import { FOOTER_QUERY, HEADER_QUERY, OFFER_PRODUCTS_QUERY } from '~/lib/fragments';
+import { OFFER, isOfferActive, type OfferProduct } from '~/lib/offers';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import { PageLayout } from './components/PageLayout';
@@ -152,10 +153,54 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
       console.error(error);
       return null;
     });
+  // Cheapest-jar suggestions for the 3 + 1 offer; never rejects.
+  const offerProducts: Promise<OfferProduct[]> = isOfferActive(OFFER)
+    ? storefront
+        .query(OFFER_PRODUCTS_QUERY, {
+          cache: storefront.CacheShort(),
+          variables: { handle: OFFER.collectionHandle },
+        })
+        .then(({ collection }) =>
+          (collection?.products.nodes ?? []).flatMap((product): OfferProduct[] => {
+            const variant = product.variants.nodes[0];
+            if (!variant) return [];
+            const titleAr =
+              product.metafields.find((m) => m?.key === 'title_ar')?.value ??
+              product.metafields.find((m) => m?.key === 'arabic_title')?.value ??
+              null;
+            const heat = product.metafields.find((m) => m?.key === 'heat_levels')?.value;
+            let hasOptions = false;
+            try {
+              hasOptions = Boolean(heat && (JSON.parse(heat) as unknown[]).length > 0);
+            } catch {
+              hasOptions = false;
+            }
+            return [
+              {
+                id: product.id,
+                handle: product.handle,
+                title: product.title,
+                titleAr,
+                variantId: variant.id,
+                price: parseFloat(variant.price.amount),
+                availableForSale: variant.availableForSale,
+                imageUrl: product.featuredImage?.url ?? null,
+                hasOptions,
+              },
+            ];
+          }),
+        )
+        .catch((error: Error) => {
+          console.error(error);
+          return [];
+        })
+    : Promise.resolve([]);
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
+    offerProducts,
   };
 }
 
