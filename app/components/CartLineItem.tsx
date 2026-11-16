@@ -19,9 +19,12 @@ type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 export function CartLineItem({
   layout,
   line,
+  freeUnits = 0,
 }: {
   layout: CartLayout;
   line: CartLine;
+  /** Units Shopify made free through the 3 + 1 offer. */
+  freeUnits?: number;
 }) {
   const { id, merchandise, attributes } = line;
   const { product, title, image, selectedOptions } = merchandise;
@@ -77,8 +80,20 @@ export function CartLineItem({
               {displayTitle}
             </p>
           </Link>
-          <div className="text-secondary font-bold mb-2">
-            <ProductPrice price={merchandise.price} />
+          <div className="text-secondary font-bold mb-2 flex flex-wrap items-center gap-2">
+            {freeUnits > 0 && freeUnits >= line.quantity ? (
+              <span className="text-dark/40 line-through font-normal">
+                <ProductPrice price={merchandise.price} />
+              </span>
+            ) : (
+              <ProductPrice price={merchandise.price} />
+            )}
+            {freeUnits > 0 && (
+              <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-bold text-white">
+                {t('offer.freeTag')}
+                {freeUnits < line.quantity && ` ×${localizeNumber(freeUnits, locale.language)}`}
+              </span>
+            )}
           </div>
 
           {/* Display variant options (excluding Default Title) */}

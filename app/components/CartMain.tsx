@@ -4,6 +4,14 @@ import type { CartApiQueryFragment } from 'storefrontapi.generated';
 import { useAside } from '~/components/Aside';
 import { CartLineItem } from '~/components/CartLineItem';
 import { CartSummary } from './CartSummary';
+import { CartOfferProgress } from './CartOfferProgress';
+import {
+  OFFER,
+  getOfferProgress,
+  isOfferActive,
+  summarizeCartOffer,
+  type OfferLineInput,
+} from '~/lib/offers';
 import { useTranslation } from '~/lib/translations';
 
 export type CartLayout = 'page' | 'aside';
@@ -27,6 +35,10 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
     cart &&
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
   const cartHasItems = cart?.totalQuantity ? cart.totalQuantity > 0 : false;
+  const lines = cart?.lines?.nodes ?? [];
+  const offerSummary = isOfferActive(OFFER)
+    ? summarizeCartOffer(OFFER, lines as unknown as OfferLineInput[])
+    : null;
 
 
   return (
@@ -35,9 +47,17 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
       {/* Cart items with scrolling */}
       <div className="flex-1 min-h-0 overflow-y-auto px-6 py-4">
         <div aria-labelledby="cart-lines">
+          {offerSummary && (
+            <CartOfferProgress progress={getOfferProgress(OFFER, offerSummary.eligibleQty)} />
+          )}
           <ul className="space-y-4 pb-4">
-            {(cart?.lines?.nodes ?? []).map((line) => (
-              <CartLineItem key={line.id} line={line} layout={layout} />
+            {lines.map((line) => (
+              <CartLineItem
+                key={line.id}
+                line={line}
+                layout={layout}
+                freeUnits={offerSummary?.freeUnitsByLineId[line.id] ?? 0}
+              />
             ))}
           </ul>
         </div>

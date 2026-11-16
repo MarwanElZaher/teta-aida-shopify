@@ -5,6 +5,7 @@ import { useEffect, useRef } from 'react';
 import type { FetcherWithComponents } from 'react-router';
 import { useTranslation } from '~/lib/translations';
 import { formatCurrency } from '~/lib/utils';
+import { OFFER, isOfferActive, summarizeCartOffer, type OfferLineInput } from '~/lib/offers';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -31,6 +32,11 @@ export function CartSummary({ cart }: CartSummaryProps) {
   const beforeDiscount = lines.reduce((sum, line) => sum + lineSubtotal(line), 0);
   const afterDiscount = parseFloat(cart?.cost?.subtotalAmount?.amount ?? '0');
   const savings = Math.max(0, Math.round((beforeDiscount - afterDiscount) * 100) / 100);
+  // The 3 + 1 offer's share of the savings gets its own line; codes keep "Discount".
+  const offerSavings = isOfferActive(OFFER)
+    ? Math.min(savings, summarizeCartOffer(OFFER, lines as unknown as OfferLineInput[]).offerSavings)
+    : 0;
+  const codeSavings = Math.round((savings - offerSavings) * 100) / 100;
 
   return (
     <div aria-labelledby="cart-summary" className="border-t border-gray-200 px-6 py-6 bg-cream/30">
@@ -44,10 +50,18 @@ export function CartSummary({ cart }: CartSummaryProps) {
         </div>
         {savings > 0 && (
           <>
-            <div className="flex justify-between text-sm">
-              <dt className="text-primary">{t('cart.discount')}</dt>
-              <dd className="font-bold text-primary">−{money(savings)}</dd>
-            </div>
+            {offerSavings > 0 && (
+              <div className="flex justify-between text-sm">
+                <dt className="text-primary">{t('offer.summaryLine')}</dt>
+                <dd className="font-bold text-primary">−{money(offerSavings)}</dd>
+              </div>
+            )}
+            {codeSavings > 0 && (
+              <div className="flex justify-between text-sm">
+                <dt className="text-primary">{t('cart.discount')}</dt>
+                <dd className="font-bold text-primary">−{money(codeSavings)}</dd>
+              </div>
+            )}
             <div className="flex justify-between text-base border-t border-gray-200 pt-2">
               <dt className="font-bold text-dark">{t('cart.totalAfterDiscount')}</dt>
               <dd className="font-bold text-dark">{money(afterDiscount)}</dd>
@@ -55,7 +69,7 @@ export function CartSummary({ cart }: CartSummaryProps) {
           </>
         )}
       </dl>
-      <CartDiscounts discountCodes={cart?.discountCodes} />
+      <CartDiscounts discountCodes={cart?.discountCodes} offerApplied={offerSavings > 0} />
       <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
     </div>
   );
@@ -89,8 +103,11 @@ function CartCheckoutActions({ checkoutUrl }: { checkoutUrl?: string }) {
 
 function CartDiscounts({
   discountCodes,
+  offerApplied = false,
 }: {
   discountCodes?: CartApiQueryFragment['discountCodes'];
+  /** A code that loses to the 3 + 1 offer isn't invalid, it just doesn't combine. */
+  offerApplied?: boolean;
 }) {
   const { t } = useTranslation();
   const applied = discountCodes?.filter((d) => d.applicable).map((d) => d.code) ?? [];
@@ -121,7 +138,7 @@ function CartDiscounts({
           {() => (
             <div role="alert" className="flex items-center justify-between rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">
               <span>
-                <code className="font-mono">{code}</code> — {t('cart.discountInvalid')}
+                <code className="font-mono">{code}</code> — {t(offerApplied ? 'offer.codeNotWithOffer' : 'cart.discountInvalid')}
               </span>
               <button type="submit" className="text-xs underline">
                 {t('cart.remove')}

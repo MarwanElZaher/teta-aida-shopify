@@ -2,6 +2,21 @@ import { useMatches } from 'react-router';
 
 export const TRANSLATIONS = {
     EN: {
+        promo: {
+            ribbon: 'White Friday Sale — 20% to 40% off, while stocks last',
+        },
+        offer: {
+            need1: 'Add 1 more jar and the 4th is free 🎁',
+            need2: 'Add 2 more jars and the 4th is free 🎁',
+            need3: 'Add 3 more jars and the 4th is free 🎁',
+            needMore1: 'Add 1 more jar for another free one 🎁',
+            needMore2: 'Add 2 more jars for another free one 🎁',
+            needMore3: 'Add 3 more jars for another free one 🎁',
+            unlocked: '🎉 Your cheapest jar is now free',
+            freeTag: 'Free',
+            summaryLine: '3 + 1 offer',
+            codeNotWithOffer: "This code can't be combined with the 3 + 1 offer",
+        },
         nav: {
             home: 'Home',
             shop: 'Shop',
@@ -977,6 +992,21 @@ export const TRANSLATIONS = {
         },
     },
     AR: {
+        promo: {
+            ribbon: 'تخفيضات الجمعة البيضاء، ٢٠٪ لحد ٤٠٪ حتى نفاد الكمية',
+        },
+        offer: {
+            need1: 'ضيف برطمان كمان والرابع هدية 🎁',
+            need2: 'ضيف برطمانين كمان والرابع هدية 🎁',
+            need3: 'ضيف ٣ برطمانات كمان والرابع هدية 🎁',
+            needMore1: 'ضيف برطمان كمان وتاخد هدية تانية 🎁',
+            needMore2: 'ضيف برطمانين كمان وتاخد هدية تانية 🎁',
+            needMore3: 'ضيف ٣ برطمانات كمان وتاخد هدية تانية 🎁',
+            unlocked: '🎉 مبروك! أرخص برطمان بقى هدية',
+            freeTag: 'هدية',
+            summaryLine: 'عرض ٣ + ١',
+            codeNotWithOffer: 'الكود ده مش بيتجمع مع عرض ٣ + ١',
+        },
         nav: {
             home: 'الرئيسية',
             shop: 'تسوق',

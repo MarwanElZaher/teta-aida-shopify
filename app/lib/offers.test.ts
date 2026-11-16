@@ -4,6 +4,7 @@ import {
   getOfferProgress,
   isOfferActive,
   isOfferProduct,
+  offerProgressKey,
   summarizeCartOffer,
   type OfferLineInput,
 } from './offers';
@@ -81,5 +82,16 @@ describe('cart offer summary', () => {
   test('lines without collections do not count', () => {
     const s = summarizeCartOffer(cfg, [{ id: 'opt', quantity: 2 }, line('box', 1, 950, ['pickle-bundles']), line('z', 1, 0, J, [[T, 0]])]);
     expect(s).toEqual({ eligibleQty: 1, offerSavings: 0, freeUnitsByLineId: {} });
+  });
+});
+
+describe('progress message', () => {
+  test('picks the message key for each state', () => {
+    expect(offerProgressKey(getOfferProgress(cfg, 1))).toBe('offer.need3');
+    expect(offerProgressKey(getOfferProgress(cfg, 2))).toBe('offer.need2');
+    expect(offerProgressKey(getOfferProgress(cfg, 3))).toBe('offer.need1');
+    expect(offerProgressKey(getOfferProgress(cfg, 4))).toBe('offer.unlocked');
+    expect(offerProgressKey(getOfferProgress(cfg, 6))).toBe('offer.needMore2');
+    expect(offerProgressKey(getOfferProgress(cfg, 0))).toBeNull();
   });
 });

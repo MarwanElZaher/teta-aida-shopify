@@ -75,6 +75,13 @@ export function getOfferProgress(config: OfferConfig, eligibleQty: number): Offe
   return { state: 'progress', needed, earned, showGiftPicker: needed === 1 };
 }
 
+/** Translation key for the cart progress message; null when nothing to say. */
+export function offerProgressKey(progress: OfferProgress): string | null {
+  if (progress.state === 'none') return null;
+  if (progress.state === 'unlocked') return 'offer.unlocked';
+  return `offer.${progress.earned === 0 ? 'need' : 'needMore'}${progress.needed}`;
+}
+
 /** The slice of a Storefront API cart line this module reads. */
 export type OfferLineInput = {
   id: string;
