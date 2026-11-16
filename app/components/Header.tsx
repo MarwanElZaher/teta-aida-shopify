@@ -10,6 +10,7 @@ import { useAside } from '~/components/Aside';
 import { useTranslation } from '~/lib/translations';
 import { LanguageSelector } from '~/components/LanguageSelector';
 import { SHOW_CHEESE } from '~/lib/featureFlags';
+import { ensureCheeseItem, isCheeseMenuItem } from '~/lib/menu';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -20,10 +21,6 @@ interface HeaderProps {
 
 type Viewport = 'desktop' | 'mobile';
 
-const CHEESE_PATTERN = /cheese|جبن|أجبان|اجبان/i;
-function isCheeseMenuItem(item: { url?: string | null; title?: string | null }) {
-  return CHEESE_PATTERN.test(item.url || '') || CHEESE_PATTERN.test(item.title || '');
-}
 
 export function Header({
   header,
@@ -107,7 +104,14 @@ export function HeaderMenu({
       {/* Decorative Top Element */}
       <div className="w-16 h-px bg-primary/20 mb-4"></div>
 
-      {(menu || FALLBACK_HEADER_MENU).items
+      {(SHOW_CHEESE
+        ? ensureCheeseItem(
+            // The fallback menu is a looser literal of the same shape.
+            (menu || FALLBACK_HEADER_MENU).items as NonNullable<HeaderQuery['menu']>['items'],
+            locale.language === 'AR' ? 'تشكيلة الأجبان' : 'Cheese Collection',
+          )
+        : (menu || FALLBACK_HEADER_MENU).items
+      )
         .filter((item) => SHOW_CHEESE || !isCheeseMenuItem(item))
         .map((item) => {
         if (!item.url) return null;
