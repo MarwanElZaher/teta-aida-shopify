@@ -230,6 +230,11 @@ export default [
     plugins: {
       jest,
     },
+    // Tests run on Vitest (jest-compatible API); jest isn't installed, so give
+    // eslint-plugin-jest a version instead of letting it look for the package.
+    settings: {
+      jest: {version: 29},
+    },
     languageOptions: {
       globals: {
         ...globals.node,
