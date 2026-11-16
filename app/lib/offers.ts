@@ -144,12 +144,15 @@ export function suggestOfferProducts(
 }
 
 /**
- * Cheese pages (the cheese collection and cheese product pages) aren't part of
- * the jar offer, so the offer ribbon stays off there. Cheese handles all
- * contain "cheese".
+ * Pages the jar offer doesn't cover, so the offer ribbon stays off there: the
+ * cheese collection, cheese product pages (handles contain "cheese") and the
+ * duo bundles (handles end in "-duo").
  */
 export function isCheesePath(pathname: string): boolean {
-  return /\/(collections|products)\/[^/]*cheese/i.test(pathname);
+  return (
+    /\/(collections|products)\/[^/]*cheese/i.test(pathname) ||
+    /\/products\/[^/]*-duo\/?$/i.test(pathname)
+  );
 }
 
 /** Translation key for the cart progress message; null when nothing to say. */

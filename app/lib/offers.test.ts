@@ -151,6 +151,9 @@ describe('offer ribbon placement', () => {
     expect(isCheesePath('/ar/collections/cheese-collection')).toBe(true);
     expect(isCheesePath('/products/signature-cheese-duo')).toBe(true);
     expect(isCheesePath('/ar/products/cheese-no-13-asfar-lemon')).toBe(true);
+    expect(isCheesePath('/products/tuffaahy-signature-duo')).toBe(true);
+    expect(isCheesePath('/ar/products/tuffaahy-signature-duo')).toBe(true);
+    expect(isCheesePath('/products/tuffaahy-olives-signature-mix')).toBe(false);
     expect(isCheesePath('/collections/pickles-products')).toBe(false);
     expect(isCheesePath('/ar/cart')).toBe(false);
     expect(isCheesePath('/')).toBe(false);
