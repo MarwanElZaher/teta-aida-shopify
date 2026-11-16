@@ -102,6 +102,21 @@ export type OfferProduct = {
   hasOptions?: boolean;
 };
 
+/**
+ * Whether a jar needs its product page to pick a heat level: it's sold as
+ * several variants (Normal / Spicy / …) or lists heat levels in a metafield.
+ */
+export function hasHeatChoice(variantCount: number, heatLevelsJson: string | null | undefined): boolean {
+  if (variantCount > 1) return true;
+  if (!heatLevelsJson) return false;
+  try {
+    const levels: unknown = JSON.parse(heatLevelsJson);
+    return Array.isArray(levels) && levels.length > 0;
+  } catch {
+    return false;
+  }
+}
+
 /** Available jars, cheapest first (ties keep their collection order). */
 export function cheapestOfferProducts(products: readonly OfferProduct[], n = 2): OfferProduct[] {
   return products

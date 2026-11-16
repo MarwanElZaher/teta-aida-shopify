@@ -13,7 +13,7 @@ import {
 import type { Route } from './+types/root';
 import favicon from '~/assets/favicon.jpg';
 import { FOOTER_QUERY, HEADER_QUERY, OFFER_PRODUCTS_QUERY } from '~/lib/fragments';
-import { OFFER, isOfferActive, type OfferProduct } from '~/lib/offers';
+import { OFFER, hasHeatChoice, isOfferActive, type OfferProduct } from '~/lib/offers';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import { PageLayout } from './components/PageLayout';
@@ -168,13 +168,10 @@ function loadDeferredData({ context }: Route.LoaderArgs) {
               product.metafields.find((m) => m?.key === 'title_ar')?.value ??
               product.metafields.find((m) => m?.key === 'arabic_title')?.value ??
               null;
-            const heat = product.metafields.find((m) => m?.key === 'heat_levels')?.value;
-            let hasOptions = false;
-            try {
-              hasOptions = Boolean(heat && (JSON.parse(heat) as unknown[]).length > 0);
-            } catch {
-              hasOptions = false;
-            }
+            const hasOptions = hasHeatChoice(
+              product.variants.nodes.length,
+              product.metafields.find((m) => m?.key === 'heat_levels')?.value,
+            );
             return [
               {
                 id: product.id,

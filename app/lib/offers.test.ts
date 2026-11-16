@@ -3,6 +3,7 @@ import {
   OFFER,
   cheapestOfferProducts,
   getOfferProgress,
+  hasHeatChoice,
   isOfferActive,
   isOfferProduct,
   offerProgressKey,
@@ -130,6 +131,16 @@ describe('suggestions for the jars still missing', () => {
     const soldOut = all.map((x) => (x.handle === 'turnips' ? { ...x, availableForSale: false } : x));
     expect(suggestOfferProducts(soldOut, ['cucumbers', 'olives']).map((x) => x.handle)).toEqual(['lemons', 'cabbage']);
     expect(suggestOfferProducts(all, all.map((x) => x.handle)).map((x) => x.handle)).toEqual(['cucumbers', 'turnips', 'lemons']);
+  });
+});
+
+describe('jars with a heat-level choice', () => {
+  test('a jar sold in several heat variants needs its product page', () => {
+    expect(hasHeatChoice(3, null)).toBe(true);
+    expect(hasHeatChoice(1, '["Normal","Spicy"]')).toBe(true);
+    expect(hasHeatChoice(1, null)).toBe(false);
+    expect(hasHeatChoice(1, '[]')).toBe(false);
+    expect(hasHeatChoice(1, 'not json')).toBe(false);
   });
 });
 

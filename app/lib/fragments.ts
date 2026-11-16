@@ -287,7 +287,7 @@ export const OFFER_PRODUCTS_QUERY = `#graphql
           featuredImage {
             url
           }
-          variants(first: 1) {
+          variants(first: 2) {
             nodes {
               id
               availableForSale

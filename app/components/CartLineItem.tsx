@@ -37,7 +37,8 @@ export function CartLineItem({
 
   // Filter out "Default Title" from selected options
   const relevantOptions = (selectedOptions || []).filter(
-    option => !(option.name === 'Title' && option.value === 'Default Title')
+    // Match on the value: on /ar the option name arrives translated ("عنوان").
+    option => option.value !== 'Default Title'
   );
 
   // Parse heat level attributes (for both bundles and individual products)

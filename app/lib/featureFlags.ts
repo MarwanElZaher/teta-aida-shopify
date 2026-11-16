@@ -1,5 +1,5 @@
 // Toggle to re-enable cheese UI when products are restocked.
-export const SHOW_CHEESE = false;
+export const SHOW_CHEESE = true;
 
 // White Friday news ribbon above every page's hero. Only set to true while the
 // 20–40% prices are actually live in Shopify. While the 3 + 1 offer is active
