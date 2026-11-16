@@ -40,7 +40,9 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
   const offerSummary = isOfferActive(OFFER)
     ? summarizeCartOffer(OFFER, lines as unknown as OfferLineInput[])
     : null;
-  const offerProgress = offerSummary ? getOfferProgress(OFFER, offerSummary.eligibleQty) : null;
+  const offerProgress = offerSummary
+    ? getOfferProgress(OFFER, offerSummary.eligibleQty, offerSummary.offerSavings > 0)
+    : null;
 
 
   return (

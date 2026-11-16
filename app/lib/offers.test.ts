@@ -107,3 +107,19 @@ describe('gift picker', () => {
     expect(cheapestOfferProducts(list).map((x) => x.title)).toEqual(['cucumbers', 'lemons']);
   });
 });
+
+describe('review fixes', () => {
+  test('no free-jar claim when Shopify applied no offer', () => {
+    expect(getOfferProgress(cfg, 4, false)).toMatchObject({ state: 'none', showGiftPicker: false });
+    expect(getOfferProgress(cfg, 7, false)).toMatchObject({ state: 'none', showGiftPicker: false });
+    expect(getOfferProgress(cfg, 3, false)).toMatchObject({ state: 'progress', needed: 1, showGiftPicker: true });
+    expect(getOfferProgress(cfg, 4, true)).toMatchObject({ state: 'unlocked', earned: 1 });
+  });
+
+  test('discount title matches despite everyday typing differences', () => {
+    const typed = '  اشترى 3  والرابع علينا ';
+    const s = summarizeCartOffer(cfg, [line('t', 1, 190, J, [[typed, 190]])]);
+    expect(s.freeUnitsByLineId).toEqual({ t: 1 });
+    expect(s.offerSavings).toBe(190);
+  });
+});

@@ -31,6 +31,8 @@ export const OFFER: OfferConfig = {
   buyQty: 3,
   getQty: 1,
   maxPerOrder: null,
+  // Matched loosely (see normalizeTitle). If it doesn't match the admin title,
+  // the free tag and offer line disappear and the progress bar stops claiming a free jar.
   discountTitle: 'اشتري ٣ والرابع علينا',
 };
 
@@ -58,14 +60,25 @@ export type OfferProgress = {
   showGiftPicker: boolean;
 };
 
-export function getOfferProgress(config: OfferConfig, eligibleQty: number): OfferProgress {
+/**
+ * @param offerApplied whether Shopify actually discounted anything through the
+ * offer. When the cart has enough jars but Shopify applied nothing (a better
+ * code won, the admin rule ended, a title mismatch), never claim a free jar.
+ */
+export function getOfferProgress(
+  config: OfferConfig,
+  eligibleQty: number,
+  offerApplied = true,
+): OfferProgress {
   const group = config.buyQty + config.getQty;
   const q = Math.max(0, Math.floor(eligibleQty));
-  if (q === 0) return { state: 'none', needed: group, earned: 0, showGiftPicker: false };
+  const none: OfferProgress = { state: 'none', needed: group, earned: 0, showGiftPicker: false };
+  if (q === 0) return none;
 
   const groups = Math.floor(q / group);
   const max = config.maxPerOrder ?? Infinity;
   const earned = Math.min(groups * config.getQty, max);
+  if (earned > 0 && !offerApplied) return none;
   const remainder = q % group;
 
   if (earned >= max || remainder === 0) {
@@ -106,6 +119,21 @@ export function offerProgressKey(progress: OfferProgress): string | null {
   return `offer.${progress.earned === 0 ? 'need' : 'needMore'}${progress.needed}`;
 }
 
+const ARABIC_DIGITS = '٠١٢٣٤٥٦٧٨٩';
+
+/**
+ * The admin title is typed by hand, so compare loosely: trim, collapse spaces,
+ * Arabic-Indic digits → ASCII, ى → ي, أ/إ/آ → ا.
+ */
+export function normalizeTitle(title: string | null | undefined): string {
+  return (title ?? '')
+    .trim()
+    .replace(/\s+/g, ' ')
+    .replace(/[٠-٩]/g, (d) => String(ARABIC_DIGITS.indexOf(d)))
+    .replace(/ى/g, 'ي')
+    .replace(/[أإآ]/g, 'ا');
+}
+
 /** The slice of a Storefront API cart line this module reads. */
 export type OfferLineInput = {
   id: string;
@@ -139,6 +167,7 @@ export function summarizeCartOffer(
   config: OfferConfig,
   lines: readonly OfferLineInput[],
 ): CartOfferSummary {
+  const wanted = normalizeTitle(config.discountTitle);
   let eligibleQty = 0;
   let offerCents = 0;
   const freeUnitsByLineId: Record<string, number> = {};
@@ -148,7 +177,7 @@ export function summarizeCartOffer(
     if (isOfferProduct(config, handles)) eligibleQty += line.quantity;
 
     const lineOffer = (line.discountAllocations ?? [])
-      .filter((a) => a.title === config.discountTitle)
+      .filter((a) => normalizeTitle(a.title) === wanted)
       .reduce((sum, a) => sum + parseFloat(a.discountedAmount.amount || '0'), 0);
     if (lineOffer <= 0) continue;
     offerCents += Math.round(lineOffer * 100);
