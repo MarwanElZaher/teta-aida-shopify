@@ -24,7 +24,7 @@ export type OfferConfig = {
 };
 
 export const OFFER: OfferConfig = {
-  enabled: false,
+  enabled: true,
   startsAt: null,
   endsAt: '2026-12-31T23:59:59+02:00',
   collectionHandle: 'pickles-products',
