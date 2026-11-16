@@ -248,6 +248,11 @@ const PRODUCT_CARD_FRAGMENT = `#graphql
     id
     title
     handle
+    collections(first: 10) {
+      nodes {
+        handle
+      }
+    }
     priceRange {
       minVariantPrice {
         amount

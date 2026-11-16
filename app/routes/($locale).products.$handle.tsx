@@ -12,6 +12,7 @@ import {
 } from '@shopify/hydrogen';
 import { ProductPrice } from '~/components/ProductPrice';
 import { ProductForm } from '~/components/ProductForm';
+import { OfferNote } from '~/components/OfferBadge';
 import { HeatLevelSelector } from '~/components/HeatLevelSelector';
 import { StickyCTA } from '~/components/StickyCTA';
 import { BundleConfigurator, type BundleItem } from '~/components/BundleConfigurator';
@@ -291,6 +292,7 @@ export default function Product() {
                     />
                   )}
 
+                  <OfferNote collections={product.collections} />
                   <ProductForm
                     productOptions={productOptions}
                     selectedVariant={selectedVariant}
@@ -593,6 +595,11 @@ const PRODUCT_FRAGMENT = `#graphql
     title
     vendor
     handle
+    collections(first: 10) {
+      nodes {
+        handle
+      }
+    }
     descriptionHtml
     description
     encodedVariantExistence

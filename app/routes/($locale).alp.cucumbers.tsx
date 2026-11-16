@@ -3,6 +3,7 @@ import { useLoaderData, Link } from 'react-router';
 import type { LoaderFunctionArgs, MetaFunction } from 'react-router';
 import { Money, Image } from '@shopify/hydrogen';
 import { AddToCartButton } from '~/components/AddToCartButton';
+import { OfferNote } from '~/components/OfferBadge';
 import { useAside } from '~/components/Aside';
 import { useScrollAnimation } from '~/hooks/useScrollAnimation';
 import { ImageGallery } from '~/components/ImageGallery';
@@ -178,6 +179,7 @@ export default function CucumbersALP() {
                             )}
 
                             {/* Add to Cart */}
+                            <OfferNote collections={product.collections} />
                             <AddToCartButton {...addToCartProps} className="w-full h-14 rounded-xl bg-primary text-white font-bold uppercase tracking-widest text-sm hover:bg-secondary transition-all">
                                 {!selectedHeat ? t('product.selectHeatLevel') : t('product.addToCart')}
                             </AddToCartButton>
@@ -287,6 +289,11 @@ const PRODUCT_QUERY = `#graphql
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       id
+      collections(first: 10) {
+        nodes {
+          handle
+        }
+      }
       title
       handle
       metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {

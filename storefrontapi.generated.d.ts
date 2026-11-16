@@ -398,6 +398,7 @@ export type ProductCardFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'title' | 'handle'
 > & {
+  collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
   priceRange: {
     minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
   };
@@ -422,6 +423,9 @@ export type HomepageQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             priceRange: {
               minVariantPrice: Pick<
                 StorefrontAPI.MoneyV2,
@@ -455,6 +459,9 @@ export type HomepageQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             priceRange: {
               minVariantPrice: Pick<
                 StorefrontAPI.MoneyV2,
@@ -486,6 +493,7 @@ export type HomepageQuery = {
   fallbackProducts: {
     nodes: Array<
       Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+        collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
         priceRange: {
           minVariantPrice: Pick<
             StorefrontAPI.MoneyV2,
@@ -521,6 +529,7 @@ export type CabbageProductQueryVariables = StorefrontAPI.Exact<{
 export type CabbageProductQuery = {
   product?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -581,6 +590,7 @@ export type CucumbersProductQueryVariables = StorefrontAPI.Exact<{
 export type CucumbersProductQuery = {
   product?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -713,6 +723,7 @@ export type LemonsProductQueryVariables = StorefrontAPI.Exact<{
 export type LemonsProductQuery = {
   product?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -773,6 +784,7 @@ export type OlivesProductQueryVariables = StorefrontAPI.Exact<{
 export type OlivesProductQuery = {
   product?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -905,6 +917,7 @@ export type TurnipsProductQueryVariables = StorefrontAPI.Exact<{
 export type TurnipsProductQuery = {
   product?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Product, 'id' | 'title' | 'handle'> & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -1135,6 +1148,7 @@ export type ProductItemFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'handle' | 'title'
 > & {
+  collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
   featuredImage?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Image, 'id' | 'altText' | 'url' | 'width' | 'height'>
   >;
@@ -1176,6 +1190,9 @@ export type GenericCollectionQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             featuredImage?: StorefrontAPI.Maybe<
               Pick<
                 StorefrontAPI.Image,
@@ -1264,6 +1281,7 @@ export type CollectionItemFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'handle' | 'title'
 > & {
+  collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
   featuredImage?: StorefrontAPI.Maybe<
     Pick<StorefrontAPI.Image, 'id' | 'altText' | 'url' | 'width' | 'height'>
   >;
@@ -1291,6 +1309,9 @@ export type AllProductsCollectionQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             featuredImage?: StorefrontAPI.Maybe<
               Pick<
                 StorefrontAPI.Image,
@@ -1342,6 +1363,9 @@ export type BundlesCollectionQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             featuredImage?: StorefrontAPI.Maybe<
               Pick<
                 StorefrontAPI.Image,
@@ -1389,6 +1413,9 @@ export type CheeseCollectionQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             featuredImage?: StorefrontAPI.Maybe<
               Pick<
                 StorefrontAPI.Image,
@@ -1436,6 +1463,9 @@ export type PickleCollectionQuery = {
       products: {
         nodes: Array<
           Pick<StorefrontAPI.Product, 'id' | 'handle' | 'title'> & {
+            collections: {
+              nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+            };
             featuredImage?: StorefrontAPI.Maybe<
               Pick<
                 StorefrontAPI.Image,
@@ -1548,6 +1578,7 @@ export type ProductFragment = Pick<
   | 'encodedVariantExistence'
   | 'encodedVariantAvailability'
 > & {
+  collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
   media: {
     nodes: Array<
       Pick<StorefrontAPI.MediaImage, 'id'> & {
@@ -1677,6 +1708,7 @@ export type GenericProductQuery = {
       | 'encodedVariantExistence'
       | 'encodedVariantAvailability'
     > & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       media: {
         nodes: Array<
           Pick<StorefrontAPI.MediaImage, 'id'> & {
@@ -2045,15 +2077,15 @@ interface GeneratedQueryTypes {
     return: OfferProductsQuery;
     variables: OfferProductsQueryVariables;
   };
-  '#graphql\n  query Homepage {\n    featured: collection(handle: "bundles") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    bestSellers: collection(handle: "best-sellers") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    fallbackProducts: products(first: 20) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    handle\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n': {
+  '#graphql\n  query Homepage {\n    featured: collection(handle: "bundles") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    bestSellers: collection(handle: "best-sellers") {\n      id\n      title\n      products(first: 5) {\n        nodes {\n          ...ProductCard\n        }\n      }\n    }\n    fallbackProducts: products(first: 20) {\n      nodes {\n        ...ProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ProductCard on Product {\n    id\n    title\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n': {
     return: HomepageQuery;
     variables: HomepageQueryVariables;
   };
-  '#graphql\n  query CabbageProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query CabbageProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      collections(first: 10) {\n        nodes {\n          handle\n        }\n      }\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
     return: CabbageProductQuery;
     variables: CabbageProductQueryVariables;
   };
-  '#graphql\n  query CucumbersProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query CucumbersProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      collections(first: 10) {\n        nodes {\n          handle\n        }\n      }\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
     return: CucumbersProductQuery;
     variables: CucumbersProductQueryVariables;
   };
@@ -2065,11 +2097,11 @@ interface GeneratedQueryTypes {
     return: HostingBoxProductQuery;
     variables: HostingBoxProductQueryVariables;
   };
-  '#graphql\n  query LemonsProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query LemonsProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      collections(first: 10) {\n        nodes {\n          handle\n        }\n      }\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
     return: LemonsProductQuery;
     variables: LemonsProductQueryVariables;
   };
-  '#graphql\n  query OlivesProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query OlivesProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      collections(first: 10) {\n        nodes {\n          handle\n        }\n      }\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
     return: OlivesProductQuery;
     variables: OlivesProductQueryVariables;
   };
@@ -2081,7 +2113,7 @@ interface GeneratedQueryTypes {
     return: SpicyLoversProductQuery;
     variables: SpicyLoversProductQueryVariables;
   };
-  '#graphql\n  query TurnipsProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query TurnipsProduct(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      collections(first: 10) {\n        nodes {\n          handle\n        }\n      }\n      title\n      handle\n      metafields(identifiers: [{namespace: "custom", key: "bundle_items"}]) {\n        key\n        value\n      }\n      media(first: 10) {\n        nodes {\n          ... on MediaImage {\n            id\n            image {\n              id\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant: variants(first: 1) {\n        nodes {\n          id\n          availableForSale\n          selectedOptions {\n             name\n             value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n      options {\n        name\n        values\n      }\n      variants(first: 20) {\n        nodes {\n          id\n          title\n          availableForSale\n          selectedOptions {\n            name\n            value\n          }\n          price {\n            amount\n            currencyCode\n          }\n          product {\n            handle\n            title\n          }\n        }\n      }\n    }\n  }\n': {
     return: TurnipsProductQuery;
     variables: TurnipsProductQueryVariables;
   };
@@ -2101,7 +2133,7 @@ interface GeneratedQueryTypes {
     return: BlogsQuery;
     variables: BlogsQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query GenericCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      metafields(identifiers: [\n        {namespace: "custom", key: "arabic_title"},\n        {namespace: "custom", key: "arabic_description"}\n      ]) {\n        key\n        value\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor\n      ) {\n        nodes {\n          ...ProductItem\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query GenericCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      metafields(identifiers: [\n        {namespace: "custom", key: "arabic_title"},\n        {namespace: "custom", key: "arabic_description"}\n      ]) {\n        key\n        value\n      }\n      products(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor\n      ) {\n        nodes {\n          ...ProductItem\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n      }\n    }\n  }\n': {
     return: GenericCollectionQuery;
     variables: GenericCollectionQueryVariables;
   };
@@ -2109,19 +2141,19 @@ interface GeneratedQueryTypes {
     return: StoreCollectionsQuery;
     variables: StoreCollectionsQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment MoneyCollectionItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment CollectionItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query AllProductsCollection(\n    $handle: String!\n    $first: Int\n  ) {\n    collection(handle: $handle) {\n      id\n      title\n      products(first: $first) {\n        nodes {\n          ...CollectionItem\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment MoneyCollectionItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment CollectionItem on Product {\n    id\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyCollectionItem\n      }\n      maxVariantPrice {\n        ...MoneyCollectionItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query AllProductsCollection(\n    $handle: String!\n    $first: Int\n  ) {\n    collection(handle: $handle) {\n      id\n      title\n      products(first: $first) {\n        nodes {\n          ...CollectionItem\n        }\n      }\n    }\n  }\n': {
     return: AllProductsCollectionQuery;
     variables: AllProductsCollectionQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query BundlesCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query BundlesCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
     return: BundlesCollectionQuery;
     variables: BundlesCollectionQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query CheeseCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query CheeseCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
     return: CheeseCollectionQuery;
     variables: CheeseCollectionQueryVariables;
   };
-  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query PickleCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  #graphql\n  fragment MoneyProductItem on MoneyV2 {\n    amount\n    currencyCode\n  }\n  fragment ProductItem on Product {\n    id\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    title\n    featuredImage {\n      id\n      altText\n      url\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n      maxVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    compareAtPriceRange {\n      minVariantPrice {\n        ...MoneyProductItem\n      }\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"}\n    ]) {\n      key\n      value\n    }\n  }\n\n  query PickleCollection(\n    $handle: String!\n    $country: CountryCode\n    $language: LanguageCode\n    $first: Int\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      products(first: $first) {\n        nodes {\n          ...ProductItem\n        }\n      }\n    }\n  }\n': {
     return: PickleCollectionQuery;
     variables: PickleCollectionQueryVariables;
   };
@@ -2133,7 +2165,7 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  query GenericProduct(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    descriptionHtml\n    description\n    encodedVariantExistence\n    encodedVariantAvailability\n    media(first: 10) {\n      nodes {\n        ... on MediaImage {\n          id\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n        }\n      }\n    }\n    options {\n      name\n      optionValues {\n        name\n        firstSelectableVariant {\n          ...ProductVariant\n        }\n        swatch {\n          color\n          image {\n            previewImage {\n              url\n            }\n          }\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      ...ProductVariant\n    }\n    adjacentVariants (selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    seo {\n      description\n      title\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "micro_trust"},\n      {namespace: "custom", key: "key_benefits"},\n      {namespace: "custom", key: "flavor_profile"},\n      {namespace: "custom", key: "usage_ideas"},\n      {namespace: "custom", key: "reviews"},\n      {namespace: "custom", key: "heat_levels"},\n      {namespace: "custom", key: "bundle_contents"},\n      {namespace: "custom", key: "why_bundle"},\n      {namespace: "custom", key: "why_this_box_works"},\n      {namespace: "custom", key: "recommended_product"},\n      {namespace: "custom", key: "usage_moments"},\n      {namespace: "custom", key: "bundle_items"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"},\n      {namespace: "custom", key: "ingredients"},\n      {namespace: "custom", key: "nutrition_facts"},\n      {namespace: "custom", key: "serving_size"}\n    ]) {\n      key\n      value\n      type\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
+  '#graphql\n  query GenericProduct(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...Product\n    }\n  }\n  #graphql\n  fragment Product on Product {\n    id\n    title\n    vendor\n    handle\n    collections(first: 10) {\n      nodes {\n        handle\n      }\n    }\n    descriptionHtml\n    description\n    encodedVariantExistence\n    encodedVariantAvailability\n    media(first: 10) {\n      nodes {\n        ... on MediaImage {\n          id\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n        }\n      }\n    }\n    options {\n      name\n      optionValues {\n        name\n        firstSelectableVariant {\n          ...ProductVariant\n        }\n        swatch {\n          color\n          image {\n            previewImage {\n              url\n            }\n          }\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {\n      ...ProductVariant\n    }\n    adjacentVariants (selectedOptions: $selectedOptions) {\n      ...ProductVariant\n    }\n    seo {\n      description\n      title\n    }\n    metafields(identifiers: [\n      {namespace: "custom", key: "tagline"},\n      {namespace: "custom", key: "micro_trust"},\n      {namespace: "custom", key: "key_benefits"},\n      {namespace: "custom", key: "flavor_profile"},\n      {namespace: "custom", key: "usage_ideas"},\n      {namespace: "custom", key: "reviews"},\n      {namespace: "custom", key: "heat_levels"},\n      {namespace: "custom", key: "bundle_contents"},\n      {namespace: "custom", key: "why_bundle"},\n      {namespace: "custom", key: "why_this_box_works"},\n      {namespace: "custom", key: "recommended_product"},\n      {namespace: "custom", key: "usage_moments"},\n      {namespace: "custom", key: "bundle_items"},\n      {namespace: "custom", key: "arabic_title"},\n      {namespace: "custom", key: "arabic_description"},\n      {namespace: "custom", key: "ingredients"},\n      {namespace: "custom", key: "nutrition_facts"},\n      {namespace: "custom", key: "serving_size"}\n    ]) {\n      key\n      value\n      type\n    }\n  }\n  #graphql\n  fragment ProductVariant on ProductVariant {\n    availableForSale\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    id\n    image {\n      __typename\n      id\n      url\n      altText\n      width\n      height\n    }\n    price {\n      amount\n      currencyCode\n    }\n    product {\n      title\n      handle\n    }\n    selectedOptions {\n      name\n      value\n    }\n    sku\n    title\n    unitPrice {\n      amount\n      currencyCode\n    }\n  }\n\n\n': {
     return: GenericProductQuery;
     variables: GenericProductQueryVariables;
   };

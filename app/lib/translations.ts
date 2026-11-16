@@ -19,6 +19,8 @@ export const TRANSLATIONS = {
             giftTitle: 'Pick your free jar:',
             add: '+ Add',
             choose: 'Choose',
+            badge: '3 + 1 free',
+            note: 'Pick any 4 jars and the cheapest one is free',
         },
         nav: {
             home: 'Home',
@@ -1012,6 +1014,8 @@ export const TRANSLATIONS = {
             giftTitle: 'اختار هديتك:',
             add: '+ أضف',
             choose: 'اختار',
+            badge: '٣ + ١ هدية',
+            note: 'اختار أي ٤ برطمانات والأرخص هدية',
         },
         nav: {
             home: 'الرئيسية',

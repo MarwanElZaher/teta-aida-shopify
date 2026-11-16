@@ -191,6 +191,11 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
   fragment CollectionItem on Product {
     id
     handle
+    collections(first: 10) {
+      nodes {
+        handle
+      }
+    }
     title
     featuredImage {
       id

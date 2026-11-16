@@ -8,6 +8,7 @@ import { useVariantUrl } from '~/lib/variants';
 import { useTranslation } from '~/lib/translations';
 import { getLocalizedTitle } from '~/lib/localized-content';
 import { formatCurrency } from '~/lib/utils';
+import { OfferBadge } from '~/components/OfferBadge';
 
 export function ProductItem({
   product,
@@ -37,6 +38,7 @@ export function ProductItem({
       to={variantUrl}
     >
       <div className="relative aspect-[4/5] overflow-hidden rounded-lg bg-[#F0EFEB] mb-4">
+        <OfferBadge collections={'collections' in product ? product.collections : null} />
         {image && (
           <Image
             alt={image.altText || displayTitle}
