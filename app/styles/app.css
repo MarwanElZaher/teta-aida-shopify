@@ -244,3 +244,55 @@ footer h6 {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+/* ── White Friday news ribbon (components/PromoRibbon.tsx) ─────────────── */
+.promo-ribbon {
+  overflow: hidden;
+  background-color: var(--color-primary);
+  color: var(--color-cream);
+  border-block: 1px solid color-mix(in srgb, var(--color-secondary) 45%, transparent);
+}
+.promo-ribbon__track {
+  display: flex;
+  width: max-content;
+  animation: promo-marquee 45s linear infinite;
+}
+.promo-ribbon__track--rtl {
+  animation-name: promo-marquee-rtl;
+}
+.promo-ribbon:hover .promo-ribbon__track {
+  animation-play-state: paused;
+}
+.promo-ribbon__group {
+  display: flex;
+  flex-shrink: 0;
+}
+.promo-ribbon__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 0.65rem 0 0.65rem 1.75rem;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.promo-ribbon[dir='rtl'] .promo-ribbon__item {
+  padding: 0.65rem 1.75rem 0.65rem 0;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+.promo-ribbon__sep {
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+}
+@keyframes promo-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes promo-marquee-rtl {
+  from { transform: translateX(0); }
+  to { transform: translateX(50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .promo-ribbon__track { animation: none; }
+}

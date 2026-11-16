@@ -20,6 +20,7 @@ export const TRANSLATIONS = {
             add: '+ Add',
             choose: 'Choose',
             badge: '3 + 1 free',
+            ribbon: 'Buy 3 jars, the 4th is on us · the cheapest jar is free',
             note: 'Pick any 4 jars and the cheapest one is free',
         },
         nav: {
@@ -1015,6 +1016,7 @@ export const TRANSLATIONS = {
             add: '+ أضف',
             choose: 'اختار',
             badge: '٣ + ١ هدية',
+            ribbon: 'اشتري ٣ برطمانات والرابع علينا · أرخص برطمان هدية',
             note: 'اختار أي ٤ برطمانات والأرخص هدية',
         },
         nav: {

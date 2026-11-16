@@ -8,6 +8,7 @@ import type {
 import { Aside } from '~/components/Aside';
 import { Footer } from '~/components/Footer';
 import { Header, HeaderMenu } from '~/components/Header';
+import { PromoRibbon } from '~/components/PromoRibbon';
 import { CartMain } from '~/components/CartMain';
 import {
   SEARCH_ENDPOINT,
@@ -46,7 +47,10 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main className="pt-24 md:pt-32 min-h-screen">{children}</main>
+      <main className="pt-24 md:pt-32 min-h-screen">
+        <PromoRibbon />
+        {children}
+      </main>
       <Footer
         footer={footer}
         header={header}
