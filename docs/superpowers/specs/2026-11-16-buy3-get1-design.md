@@ -17,8 +17,8 @@ checkout ever showing different totals.
 - Customers can see the offer before, during and after adding to cart: ribbon,
   badge on jars, product-page note, cart progress, the free line marked "هدية".
 - Works in Arabic and English, desktop and phone, cart page and cart drawer.
-- Turning the offer off (or reaching its end date) removes every trace from the
-  site without a deploy.
+- Reaching the end date removes every trace of the offer from the site without a
+  deploy. Stopping it early is a one-line flag change plus a push (~3 minutes).
 
 ## Non-goals
 
