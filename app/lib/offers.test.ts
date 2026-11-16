@@ -1,5 +1,12 @@
 import { describe, expect, test } from 'vitest';
-import { OFFER, getOfferProgress, isOfferActive, isOfferProduct } from './offers';
+import {
+  OFFER,
+  getOfferProgress,
+  isOfferActive,
+  isOfferProduct,
+  summarizeCartOffer,
+  type OfferLineInput,
+} from './offers';
 
 const cfg = { ...OFFER, enabled: true };
 
@@ -35,5 +42,44 @@ describe('offer progress', () => {
     const once = { ...cfg, maxPerOrder: 1 };
     expect(getOfferProgress(once, 4)).toMatchObject({ state: 'unlocked', earned: 1 });
     expect(getOfferProgress(once, 7)).toMatchObject({ state: 'unlocked', needed: 0, earned: 1, showGiftPicker: false });
+  });
+});
+
+const T = OFFER.discountTitle;
+const J = ['pickles-products'];
+const line = (
+  id: string,
+  qty: number,
+  unit: number,
+  handles: string[],
+  allocs: Array<[string, number]> = [],
+): OfferLineInput => ({
+  id,
+  quantity: qty,
+  cost: { amountPerQuantity: { amount: String(unit) } },
+  discountAllocations: allocs.map(([title, amount]) => ({ title, discountedAmount: { amount: String(amount) } })),
+  merchandise: { product: { collections: { nodes: handles.map((handle) => ({ handle })) } } },
+});
+
+describe('cart offer summary', () => {
+  test('four mixed jars, turnips free', () => {
+    const s = summarizeCartOffer(cfg, [line('o', 1, 390, J), line('l', 1, 225, J), line('c', 1, 225, J), line('t', 1, 190, J, [[T, 190]])]);
+    expect(s).toEqual({ eligibleQty: 4, offerSavings: 190, freeUnitsByLineId: { t: 1 } });
+  });
+
+  test('marks one unit free on a two-unit line', () => {
+    const s = summarizeCartOffer(cfg, [line('t', 2, 190, J, [[T, 190]]), line('o', 2, 390, J)]);
+    expect(s.freeUnitsByLineId).toEqual({ t: 1 });
+    expect(s.eligibleQty).toBe(4);
+  });
+
+  test('freeUnits ignores allocations with another title', () => {
+    const s = summarizeCartOffer(cfg, [line('t', 1, 190, J, [['TETA20', 38]])]);
+    expect(s).toEqual({ eligibleQty: 1, offerSavings: 0, freeUnitsByLineId: {} });
+  });
+
+  test('lines without collections do not count', () => {
+    const s = summarizeCartOffer(cfg, [{ id: 'opt', quantity: 2 }, line('box', 1, 950, ['pickle-bundles']), line('z', 1, 0, J, [[T, 0]])]);
+    expect(s).toEqual({ eligibleQty: 1, offerSavings: 0, freeUnitsByLineId: {} });
   });
 });

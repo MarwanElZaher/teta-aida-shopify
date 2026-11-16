@@ -74,3 +74,60 @@ export function getOfferProgress(config: OfferConfig, eligibleQty: number): Offe
   const needed = group - remainder;
   return { state: 'progress', needed, earned, showGiftPicker: needed === 1 };
 }
+
+/** The slice of a Storefront API cart line this module reads. */
+export type OfferLineInput = {
+  id: string;
+  quantity: number;
+  cost?: { amountPerQuantity?: { amount: string } | null } | null;
+  discountAllocations?: ReadonlyArray<{
+    title?: string | null;
+    discountedAmount: { amount: string };
+  }> | null;
+  merchandise?: {
+    product?: {
+      collections?: { nodes: ReadonlyArray<{ handle: string }> } | null;
+    } | null;
+  } | null;
+};
+
+export type CartOfferSummary = {
+  eligibleQty: number;
+  /** Sum of the offer's allocations (matched by discount title). */
+  offerSavings: number;
+  /** Only lines with at least one free unit. */
+  freeUnitsByLineId: Record<string, number>;
+};
+
+/**
+ * Reads what Shopify already decided: which lines count toward the offer and
+ * which units it made free. Lines missing product data (optimistic lines,
+ * bundle components) don't count.
+ */
+export function summarizeCartOffer(
+  config: OfferConfig,
+  lines: readonly OfferLineInput[],
+): CartOfferSummary {
+  let eligibleQty = 0;
+  let offerCents = 0;
+  const freeUnitsByLineId: Record<string, number> = {};
+
+  for (const line of lines) {
+    const handles = line.merchandise?.product?.collections?.nodes?.map((n) => n.handle) ?? [];
+    if (isOfferProduct(config, handles)) eligibleQty += line.quantity;
+
+    const lineOffer = (line.discountAllocations ?? [])
+      .filter((a) => a.title === config.discountTitle)
+      .reduce((sum, a) => sum + parseFloat(a.discountedAmount.amount || '0'), 0);
+    if (lineOffer <= 0) continue;
+    offerCents += Math.round(lineOffer * 100);
+
+    const unit = parseFloat(line.cost?.amountPerQuantity?.amount ?? '0');
+    if (unit > 0) {
+      const free = Math.min(line.quantity, Math.round(lineOffer / unit));
+      if (free > 0) freeUnitsByLineId[line.id] = free;
+    }
+  }
+
+  return { eligibleQty, offerSavings: offerCents / 100, freeUnitsByLineId };
+}

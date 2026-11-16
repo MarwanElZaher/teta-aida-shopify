@@ -33,6 +33,15 @@ export type CartLineFragment = Pick<
   'id' | 'quantity'
 > & {
   attributes: Array<Pick<StorefrontAPI.Attribute, 'key' | 'value'>>;
+  discountAllocations: Array<
+    | (Pick<StorefrontAPI.CartAutomaticDiscountAllocation, 'title'> & {
+        discountedAmount: Pick<
+          StorefrontAPI.MoneyV2,
+          'currencyCode' | 'amount'
+        >;
+      })
+    | {discountedAmount: Pick<StorefrontAPI.MoneyV2, 'currencyCode' | 'amount'>}
+  >;
   cost: {
     totalAmount: Pick<StorefrontAPI.MoneyV2, 'currencyCode' | 'amount'>;
     subtotalAmount: Pick<StorefrontAPI.MoneyV2, 'currencyCode' | 'amount'>;
@@ -56,6 +65,7 @@ export type CartLineFragment = Pick<
       StorefrontAPI.Product,
       'handle' | 'title' | 'id' | 'vendor'
     > & {
+      collections: {nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>};
       metafields: Array<
         StorefrontAPI.Maybe<Pick<StorefrontAPI.Metafield, 'key' | 'value'>>
       >;
@@ -127,6 +137,20 @@ export type CartApiQueryFragment = Pick<
     nodes: Array<
       | (Pick<StorefrontAPI.CartLine, 'id' | 'quantity'> & {
           attributes: Array<Pick<StorefrontAPI.Attribute, 'key' | 'value'>>;
+          discountAllocations: Array<
+            | (Pick<StorefrontAPI.CartAutomaticDiscountAllocation, 'title'> & {
+                discountedAmount: Pick<
+                  StorefrontAPI.MoneyV2,
+                  'currencyCode' | 'amount'
+                >;
+              })
+            | {
+                discountedAmount: Pick<
+                  StorefrontAPI.MoneyV2,
+                  'currencyCode' | 'amount'
+                >;
+              }
+          >;
           cost: {
             totalAmount: Pick<StorefrontAPI.MoneyV2, 'currencyCode' | 'amount'>;
             subtotalAmount: Pick<
@@ -159,6 +183,9 @@ export type CartApiQueryFragment = Pick<
               StorefrontAPI.Product,
               'handle' | 'title' | 'id' | 'vendor'
             > & {
+              collections: {
+                nodes: Array<Pick<StorefrontAPI.Collection, 'handle'>>;
+              };
               metafields: Array<
                 StorefrontAPI.Maybe<
                   Pick<StorefrontAPI.Metafield, 'key' | 'value'>

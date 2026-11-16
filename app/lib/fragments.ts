@@ -11,6 +11,14 @@ export const CART_QUERY_FRAGMENT = `#graphql
       key
       value
     }
+    discountAllocations {
+      discountedAmount {
+        ...Money
+      }
+      ... on CartAutomaticDiscountAllocation {
+        title
+      }
+    }
     cost {
       totalAmount {
         ...Money
@@ -50,6 +58,11 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          collections(first: 10) {
+            nodes {
+              handle
+            }
+          }
           metafields(identifiers: [
             {namespace: "custom", key: "arabic_title"},
             {namespace: "custom", key: "title_ar"}
