@@ -4,6 +4,7 @@ import {
   cheapestOfferProducts,
   getOfferProgress,
   hasHeatChoice,
+  isCheesePath,
   isOfferActive,
   isOfferProduct,
   offerProgressKey,
@@ -141,6 +142,18 @@ describe('jars with a heat-level choice', () => {
     expect(hasHeatChoice(1, null)).toBe(false);
     expect(hasHeatChoice(1, '[]')).toBe(false);
     expect(hasHeatChoice(1, 'not json')).toBe(false);
+  });
+});
+
+describe('offer ribbon placement', () => {
+  test('hidden on cheese pages, shown elsewhere', () => {
+    expect(isCheesePath('/collections/cheese-collection')).toBe(true);
+    expect(isCheesePath('/ar/collections/cheese-collection')).toBe(true);
+    expect(isCheesePath('/products/signature-cheese-duo')).toBe(true);
+    expect(isCheesePath('/ar/products/cheese-no-13-asfar-lemon')).toBe(true);
+    expect(isCheesePath('/collections/pickles-products')).toBe(false);
+    expect(isCheesePath('/ar/cart')).toBe(false);
+    expect(isCheesePath('/')).toBe(false);
   });
 });
 

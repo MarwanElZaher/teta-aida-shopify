@@ -1,5 +1,6 @@
+import { useLocation } from 'react-router';
 import { SHOW_PROMO_RIBBON } from '~/lib/featureFlags';
-import { OFFER, isOfferActive } from '~/lib/offers';
+import { OFFER, isCheesePath, isOfferActive } from '~/lib/offers';
 import { useTranslation } from '~/lib/translations';
 
 // How many times the message repeats in each half of the loop. Enough to be
@@ -13,8 +14,16 @@ const REPEATS = 8;
  */
 export function PromoRibbon() {
   const { t, isRtl } = useTranslation();
-  // The 3 + 1 offer wins while it's live; otherwise the White Friday text, if on.
-  const key = isOfferActive(OFFER) ? 'offer.ribbon' : SHOW_PROMO_RIBBON ? 'promo.ribbon' : null;
+  const { pathname } = useLocation();
+  // The 3 + 1 offer wins while it's live (except on cheese pages, which it
+  // doesn't cover); otherwise the White Friday text, if on.
+  const key = isOfferActive(OFFER)
+    ? isCheesePath(pathname)
+      ? null
+      : 'offer.ribbon'
+    : SHOW_PROMO_RIBBON
+      ? 'promo.ribbon'
+      : null;
   if (!key) return null;
 
   const text = t(key);
