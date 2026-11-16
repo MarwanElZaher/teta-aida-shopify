@@ -43,7 +43,9 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
   const offerProgress = offerSummary
     ? getOfferProgress(OFFER, offerSummary.eligibleQty, offerSummary.offerSavings > 0)
     : null;
-
+  const inCartHandles = lines
+    .map((line) => ('product' in line.merchandise ? line.merchandise.product?.handle : undefined))
+    .filter((handle): handle is string => Boolean(handle));
 
   return (
     <div className="flex flex-col h-full">
@@ -53,7 +55,9 @@ export function CartMain({ layout, cart: originalCart }: CartMainProps) {
         <div aria-labelledby="cart-lines">
           {offerProgress && (
             <CartOfferProgress progress={offerProgress}>
-              {offerProgress.showGiftPicker && <CartGiftPicker />}
+              {offerProgress.showGiftPicker && (
+                <CartGiftPicker inCartHandles={inCartHandles} needed={offerProgress.needed} />
+              )}
             </CartOfferProgress>
           )}
           <ul className="space-y-4 pb-4">

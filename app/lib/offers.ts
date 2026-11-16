@@ -85,7 +85,7 @@ export function getOfferProgress(
     return { state: 'unlocked', needed: 0, earned, showGiftPicker: false };
   }
   const needed = group - remainder;
-  return { state: 'progress', needed, earned, showGiftPicker: needed === 1 };
+  return { state: 'progress', needed, earned, showGiftPicker: true };
 }
 
 /** A jar the cart can suggest as the free 4th item. */
@@ -110,6 +110,22 @@ export function cheapestOfferProducts(products: readonly OfferProduct[], n = 2):
     .sort((a, b) => a.p.price - b.p.price || a.i - b.i)
     .slice(0, n)
     .map(({ p }) => p);
+}
+
+/**
+ * Jars to suggest while the cart is short of a group: the ones the customer
+ * hasn't added yet. When every available jar is already in the cart, suggest
+ * those again so there's still something to add.
+ */
+export function suggestOfferProducts(
+  products: readonly OfferProduct[],
+  inCartHandles: readonly string[],
+  n = 3,
+): OfferProduct[] {
+  const inCart = new Set(inCartHandles);
+  const missing = products.filter((p) => !inCart.has(p.handle));
+  const picks = cheapestOfferProducts(missing, n);
+  return picks.length > 0 ? picks : cheapestOfferProducts(products, n);
 }
 
 /** Translation key for the cart progress message; null when nothing to say. */

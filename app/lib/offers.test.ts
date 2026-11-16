@@ -6,6 +6,7 @@ import {
   isOfferActive,
   isOfferProduct,
   offerProgressKey,
+  suggestOfferProducts,
   summarizeCartOffer,
   type OfferLineInput,
   type OfferProduct,
@@ -105,6 +106,30 @@ describe('gift picker', () => {
     });
     const list = [p('olives', 390), p('lemons', 225), p('turnips', 190, false), p('cucumbers', 190), p('cabbage', 225)];
     expect(cheapestOfferProducts(list).map((x) => x.title)).toEqual(['cucumbers', 'lemons']);
+  });
+});
+
+describe('suggestions for the jars still missing', () => {
+  const p = (handle: string, price: number, availableForSale = true): OfferProduct => ({
+    id: handle, handle, title: handle, variantId: `v-${handle}`, price, availableForSale,
+  });
+  const all = [p('olives', 390), p('lemons', 225), p('cabbage', 225), p('cucumbers', 190), p('turnips', 190)];
+
+  test('shows the picker whenever the cart is short of a group', () => {
+    expect(getOfferProgress(cfg, 1)).toMatchObject({ state: 'progress', needed: 3, showGiftPicker: true });
+    expect(getOfferProgress(cfg, 2)).toMatchObject({ state: 'progress', needed: 2, showGiftPicker: true });
+    expect(getOfferProgress(cfg, 5)).toMatchObject({ state: 'progress', needed: 3, showGiftPicker: true });
+  });
+
+  test('suggests the other jars when X is already in the cart', () => {
+    expect(suggestOfferProducts(all, ['cucumbers']).map((x) => x.handle)).toEqual(['turnips', 'lemons', 'cabbage']);
+    expect(suggestOfferProducts(all, ['olives', 'lemons', 'cabbage']).map((x) => x.handle)).toEqual(['cucumbers', 'turnips']);
+  });
+
+  test('skips sold-out jars and falls back to cart jars when nothing else is left', () => {
+    const soldOut = all.map((x) => (x.handle === 'turnips' ? { ...x, availableForSale: false } : x));
+    expect(suggestOfferProducts(soldOut, ['cucumbers', 'olives']).map((x) => x.handle)).toEqual(['lemons', 'cabbage']);
+    expect(suggestOfferProducts(all, all.map((x) => x.handle)).map((x) => x.handle)).toEqual(['cucumbers', 'turnips', 'lemons']);
   });
 });
 

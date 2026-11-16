@@ -3,16 +3,23 @@ import { Await, Link, useRouteLoaderData } from 'react-router';
 import { CartForm } from '@shopify/hydrogen';
 import type { RootLoader } from '~/root';
 import { useAside } from '~/components/Aside';
-import { cheapestOfferProducts, type OfferProduct } from '~/lib/offers';
+import { suggestOfferProducts, type OfferProduct } from '~/lib/offers';
 import { useTranslation } from '~/lib/translations';
 import { formatCurrency } from '~/lib/utils';
 
 /**
- * "Pick your free jar": the two cheapest available jars, shown when one more
- * jar unlocks the 3 + 1 offer. Jars with a heat-level choice link to their
- * product page so the customer can pick it; the rest add in one tap.
+ * Jars the customer hasn't added yet, shown while the cart is short of a
+ * 3 + 1 group. With one jar to go the heading says "pick your free jar".
+ * Jars with a heat-level choice link to their product page so the customer
+ * can pick it; the rest add in one tap.
  */
-export function CartGiftPicker() {
+export function CartGiftPicker({
+  inCartHandles,
+  needed,
+}: {
+  inCartHandles: readonly string[];
+  needed: number;
+}) {
   const data = useRouteLoaderData<RootLoader>('root');
   const { t } = useTranslation();
   if (!data?.offerProducts) return null;
@@ -21,11 +28,13 @@ export function CartGiftPicker() {
     <Suspense fallback={null}>
       <Await resolve={data.offerProducts}>
         {(products) => {
-          const picks = cheapestOfferProducts(products ?? []);
+          const picks = suggestOfferProducts(products ?? [], inCartHandles);
           if (picks.length === 0) return null;
           return (
             <div className="mt-3 space-y-2">
-              <p className="text-xs font-bold text-dark">{t('offer.giftTitle')}</p>
+              <p className="text-xs font-bold text-dark">
+                {t(needed === 1 ? 'offer.giftTitle' : 'offer.giftTitleMore')}
+              </p>
               {picks.map((product) => (
                 <GiftRow key={product.id} product={product} />
               ))}
